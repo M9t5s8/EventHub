@@ -1,0 +1,213 @@
+/* General styles */
+body {
+  margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #1d1155;
+  padding: 0;
+  box-sizing: border-box;
+   overflow-y: scroll;
+}
+
+/* Navigation bar styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000000c0;
+  padding: 15px 30px;
+  z-index: 1000; 
+  border-bottom: 0.5px solid rgb(191, 142, 142);
+  
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.nav-list li{
+  
+  font-weight: bold;
+  color: #fff;
+}
+
+.nav-list .logo {
+  margin-right: auto;
+  font-size: 16px;
+}
+.nav-list .logo:hover{
+  cursor: default;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.nav-list a:hover{
+  color: #ddd;
+  text-decoration: underline;
+}
+
+ .nav-list li:last-child {
+  margin-right: 50px;
+  margin-left: auto;
+  font-size: 18px;
+}
+
+
+
+.login-hero{
+  background-color: #000;
+  color: white;
+  padding: 13px 30px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  line-height: 1.5;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+
+.login-hero:hover {
+  background-color: #333;
+  text-decoration: underline;
+}
+
+.login-hero:active {
+  background-color: #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+}
+
+
+
+
+.login-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+.signup-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); 
+}
+
+
+.login-box {
+  background-color: #1a103e;
+  padding: 30px 40px;
+  border-radius: 10px;
+  width: 300px;
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.input-label {
+  margin-left: 5px;
+  text-align: left;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #d3d3d3;
+  font-size: 14px;
+  outline: none;
+}
+
+.remember-me {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.remember-me input {
+  margin-right: 2px;
+}
+
+.login-btn {
+  background-color: #000;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.login-btn:hover {
+  background-color: #333;
+  text-decoration: underline;
+}
+
+.login-btn:active {
+  background-color: #000;
+}
+
+.signup-text {
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.signup-text a {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+} 
+
+
+
+
