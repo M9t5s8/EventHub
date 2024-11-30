@@ -1,0 +1,34 @@
+<!-- base.html -->
+{% load static %}
+{% comment %} to use static for the link css and js {% endcomment %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Document{% endblock %}</title>
+
+    {% comment %} this is the common css used in the website {% endcomment %}
+    <link rel="stylesheet" href="{% static 'CSS/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/scroll.css' %}" />
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block navbar %}{% include 'navbar.html' %}{% endblock %}
+
+
+
+    {% block content %}
+
+    
+    {% endblock %}
+
+
+
+    {% comment %} this is where all the common js are kept  {% endcomment %}
+    <script src="{% static 'JS/login.js' %}"></script>
+</body>
+</html>

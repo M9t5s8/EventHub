@@ -1,0 +1,67 @@
+ <!-- Navigation Bar -->
+ <div>
+    <nav class="navbar">
+      <ul class="nav-list">
+        <li class="logo">EventHub</li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/events/">Events</a></li>
+        <li><a href="/aboutus/">About Us</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href="" id="login-btn">Login</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Login Form -->
+  <div class="login-container" id="login-container">
+    <div class="login-box">
+      <button class="close-btn" id="close-login-btn">×</button>
+      <h2>Welcome Back</h2>
+      <form>
+        <label for="email-login" class="input-label">Email:</label>
+        <input type="email" id="email-login" placeholder="Enter your Gmail..." />
+
+        <label for="password-login" class="input-label">Password:</label>
+
+        <input type="password" id="password-login" placeholder="Enter your password..." />
+
+        <div class="remember-me">
+          <input type="checkbox" id="remember-login" />
+          <label for="remember-login">Remember me?</label>
+        </div>
+
+        <button type="submit" class="login-btn">LOG IN</button>
+      </form>
+      <p class="signup-text">
+        Don’t have an account? <a href="#" id="signup-link">SIGN UP</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Signup Form -->
+  <div class="signup-container" id="signup-container">
+    <div class="login-box">
+      <button class="close-btn" id="close-signup-btn">×</button>
+      <h2>Create an Account</h2>
+      <form>
+        <label for="email-signup" class="input-label">Email:</label>
+        <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
+
+        <label for="password-signup" class="input-label">Password:</label>
+        <input type="password" id="password-signup" placeholder="Enter your password..." />
+
+        <label for="confirm-password" class="input-label">Confirm Password:</label>
+        <input type="password" id="confirm-password" placeholder="Confirm your password..." />
+
+        <div class="remember-me">
+          <input type="checkbox" id="terms-condtn" />
+          <label for="terms-condtn">I agree terms and conditions!</label>
+        </div>
+
+        <button type="submit" class="login-btn">SIGN UP</button>
+      </form>
+      <p class="signup-text">
+        Already have an account? <a href="#" id="login-link">LOG IN</a>
+      </p>
+    </div>
+  </div>

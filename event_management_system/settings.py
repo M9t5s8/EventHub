@@ -59,7 +59,7 @@ ROOT_URLCONF = 'event_management_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +127,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+STATIC_URL = '/static/'  # This defines the base URL for static files
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # For custom static files folder
+]

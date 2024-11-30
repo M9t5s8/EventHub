@@ -10,3 +10,6 @@ def aboutus(request):
 
 def contact(request):
     return render(request,"events/contact.html")
+
+def events(request):
+    return render(request,"events/events.html")

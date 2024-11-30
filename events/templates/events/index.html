@@ -1,125 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="../../../static/CSS/navbar.css" />
-    <link rel="stylesheet" href="../../../static/CSS/style.css" />
-    <link rel="stylesheet" href="../../../static/CSS/scroll.css" />
-  </head>
+<!-- home.html -->
+{% extends 'base.html' %}
+<!-- this uses the base.html where the boiler plate are used -->
 
-  <body>
-    <!-- Navigation Bar -->
-    <div>
-      <nav class="navbar">
-        <ul class="nav-list">
-          <li class="logo">EventHub</li>
-          <li><a href="/">Home</a></li>
-          <li><a href="#">Events</a></li>
-          <li><a href="/aboutus/">About Us</a></li>
-          <li><a href="/contact/">Contact</a></li>
-          <li><a href="" id="login-btn">Login</a></li>
-        </ul>
-      </nav>
+{% load static %}
+<!-- to use contact.css in this page -->
+
+{% block title %}Events{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>EVENT MANAGEMENT SYSTEM</h1>
+      <h2>
+        Your one-stop platform for discovering and joining exciting events!
+      </h2>
+      <p>
+        Explore a wide range of events, from concerts to conferences, sports,
+        and community gatherings. Our platform makes it easy to browse,
+        register, and participate in exciting events!
+      </p>
+      <a href="#" id="hero-login-btn" class="login-hero">Login</a>
     </div>
+  </section>
 
-    <!-- Login Form -->
-    <div class="login-container" id="login-container">
-      <div class="login-box">
-        <button class="close-btn" id="close-login-btn">×</button>
-        <h2>Welcome Back</h2>
-        <form>
-          <label for="email-login" class="input-label">Email:</label>
-          <input
-            type="email"
-            id="email-login"
-            placeholder="Enter your Gmail..."
-          />
-
-          <label for="password-login" class="input-label">Password:</label>
-
-          <input
-            type="password"
-            id="password-login"
-            placeholder="Enter your password..."
-          />
-
-          <div class="remember-me">
-            <input type="checkbox" id="remember-login" />
-            <label for="remember-login">Remember me?</label>
-          </div>
-
-          <button type="submit" class="login-btn">LOG IN</button>
-        </form>
-        <p class="signup-text">
-          Don’t have an account? <a href="#" id="signup-link">SIGN UP</a>
-        </p>
-      </div>
-    </div>
-
-    <!-- Signup Form -->
-    <div class="signup-container" id="signup-container">
-      <div class="login-box">
-        <button class="close-btn" id="close-signup-btn">×</button>
-        <h2>Create an Account</h2>
-        <form>
-          <label for="email-signup" class="input-label">Email:</label>
-          <input
-            type="email"
-            id="email-signup"
-            placeholder="Enter your Gmail..."
-          />
-
-          <label for="password-signup" class="input-label">Password:</label>
-          <input
-            type="password"
-            id="password-signup"
-            placeholder="Enter your password..."
-          />
-
-          <label for="confirm-password" class="input-label"
-            >Confirm Password:</label
-          >
-          <input
-            type="password"
-            id="confirm-password"
-            placeholder="Confirm your password..."
-          />
-
-          <div class="remember-me">
-            <input type="checkbox" id="terms-condtn" />
-            <label for="terms-condtn">I agree terms and conditions!</label>
-          </div>
-
-          <button type="submit" class="login-btn">SIGN UP</button>
-        </form>
-        <p class="signup-text">
-          Already have an account? <a href="#" id="login-link">LOG IN</a>
-        </p>
-      </div>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <h1>EVENT MANAGEMENT SYSTEM</h1>
-        <h2>
-          Your one-stop platform for discovering and joining exciting events!
-        </h2>
-        <p>
-          Explore a wide range of events, from concerts to conferences, sports,
-          and community gatherings. Our platform makes it easy to browse,
-          register, and participate in exciting events!
-        </p>
-        <a href="#" id="hero-login-btn" class="login-hero">Login</a>
-      </div>
-    </section>
-
-    <!-- Footer (optional) -->
-    <footer>
-      <p>&copy; 2024 Event Management System. All Rights Reserved.</p>
-    </footer>
-  </body>
-  <script src="../../../static/JS/script.js"></script>
-</html>
+  <!-- Footer (optional) -->
+  <footer>
+    <p>&copy; 2024 Event Management System. All Rights Reserved.</p>
+  </footer>
+</body>
+<script src="% static 'JS/script.js"></script>
+{% endblock %}
