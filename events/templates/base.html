@@ -1,8 +1,5 @@
-<!-- base.html -->
 {% load static %}
 {% comment %} to use static for the link css and js {% endcomment %}
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,16 +17,9 @@
 <body>
     {% block navbar %}{% include 'navbar.html' %}{% endblock %}
 
+    {% block content %}{% endblock %}
 
-
-    {% block content %}
-
-
-    {% endblock %}
-
-
-
-    {% comment %} this is where all the common js are kept  {% endcomment %}
+    {% block footer %}
     <footer>
         <div class="footer-container">
             <div class="social-icons">
@@ -47,10 +37,9 @@
                     <li><a href="/ourteam/">Our Team</a></li>
                 </ul>
             </div>
-            
         </div>
     </footer>
-    
+    {% endblock %}
 </body>
 <script src="{% static 'JS/login.js' %}"></script>
 </html>

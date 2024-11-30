@@ -1,0 +1,124 @@
+.ourteam-container {
+    text-align: center;
+    padding: 30px;
+    background-color: #120a3f; /* Dark background for the page */
+    color: #fff; /* White text color for contrast */
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center the content */
+}
+
+/* Sub-container for the team members */
+.ourteam-sub-container {
+    max-width: 1200px;
+    margin: 30px auto; /* Center the container horizontally */
+    padding: 30px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the items */
+}
+
+/* Individual team member box */
+.ourteams {
+    margin: 15px;
+    padding: 30px;
+    max-width: 300px; /* Set a reasonable width */
+    cursor: pointer;
+    transition: 0.4s;
+    box-sizing: border-box;
+    background: #111; /* Darker blue-gray background for team members */
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.395); /* Softer shadow */
+    color: #fff; /* White text color */
+}
+
+/* Hover effect on team member box */
+.ourteams:hover {
+    background: #000; /* Even darker blue-gray on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Image inside the team member box */
+.ourteams img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* Circular image */
+    object-fit: cover;
+    margin-bottom: 20px; /* Add more space */
+    border: 3px solid #fff; /* White border around the image */
+}
+
+/* Name of the team member */
+.ourteam-name {
+    padding: 12px;
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+/* Designation of the team member */
+.ourteam-desig {
+    font-style: italic;
+    color: #dfe6e9; /* Lighter gray for distinction */
+    margin-bottom: 10px;
+}
+
+/* About text for the team member */
+.ourteam-about {
+    margin: 20px 0;
+    font-weight: lighter;
+    color: #dfe6e9; /* Light gray for better readability */
+}
+
+
+
+.ourteam-social-links {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    /* Allows items to wrap onto the next line if necessary */
+    overflow-x: hidden;
+    /* Disables horizontal scrolling within the social icons */
+}
+
+.ourteam-social-links a {
+    text-decoration: none;
+    padding: 10px;
+    background-color: white;
+    margin: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    /* Keeps icons inline */
+}
+
+.ourteam-social-links a i {
+    font-size: 1.2em;
+    color: black;
+    opacity: 0.9;
+}
+
+.ourteam-social-links a:hover {
+    background-color: #000;
+}
+
+.ourteam-social-links a:hover i {
+    color: white;
+    transition: 0.5s;
+}
+
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 768px) {
+    .ourteams {
+        max-width: 45%; /* Adjust width for medium screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ourteams {
+        max-width: 90%; /* Take up most of the width on small screens */
+    }
+}
