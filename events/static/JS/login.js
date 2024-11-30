@@ -24,8 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     showLoginForm();
   });
-
-  
   // Close login form and reset navbar z-index
   closeLoginBtn.addEventListener("click", () => {
     loginContainer.style.display = "none";

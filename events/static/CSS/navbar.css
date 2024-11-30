@@ -5,7 +5,7 @@ body {
   background-color: #1d1155;
   padding: 0;
   box-sizing: border-box;
-   overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 /* Navigation bar styles */
@@ -14,11 +14,11 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #000000c0;
-  padding: 15px 30px;
-  z-index: 1000; 
+  background-color: #111111de;
+  padding: 20px 30px;
+  z-index: 1000;
   border-bottom: 0.5px solid rgb(191, 142, 142);
-  
+
 }
 
 .nav-list {
@@ -27,20 +27,22 @@ body {
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 60px;
 }
 
-.nav-list li{
-  
-  font-weight: bold;
+.nav-list li {
+
+  font-weight: 500;
   color: #fff;
+  font-size: 1.3rem;
 }
 
 .nav-list .logo {
   margin-right: auto;
-  font-size: 16px;
+  font-size: 1.2rem;
 }
-.nav-list .logo:hover{
+
+.nav-list .logo:hover {
   cursor: default;
 }
 
@@ -50,20 +52,20 @@ body {
   transition: color 0.3s;
 }
 
-.nav-list a:hover{
+.nav-list a:hover {
   color: #ddd;
   text-decoration: underline;
 }
 
- .nav-list li:last-child {
+.nav-list li:last-child {
   margin-right: 50px;
   margin-left: auto;
-  font-size: 18px;
+  font-size: 1.3rem;
 }
 
 
 
-.login-hero{
+.login-hero {
   background-color: #000;
   color: white;
   padding: 13px 30px;
@@ -83,25 +85,13 @@ body {
 
 .login-hero:active {
   background-color: #000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 
 
-
-.login-container {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-
+/* Login and Signup container */
+.login-container,
 .signup-container {
   display: none;
   justify-content: center;
@@ -111,24 +101,33 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); 
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
 }
 
-
-.login-box {
+/* Login and Signup box styles */
+.login-box,
+.signup-box {
   background-color: #1a103e;
-  padding: 30px 40px;
+  padding: 40px 50px;
+  /* Increase padding to make the box bigger */
   border-radius: 10px;
-  width: 300px;
+  width: 350px;
+  /* Increase width to make the box wider */
   position: relative;
   color: white;
   text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  /* Optional: Add shadow for depth */
 }
 
-.login-box h2 {
-  margin-bottom: 20px;
+.login-box h2,
+.signup-box h2 {
+  margin-bottom: 30px;
+  /* Increase margin to create more space */
 }
 
+/* Close button for login/signup form */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -136,56 +135,74 @@ body {
   background: none;
   border: none;
   color: white;
-  font-size: 24px;
+  font-size: 28px;
+  /* Increase close button size */
   cursor: pointer;
 }
 
+/* Form styling */
 form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 
+/* Input label styling */
 .input-label {
   margin-left: 5px;
   text-align: left;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-bottom: 8px;
+  /* Increased space between label and input */
+  font-size: 16px;
+  /* Make label text a bit bigger */
 }
 
+/* Input fields styling */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 12px;
+  /* Make the input fields a little bigger */
+  margin-bottom: 20px;
+  /* Increased space between inputs */
   border-radius: 5px;
   border: none;
   background-color: #d3d3d3;
-  font-size: 14px;
+  font-size: 16px;
+  /* Increased font size for better readability */
   outline: none;
 }
 
+/* Styling for the remember me checkbox */
 .remember-me {
-  margin-top: 10px;
+  margin-top: 15px;
+  /* Increase spacing from input fields */
   display: flex;
   align-items: center;
-  font-size: 12px;
-  margin-bottom: 2px;
+  font-size: 14px;
+  /* Slightly bigger font */
+  margin-bottom: 10px;
+  /* Added more space */
 }
 
 .remember-me input {
-  margin-right: 2px;
+  margin-right: 5px;
+  /* Slightly larger gap */
 }
 
+/* Login button styling */
 .login-btn {
   background-color: #000;
   color: white;
-  padding: 10px;
+  padding: 15px;
+  /* Increased padding for bigger button */
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  /* Increase font size for button */
   font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .login-btn:hover {
@@ -197,17 +214,126 @@ input[type="text"] {
   background-color: #000;
 }
 
+/* Signup text styling */
 .signup-text {
-  font-size: 12px;
-  margin-top: 10px;
+  font-size: 14px;
+  /* Increase font size for better readability */
+  margin-top: 15px;
 }
 
 .signup-text a {
   color: white;
   text-decoration: underline;
   font-weight: bold;
-} 
+}
 
 
 
 
+
+
+
+
+
+footer {
+  background-color: #111;
+  overflow-x: hidden;
+  /* Disables horizontal scrolling */
+}
+
+.footer-container {
+  width: 100%;
+  padding: 70px 20px 20px;
+  white-space: normal;
+  /* Allows text/content to wrap if necessary */
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  /* Allows items to wrap onto the next line if necessary */
+  overflow-x: hidden;
+  /* Disables horizontal scrolling within the social icons */
+}
+
+.social-icons a {
+  text-decoration: none;
+  padding: 10px;
+  background-color: white;
+  margin: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  /* Keeps icons inline */
+}
+
+.social-icons a i {
+  font-size: 2em;
+  color: black;
+  opacity: 0.9;
+}
+
+.social-icons a:hover {
+  background-color: #000;
+  transition: 0.5s;
+}
+
+.social-icons a:hover i {
+  color: white;
+  transition: 0.5s;
+}
+
+.footer-nav {
+  margin: 30px 0;
+}
+
+.footer-nav ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  overflow-x: hidden;
+  /* Disables horizontal scrolling for navigation list */
+  white-space: normal;
+  /* Allows text/content to wrap if necessary */
+}
+
+.footer-nav ul li a {
+  color: white;
+  margin: 20px;
+  text-decoration: none;
+  font-size: 1.3em;
+  transition: 0.3s;
+}
+
+.footer-nav ul li a:hover {
+  color: #ddd;
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+/* @media (max-width: 900px) {
+  .nav-list {
+    gap: 30px;
+  }
+}
+@media (max-width: 700px) {
+  .footer-nav ul {
+    flex-direction: column;
+  }
+  .footer-nav ul li {
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+  }
+  .social-icons a {
+    padding: 8px;
+    margin: 4px;
+  }
+} */

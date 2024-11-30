@@ -1,9 +1,6 @@
-<!-- home.html -->
 {% extends 'base.html' %}
-<!-- this uses the base.html where the boiler plate are used -->
 
 {% load static %}
-<!-- to use contact.css in this page -->
 
 {% block title %}Events{% endblock %}
 
@@ -27,11 +24,5 @@
       <a href="#" id="hero-login-btn" class="login-hero">Login</a>
     </div>
   </section>
-
-  <!-- Footer (optional) -->
-  <footer>
-    <p>&copy; 2024 Event Management System. All Rights Reserved.</p>
-  </footer>
-</body>
-<script src="% static 'JS/script.js"></script>
+  <script src="{% static 'JS/script.js' %}"></script>
 {% endblock %}
