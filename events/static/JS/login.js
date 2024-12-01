@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("login-btn");
+  const heroLoginButton = document.getElementById('hero-login-btn');
   const closeLoginBtn = document.getElementById("close-login-btn");
   const loginContainer = document.getElementById("login-container");
 
@@ -19,11 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("no-scroll"); // Disable scrolling
   }
 
+  // Show login form from hero login button
+  if (heroLoginButton) { // Ensure the button exists before adding event listener
+    heroLoginButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      showLoginForm();
+    });
+  }
+
   // Show login form from navbar login button
   loginBtn.addEventListener("click", (e) => {
     e.preventDefault();
     showLoginForm();
   });
+
   // Close login form and reset navbar z-index
   closeLoginBtn.addEventListener("click", () => {
     loginContainer.style.display = "none";

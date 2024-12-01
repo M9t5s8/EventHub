@@ -1,7 +1,7 @@
 .ourteam-container {
     text-align: center;
     padding: 30px;
-    background-color: #120a3f; /* Dark background for the page */
+    background: linear-gradient(135deg, #1a103e, #3e2c8d); /* Gradient background */
     color: #fff; /* White text color for contrast */
     height: 100vh; 
     display: flex;
@@ -36,7 +36,7 @@
 /* Hover effect on team member box */
 .ourteams:hover {
     background: #000; /* Even darker blue-gray on hover */
-    transform: translateY(-2px); /* Slight lift effect */
+    transform: translateY(-5px); /* Slight lift effect */
 }
 
 /* Image inside the team member box */
@@ -73,41 +73,44 @@
 }
 
 
-
 .ourteam-social-links {
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;  /* Use align-items instead of align-content */
     flex-wrap: wrap;
-    /* Allows items to wrap onto the next line if necessary */
-    overflow-x: hidden;
-    /* Disables horizontal scrolling within the social icons */
+    overflow-x: hidden; /* Disables horizontal scrolling */
 }
 
 .ourteam-social-links a {
     text-decoration: none;
-    padding: 10px;
+    padding: 12px;  /* Adjust padding for a more balanced look */
     background-color: white;
-    margin: 9px;
-    border-radius: 50%;
-    display: inline-block;
-    /* Keeps icons inline */
+    margin: 9px;  /* Margin between icons */
+    border-radius: 50%;  /* Rounded container */
+    display: inline-flex;  /* Use inline-flex for better alignment of the icon */
+    justify-content: center;  /* Center the icon horizontally */
+    align-items: center;  /* Center the icon vertically */
+    width: 20px;  /* Fixed width of the circle */
+    height: 20px;  /* Fixed height of the circle */
 }
 
 .ourteam-social-links a i {
-    font-size: 1.2em;
+    font-size: 1.5rem;  /* Fixed size for the icons */
     color: black;
     opacity: 0.9;
 }
 
 .ourteam-social-links a:hover {
-    background-color: #000;
+    background-color: #000;  /* Dark background on hover */
+    transition: 0.5s;
 }
 
 .ourteam-social-links a:hover i {
-    color: white;
+    color: white;  /* Change icon color on hover */
     transition: 0.5s;
 }
+
+
 
 
 /* Responsive design for smaller screens */

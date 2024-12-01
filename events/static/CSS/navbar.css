@@ -2,23 +2,21 @@
 body {
   margin: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: #1d1155;
+  background: linear-gradient(135deg, #1a103e, #3e2c8d); /* Use `background` instead of `background-color` */
   padding: 0;
   box-sizing: border-box;
   overflow-y: scroll;
 }
 
-/* Navigation bar styles */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #111111de;
+  background: linear-gradient(90deg, #1d1155, #3e2c8d);
   padding: 20px 30px;
   z-index: 1000;
-  border-bottom: 0.5px solid rgb(191, 142, 142);
-
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .nav-list {
@@ -27,68 +25,61 @@ body {
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
 }
 
 .nav-list li {
-
   font-weight: 500;
-  color: #fff;
   font-size: 1.3rem;
+  position: relative; /* For hover underline effect */
 }
 
 .nav-list .logo {
   margin-right: auto;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
 .nav-list .logo:hover {
   cursor: default;
+  color: #ccc;
 }
 
 .nav-list a {
   text-decoration: none;
-  color: #fff;
-  transition: color 0.3s;
+  color: #ffffff;
+  transition: color 0.3s ease;
+  position: relative;
 }
 
 .nav-list a:hover {
-  color: #ddd;
-  text-decoration: underline;
+  color: #ffcc00; /* Highlight color on hover */
 }
 
+.nav-list a::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 3px;
+  background: #ffcc00;
+  transition: width 0.3s ease;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+}
+
+.nav-list a:hover::after {
+  width: 100%;
+}
+
+/* Add padding between menu and edges */
 .nav-list li:last-child {
   margin-right: 50px;
   margin-left: auto;
   font-size: 1.3rem;
 }
-
-
-
-.login-hero {
-  background-color: #000;
-  color: white;
-  padding: 13px 30px;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 5px;
-  line-height: 1.5;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-
-.login-hero:hover {
-  background-color: #333;
-  text-decoration: underline;
-}
-
-.login-hero:active {
-  background-color: #000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-
 
 /* Login and Signup container */
 .login-container,
@@ -108,7 +99,7 @@ body {
 /* Login and Signup box styles */
 .login-box,
 .signup-box {
-  background-color: #1a103e;
+  background: linear-gradient(135deg, #1a103e, #3e2c8d); /* Use `background` instead of `background-color` */
   padding: 40px 50px;
   /* Increase padding to make the box bigger */
   border-radius: 10px;
@@ -251,25 +242,26 @@ footer {
 .social-icons {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;  /* Use align-items instead of align-content */
   flex-wrap: wrap;
-  /* Allows items to wrap onto the next line if necessary */
   overflow-x: hidden;
-  /* Disables horizontal scrolling within the social icons */
 }
 
 .social-icons a {
   text-decoration: none;
-  padding: 10px;
+  padding: 15px;  /* Increase padding if necessary */
   background-color: white;
   margin: 10px;
   border-radius: 50%;
-  display: inline-block;
-  /* Keeps icons inline */
+  display: inline-flex;  /* Use inline-flex for better control over alignment */
+  justify-content: center;  /* Align icons in the center of the circle */
+  align-items: center;  /* Align icons in the center of the circle */
+  width: 30px;  /* Set a consistent width for the circle */
+  height: 30px;  /* Set a consistent height for the circle */
 }
 
 .social-icons a i {
-  font-size: 2em;
+  font-size: 2rem;  /* Set a fixed font size for consistency */
   color: black;
   opacity: 0.9;
 }
@@ -284,6 +276,7 @@ footer {
   transition: 0.5s;
 }
 
+
 .footer-nav {
   margin: 30px 0;
 }
@@ -293,9 +286,7 @@ footer {
   justify-content: center;
   list-style-type: none;
   overflow-x: hidden;
-  /* Disables horizontal scrolling for navigation list */
   white-space: normal;
-  /* Allows text/content to wrap if necessary */
 }
 
 .footer-nav ul li a {

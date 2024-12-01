@@ -2,27 +2,87 @@
 
 {% load static %}
 
-{% block title %}Events{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'CSS/style.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/style.css' %}" />
 {% endblock %}
 
 {% block content %}
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>EVENT MANAGEMENT SYSTEM</h1>
-      <h2>
-        Your one-stop platform for discovering and joining exciting events!
-      </h2>
-      <p>
-        Explore a wide range of events, from concerts to conferences, sports,
-        and community gatherings. Our platform makes it easy to browse,
-        register, and participate in exciting events!
-      </p>
-      <a href="#" id="hero-login-btn" class="login-hero">Login</a>
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>EVENT MANAGEMENT SYSTEM</h1>
+    <h2>Your one-stop platform for discovering and joining exciting events!</h2>
+    <p>
+      Explore a wide range of events, from concerts to conferences, sports,
+      and community gatherings. Our platform makes it easy to browse,
+      register, and participate in exciting events!
+    </p>
+    <a href="#" id="hero-login-btn" class="login-hero">Login</a>
+
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+  <div class="container">
+    <h2 class="section-title">Key Features</h2>
+    <div class="boxs">
+      <div class="box-card">
+        <i class="fas fa-user-plus box-icon"></i>
+        <h3>User Registration & Login</h3>
+        <p>Seamless registration and login system for users to create accounts, log in, and manage profiles.</p>
+      </div>
+      <div class="box-card">
+        <i class="fas fa-calendar-check box-icon"></i>
+        <h3>Event Creation & Management</h3>
+        <p>Organizers can create and manage events, set dates, locations, and descriptions for better engagement.</p>
+      </div>
+      <div class="box-card">
+        <i class="fas fa-ticket-alt box-icon"></i>
+        <h3>RSVP & Ticketing</h3>
+        <p>Users can RSVP for events, look for tickets, and receive confirmations directly from the platform.</p>
+      </div>
+      <div class="box-card">
+        <i class="fas fa-comments box-icon"></i>
+        <h3>Event Comments & Ratings</h3>
+        <p>Attendees can comment on events, share feedback, and rate their experiences for better insights.</p>
+      </div>
     </div>
-  </section>
-  <script src="{% static 'JS/script.js' %}"></script>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <div class="boxs">
+      <div class="box-card">
+        <i class="fas fa-user-plus box-icon"></i>
+        <h3>Step 1: Create an Account</h3>
+        <p>Sign up to create an account and start exploring the platform.</p>
+      </div>
+      <div class="box-card">
+        <i class="fas fa-calendar-plus box-icon"></i>
+        <h3>Step 2: Create an Event</h3>
+        <p>Organize and create your event, set the details, and make it live!</p>
+      </div>
+      <div class="box-card">
+        <i class="fas fa-ticket-alt box-icon"></i>
+        <h3>Step 3: Look for Tickets</h3>
+        <p>Browse through events and look for the tickets for your favorite ones.</p>
+      </div>
+      <div class="box-card">
+        <i class="fas fa-thumbs-up box-icon"></i>
+        <h3>Step 4: RSVP & Attend</h3>
+        <p>RSVP for your chosen event and get ready to attend!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% block extra_js %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
 {% endblock %}
