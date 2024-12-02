@@ -20,7 +20,7 @@ from events.views import *
 urlpatterns = [
     
     
-    
+    path('signup/', signup_view, name='signup'),
     path('', home ,name='home'),  # The homepage
     path('about/',about,name='about'),
     path('contactus/',contactus,name='contactus'),

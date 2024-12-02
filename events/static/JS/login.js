@@ -217,16 +217,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (signup_valid) {
+      console.log("Email:", email.value);
+      console.log("Password:", password.value);
+      fetch('/signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify({ 
+          email: email.value, 
+          password: password.value 
+      }),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to send signup data');
+          }
+        })
+        .then(data => {
+          alert(data.message); // Display the success message
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+      
       signupContainer.style.display = "none";
       loginContainer.style.display = "none";
       otpContainer.style.display = "flex";
       otpContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     }
+    
   });
 
 
-
+  function getCSRFToken() {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('csrftoken='))
+      ?.split('=')[1];
+    return cookieValue;
+  }
 
 
 
@@ -263,17 +298,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const shortPassword = document.getElementById('short-password-signup');
     const passwordCompare = document.getElementById('password-not-same-signup');
     // Hide error messages when focused
-    if (passwordEmpty.style.display === 'block') 
-    {
+    if (passwordEmpty.style.display === 'block') {
       passwordEmpty.style.display = 'none';
     }
-    if (shortPassword.style.display === 'block') 
-    {
+    if (shortPassword.style.display === 'block') {
       shortPassword.style.display = 'none';
     }
-    if(passwordCompare.style.display==='block')
-    {
-      passwordCompare.style.display='none';
+    if (passwordCompare.style.display === 'block') {
+      passwordCompare.style.display = 'none';
     }
   });
   document.getElementById('confirm-password').addEventListener('focus', function () {
