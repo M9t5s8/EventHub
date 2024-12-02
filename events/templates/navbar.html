@@ -1,69 +1,130 @@
- <!-- Navigation Bar -->
- <div>
-    <nav class="navbar">
-      <ul class="nav-list">
-        <li class="logo">EventHub</li>
-        <li><a href="/">Home</a></li>
-        <li><a href="/events/">Events</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/contactus/">Contact Us</a></li>
-        <li><a href="" id="login-btn">Login</a></li>
-      </ul>
-    </nav>
+<!-- Navigation Bar -->
+<div>
+  <nav class="navbar">
+    <ul class="nav-list">
+      <li class="logo">EventHub</li>
+      <li><a href="/">Home</a></li>
+      <li><a href="" id="event-login-btn">Events</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/contactus/">Contact Us</a></li>
+      <li><a href="" id="login-btn">Login</a></li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Login Form -->
+<div class="login-container" id="login-container">
+  <div class="login-box">
+    <button class="close-btn" id="close-login-btn">×</button>
+    <h2>Welcome Back</h2>
+    <form id="form-login">
+      <label for="email-login" class="input-label">Email:</label>
+      <input type="email" id="email-login" placeholder="Enter your Gmail..." />
+      <span id="empty-email" class="error-message" style="display: none;">Email is required!</span>
+
+      <label for="password-login" class="input-label">Password:</label>
+      <input type="password" id="password-login" placeholder="Enter your password..." />
+      <span id="empty-password" class="error-message" style="display: none;">Password is required!</span>
+      <span id="short-password" class="error-message" style="display: none;">Password should br between 8 to 15 character!</span>
+      <div class="remember-me">
+        <input type="checkbox" id="remember-login" />
+        <label for="remember-login">Remember me?</label>
+      </div>
+
+      <button type="submit" class="login-btn">LOG IN</button>
+    </form>
+    <p class="signup-text">
+      Don’t have an account? <a href="#" id="signup-link">SIGN UP</a>
+    </p>
   </div>
+</div>
 
-  <!-- Login Form -->
-  <div class="login-container" id="login-container">
-    <div class="login-box">
-      <button class="close-btn" id="close-login-btn">×</button>
-      <h2>Welcome Back</h2>
-      <form>
-        <label for="email-login" class="input-label">Email:</label>
-        <input type="email" id="email-login" placeholder="Enter your Gmail..." />
+<!-- Signup Form -->
+<div class="signup-container" id="signup-container">
+  <div class="login-box">
+    <button class="close-btn" id="close-signup-btn">×</button>
+    <h2>Create an Account</h2>
+    <form id="form-signup">
+      <label for="email-signup" class="input-label">Email:</label>
+      <input type="email" id="email-signup" placeholder="Enter your Gmail..."  />
+      <span id="empty-email-signup" class="error-message" style="display: none;">Email is required!</span>
 
-        <label for="password-login" class="input-label">Password:</label>
+      <label for="password-signup" class="input-label">Password:</label>
+      <input type="password" id="password-signup" placeholder="Enter your password..."  />
+      <span id="empty-password-signup" class="error-message" style="display: none;">Password is required!</span>
+      <span id="short-password-signup" class="error-message" style="display: none;">Password should br between 8 to 15 character!</span>
+      <span id="password-not-same-signup" class="error-message" style="display: none;">Password doesnot match!</span>
 
-        <input type="password" id="password-login" placeholder="Enter your password..." />
+      <label for="confirm-password" class="input-label">Confirm Password:</label>
+      <input type="password" id="confirm-password" placeholder="Confirm your password..." />
+      <span id="confirmpassword-not-same-signup" class="error-message" style="display: none;">Password doesnot match!</span>
 
-        <div class="remember-me">
-          <input type="checkbox" id="remember-login" />
-          <label for="remember-login">Remember me?</label>
-        </div>
+      <div class="remember-me">
+        <input type="checkbox" id="terms-condtn" required/>
+        <label for="terms-condtn">I agree terms and conditions!</label>
+      </div>
 
-        <button type="submit" class="login-btn">LOG IN</button>
-      </form>
-      <p class="signup-text">
-        Don’t have an account? <a href="#" id="signup-link">SIGN UP</a>
-      </p>
-    </div>
+      <button type="submit" class="login-btn" id="next-signup-page">NEXT</button>
+    </form>
+    <p class="signup-text">
+      Already have an account? <a href="#" id="login-link">LOG IN</a>
+    </p>
   </div>
+</div>
 
-  <!-- Signup Form -->
-  <div class="signup-container" id="signup-container">
-    <div class="login-box">
-      <button class="close-btn" id="close-signup-btn">×</button>
-      <h2>Create an Account</h2>
-      <form>
-        <label for="email-signup" class="input-label">Email:</label>
-        <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
 
-        <label for="password-signup" class="input-label">Password:</label>
-        <input type="password" id="password-signup" placeholder="Enter your password..." />
+<!-- OTP form -->
+<div class="otp-container" id="otp-container">
+  <div class="login-box">
+    <button class="close-btn" id="close-otp-btn">×</button>
+    <h2>Verify Your Account</h2>
+    <form>
+      <label for="otp" class="input-label">OTP:</label>
+      <input type="number" id="otp" maxlength="6" placeholder="Enter the 6-digit OTP" required/>
+      <span id="empty-otp" class="error-message" style="display: none;">OTP required!</span>
+      <span id="not-match-otp" class="error-message" style="display: none;">OTP doesnot match!</span>
 
-        <label for="confirm-password" class="input-label">Confirm Password:</label>
-        <input type="password" id="confirm-password" placeholder="Confirm your password..." />
+      <div class="resend-otp">
+        <p>Didn't receive the OTP? <a href="#" id="resend-otp-link">Resend OTP</a></p>
+      </div>
 
-        <div class="remember-me">
-          <input type="checkbox" id="terms-condtn" />
-          <label for="terms-condtn">I agree terms and conditions!</label>
-        </div>
-
-        <button type="submit" class="login-btn">SIGN UP</button>
-      </form>
-      <p class="signup-text">
-        Already have an account? <a href="#" id="login-link">LOG IN</a>
-      </p>
-    </div>
+      <button type="submit" class="login-btn">VERIFT</button>
+    </form>
+    <p class="signup-text">
+      Back to: <a href="" id="back-to-signup">SIGNUP</a>
+    </p>
   </div>
+</div>
 
-  
+
+
+
+
+
+<!-- Register Form -->
+{% comment %} <div class="register-container">
+  <div class="login-box">
+    <button class="close-btn" id="close-signup-btn">×</button>
+    <h2>Create an Account</h2>
+    <form>
+      <label for="email-signup" class="input-label">Email:</label>
+      <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
+
+      <label for="password-signup" class="input-label">Password:</label>
+      <input type="password" id="password-signup" placeholder="Enter your password..." />
+
+      <label for="confirm-password" class="input-label">Confirm Password:</label>
+      <input type="password" id="confirm-password" placeholder="Confirm your password..." />
+
+      <div class="remember-me">
+        <input type="checkbox" id="terms-condtn" />
+        <label for="terms-condtn">I agree terms and conditions!</label>
+      </div>
+
+      <button type="submit" class="login-btn">NEXT</button>
+    </form>
+    <p class="signup-text">
+      Already have an account? <a href="#" id="login-link">LOG IN</a>
+    </p>
+  </div>
+</div> {% endcomment %}

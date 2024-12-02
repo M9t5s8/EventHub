@@ -24,7 +24,7 @@ urlpatterns = [
     path('', home ,name='home'),  # The homepage
     path('about/',about,name='about'),
     path('contactus/',contactus,name='contactus'),
-    path('events/',events,name='events'),
+    # path('events/',events,name='events'),
     path('ourteam/',ourteam,name='ourteam'),
     path('admin/', admin.site.urls),
     

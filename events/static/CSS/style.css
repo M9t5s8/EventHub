@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  height: 100vh;
+ height: 100vh;
   background: linear-gradient(135deg, #1a103e, #3e2c8d);
   text-align: left;
   padding: 0 40px;
@@ -67,12 +67,12 @@
 
 .login-hero:hover {
   background-color: #333;
-  transform: scale(1.05);
+  text-decoration: underline;
 }
 
 .login-hero:active {
   background-color: #000000;
-  transform: scale(0.95);
+  
 }
 
 

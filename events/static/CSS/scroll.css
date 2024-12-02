@@ -28,12 +28,18 @@
 
 
 
-
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 
 input[type="email"]:focus,
 input[type="password"]:focus,
-textarea:focus{
+input[type="number"]:focus,
+textarea:focus {
   outline: 2px solid #fff; /* White outline when focused */
   outline-offset: 2px;
+  border: none;  /* Optional: Remove default border */
 }

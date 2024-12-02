@@ -11,8 +11,8 @@ def about(request):
 def contactus(request):
     return render(request,"events/contactus.html")
 
-def events(request):
-    return render(request,"events/events.html")
+# def events(request):
+#     return render(request,"events/events.html")
 
 def ourteam(request):
     return render(request,"events/ourteam.html")

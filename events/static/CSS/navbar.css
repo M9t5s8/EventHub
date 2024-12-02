@@ -81,9 +81,10 @@ body {
   font-size: 1.3rem;
 }
 
-/* Login and Signup container */
+
 .login-container,
-.signup-container {
+.signup-container,
+.otp-container {
   display: none;
   justify-content: center;
   align-items: center;
@@ -93,32 +94,26 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
+  z-index: 2000;
 }
 
-/* Login and Signup box styles */
-.login-box,
-.signup-box {
-  background: linear-gradient(135deg, #1a103e, #3e2c8d); /* Use `background` instead of `background-color` */
+
+.login-box {
+  background: linear-gradient(135deg, #1a103e, #3e2c8d);
   padding: 40px 50px;
-  /* Increase padding to make the box bigger */
   border-radius: 10px;
   width: 350px;
-  /* Increase width to make the box wider */
   position: relative;
   color: white;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  /* Optional: Add shadow for depth */
 }
 
-.login-box h2,
-.signup-box h2 {
-  margin-bottom: 30px;
-  /* Increase margin to create more space */
+.login-box h2 {
+  margin-bottom: 20px;
 }
 
-/* Close button for login/signup form */
+
 .close-btn {
   position: absolute;
   top: 10px;
@@ -127,40 +122,36 @@ body {
   border: none;
   color: white;
   font-size: 28px;
-  /* Increase close button size */
   cursor: pointer;
 }
 
-/* Form styling */
+
 form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 
-/* Input label styling */
+
 .input-label {
+  margin-top: 20px;
   margin-left: 5px;
   text-align: left;
   margin-bottom: 8px;
-  /* Increased space between label and input */
   font-size: 16px;
-  /* Make label text a bit bigger */
 }
 
-/* Input fields styling */
+
 input[type="email"],
 input[type="password"],
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
   padding: 12px;
-  /* Make the input fields a little bigger */
-  margin-bottom: 20px;
-  /* Increased space between inputs */
+  
   border-radius: 5px;
   border: none;
   background-color: #d3d3d3;
   font-size: 16px;
-  /* Increased font size for better readability */
   outline: none;
 }
 
@@ -186,7 +177,6 @@ input[type="text"] {
   background-color: #000;
   color: white;
   padding: 15px;
-  /* Increased padding for bigger button */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -219,6 +209,35 @@ input[type="text"] {
 }
 
 
+.resend-otp{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  width: 100%;
+}
+.resend-otp a{
+  color: white;
+  text-decoration: none;
+  
+}
+.resend-otp a:hover{
+  text-decoration: underline;
+}
+
+
+
+.error-message{
+  color: #ff4d4d;
+  margin-top: 5px;
+  font-size: 14px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  text-align: start;
+}
+input:invalid {
+  border: 2px solid red;
+}
 
 
 
@@ -226,6 +245,11 @@ input[type="text"] {
 
 
 
+
+
+
+
+/* footer */
 footer {
   background-color: #111;
   overflow-x: hidden;
