@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 EXTERNAL_APPS=[
     'rest_framework',
     'events',
+    'attender',
+    'organizer'
 ]
 INSTALLED_APPS+=EXTERNAL_APPS
 

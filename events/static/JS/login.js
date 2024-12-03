@@ -2,13 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("login-btn");
   const heroLoginBtn = document.getElementById("hero-login-btn");
   const eventLoginBtn = document.getElementById("event-login-btn");
-  const closeLoginBtn = document.getElementById("close-login-btn");
+
+
+
+  let generatedOTP;
+
   const loginContainer = document.getElementById("login-container");
-  const SignUpOTP = document.getElementById("next-signup-page");
   const signupContainer = document.getElementById("signup-container");
+  const otpContainer = document.getElementById("otp-container");
+  const registerContainer = document.getElementById("register-container");
+
+
+
   const closeSignupBtn = document.getElementById("close-signup-btn");
   const closeOTPBtn = document.getElementById("close-otp-btn");
-  const otpContainer = document.getElementById("otp-container");
+  const closeLoginBtn = document.getElementById("close-login-btn");
+  const closeRegisterBtn = document.getElementById("close-register-btn");
+
+
+
   const backToSignup = document.getElementById("back-to-signup");
   const signupLink = document.getElementById("signup-link");
   const loginLink = document.getElementById("login-link");
@@ -17,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginContainer.style.display = "flex";
     signupContainer.style.display = "none";
     otpContainer.style.display = "none";
+    registerContainer.style.display = "none";
     loginContainer.style.zIndex = "2000";
     document.body.classList.add("no-scroll");
   }
@@ -50,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     signupContainer.style.display = "flex";
     loginContainer.style.display = "none";
     otpContainer.style.display = 'none';
+    registerContainer.style.display = "none";
     signupContainer.style.zIndex = "2000";
     document.body.classList.add("no-scroll");
   });
@@ -58,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginContainer.style.display = "flex";
     signupContainer.style.display = "none";
     otpContainer.style.display = "none";
+    registerContainer.style.display = "none";
     loginContainer.style.zIndex = "2000";
     document.body.classList.add("no-scroll");
   });
@@ -66,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginContainer.style.display = "none";
     signupContainer.style.display = "flex";
     otpContainer.style.display = "none";
+    registerContainer.style.display = "none";
     loginContainer.style.zIndex = "2000";
     document.body.classList.add("no-scroll");
   });
@@ -86,18 +102,22 @@ document.addEventListener("DOMContentLoaded", () => {
     otpContainer.style.display = "none";
     document.body.classList.remove("no-scroll");
   });
-
-
-
-  //when clicking outside the page wil close the page
-  [loginContainer, signupContainer, otpContainer].forEach((container) => {
-    container.addEventListener("click", (e) => {
-      if (e.target === container) {
-        container.style.display = "none";
-        document.body.classList.remove("no-scroll");
-      }
-    });
+  closeRegisterBtn.addEventListener("click", () => {
+    registerContainer.style.display = "none";
+    document.body.classList.remove("no-scroll");
   });
+  //to make sure when there is click outside the form form will close
+  // [loginContainer, signupContainer, otpContainer, registerContainer].forEach((container) => {
+  //   if (container) {
+  //     container.addEventListener("click", (e) => {
+  //       if (e.target === container) {
+  //         container.style.display = "none";
+  //         document.body.classList.remove("no-scroll");
+  //       }
+  //     });
+  //   }
+  // });
+
 
 
   document.querySelectorAll(".toggle-password").forEach((toggleBtn) => {
@@ -128,12 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailEmpty = document.getElementById('empty-email');
     const passwordEmpty = document.getElementById('empty-password');
     const passwordShort = document.getElementById('short-password');
-    let valid = true;
+    let login_valid = true;
 
     // Check if email is empty
     if (email.value.trim() === '') {
       emailEmpty.style.display = 'block';
-      valid = false;
+      login_valid = false;
     } else {
       emailEmpty.style.display = 'none';
       email.style.border = '';
@@ -142,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check if password is empty
     if (password.value.trim() === '') {
       passwordEmpty.style.display = 'block';
-      valid = false;
+      login_valid = false;
     }
     else {
       passwordEmpty.style.display = 'none';
@@ -150,16 +170,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (password.value.length < 8 || password.value.length > 15) {
         passwordShort.style.display = 'block';
-        valid = false;
+        login_valid = false;
       }
       else {
         passwordShort.style.display = 'none';
       }
     }
-
-
-    if (valid) {
-      alert('Form Submitted Successfully');
+    if (login_valid) {
+      fetch('/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to send login data');
+          }
+        })
+        .then(data => {
+          if (data.message) {
+            alert(data.message); // Show success message from backend
+          } else {
+            alert("Unexpected response from server.");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
     }
   });
 
@@ -170,15 +216,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+  // signup data to backend
   document.getElementById('form-signup').addEventListener('submit', function (event) {
     event.preventDefault();
-    //to get email and password
     const email = document.getElementById('email-signup');
     const password = document.getElementById('password-signup');
     const confirmPassword = document.getElementById('confirm-password');
-
-    // Get error message elements
     const emailEmpty = document.getElementById('empty-email-signup');
     const passwordEmpty = document.getElementById('empty-password-signup');
     const passwordShort = document.getElementById('short-password-signup');
@@ -199,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
     else {
       passwordEmpty.style.display = 'none';
       password.style.border = '';
-
       if (password.value.length < 8 || password.value.length > 15) {
         passwordShort.style.display = 'block';
         signup_valid = false;
@@ -214,21 +256,17 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       passwordCompare.style.display = 'none';
     }
-
-
     if (signup_valid) {
-      console.log("Email:", email.value);
-      console.log("Password:", password.value);
       fetch('/signup/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': getCSRFToken(),
         },
-        body: JSON.stringify({ 
-          email: email.value, 
-          password: password.value 
-      }),
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value
+        }),
       })
         .then(response => {
           if (response.ok) {
@@ -238,21 +276,113 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
         .then(data => {
-          alert(data.message); // Display the success message
+          document.getElementById('email-register').value = data.email_signup;
+          generatedOTP = data.otp;
+          user_email=data.email;
+          user_password=data.password_signup;
         })
         .catch(error => {
           console.error('Error:', error);
           alert('An error occurred. Please try again.');
         });
-      
       signupContainer.style.display = "none";
       loginContainer.style.display = "none";
       otpContainer.style.display = "flex";
+      registerContainer.style.display = "none";
       otpContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     }
-    
   });
+  // otp data to backend
+  document.getElementById('form-otp').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const otp = document.getElementById('otp');
+    const emptyOTP = document.getElementById('empty-otp');
+    const notmatchOTP = document.getElementById('not-match-otp');
+    let otp_valid = true;
+    if (otp.value.trim() === '') {
+      emptyOTP.style.display = "block";
+      otp_valid = false;
+    }
+    else if (generatedOTP != otp.value) {
+      notmatchOTP.style.display = "block";
+      otp_valid = false;
+    }
+    if (otp_valid) {
+      console.log("OTP:", otp.value);
+      signupContainer.style.display = "none";
+      loginContainer.style.display = "none";
+      otpContainer.style.display = "none";
+      registerContainer.style.display = "flex";
+      registerContainer.style.zIndex = "2000";
+      document.body.classList.add("no-scroll");
+    }
+
+  });
+
+  document.getElementById('register-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Get form elements
+    const profileImage = document.getElementById('profile-image');
+    const username = document.getElementById('username');
+    const organizer = document.getElementById('organizer');
+    const attender = document.getElementById('attender');
+
+    const usernameError = document.getElementById('empty-username');
+
+    let isValid = true;
+
+    // Check if username is provided
+    if (username.value.trim() === '') {
+      usernameError.style.display = 'block';
+      isValid = false;
+    } else {
+      usernameError.style.display = 'none';
+    }
+
+
+    if (isValid) {
+      const selectedRole = organizer.checked ? 'organizer' : 'attender';
+      console.log("Email:",user_email);
+      console.log("Password:",user_password);
+      console.log("Username:", username.value);
+      console.log("Selected Role:", selectedRole);
+      fetch('/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify({
+          email:user_email,
+          password:user_password,
+          username: username.value,
+          role: selectedRole,
+        }),
+      })
+        .then(response => {
+          
+        })
+        .then(data => {
+          console.log('Registration successful:');
+          })
+        .catch(error => {
+          console.error('Error:', error);
+         
+        });
+
+    }
+  });
+
+
+
+
+
+
+
+
+
 
 
   function getCSRFToken() {
@@ -262,6 +392,11 @@ document.addEventListener("DOMContentLoaded", () => {
       ?.split('=')[1];
     return cookieValue;
   }
+
+
+
+
+
 
 
 
@@ -284,6 +419,13 @@ document.addEventListener("DOMContentLoaded", () => {
       shortPassword.style.display = 'none';
     }
   });
+
+
+
+
+
+
+
 
 
 
@@ -310,15 +452,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById('confirm-password').addEventListener('focus', function () {
     const confirmpasswordCompare = document.getElementById('confirmpassword-not-same-signup');
-    // Hide error messages when focused
     if (confirmpasswordCompare.display === 'block') {
       confirmpasswordCompare.style.display = 'none';
     }
   });
+  document.getElementById('otp').addEventListener('focus', function () {
+    const emptyOTP = document.getElementById('empty-otp');
+    const notmatchOTP = document.getElementById('not-match-otp');
 
+    // Check and hide the elements if they are visible
+    if (notmatchOTP.style.display === 'block') {
+      notmatchOTP.style.display = 'none';
+    }
+    if (emptyOTP.style.display === 'block') {
+      emptyOTP.style.display = 'none';
+    }
+  });
 
 });
-
 
 
 

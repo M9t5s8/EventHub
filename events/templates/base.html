@@ -41,6 +41,8 @@
     </footer>
     {% endblock %}
 </body>
-document.cookie = "csrftoken={{ csrf_token }}";
-<script src="{% static 'JS/login.js' %}"></script>
+
+<script src="{% static 'JS/login.js' %}">
+    document.cookie = "csrftoken={{ csrf_token }}";
+</script>
 </html>
