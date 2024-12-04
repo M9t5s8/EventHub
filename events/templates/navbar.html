@@ -3,12 +3,18 @@
 <div>
   <nav class="navbar">
     <ul class="nav-list">
-      <li class="logo">EventHub</li>
+      <li class="logo">EventHub</li>>
       <li><a href="{% url 'home' %}">Home</a></li>
-      <li><a href="" id="event-login-btn">Events</a></li>
+      <li>
+        <a href="{% url 'events' %}" id="event-btn" style="display: none;">Events</a>
+        <a href="" id="event-login-btn">Events</a>
+      </li>
       <li><a href="{% url 'about' %}">About</a></li>
       <li><a href="{% url 'contactus' %}">Contact Us</a></li>
-      <li><a href="" id="login-btn">Login</a></li>
+      <li>
+        <a href="" id="login-btn">Login</a>
+        <a href="" id="user-profile" style="display: none;">Profile</a>
+      </li>
     </ul>
   </nav>
 </div>
@@ -22,12 +28,14 @@
       <label for="email-login" class="input-label">Email:</label>
       <input type="email" id="email-login" placeholder="Enter your Gmail..." />
       <span id="empty-email" class="error-message" style="display: none;">Email is required!</span>
+      <span id="no-email_exists_login" class="error-message" style="display: none;">Email doesnot Exists!</span>
 
       <label for="password-login" class="input-label">Password:</label>
       <input type="password" id="password-login" placeholder="Enter your password..." />
       <span id="empty-password" class="error-message" style="display: none;">Password is required!</span>
       <span id="short-password" class="error-message" style="display: none;">Password should br between 8 to 15
         character!</span>
+      <span id="incorrect_password" class="error-message" style="display: none;">Incorrect Password!</span>
       <div class="remember-me">
         <input type="checkbox" id="remember-login" />
         <label for="remember-login">Remember me?</label>
@@ -50,6 +58,7 @@
       <label for="email-signup" class="input-label">Email:</label>
       <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
       <span id="empty-email-signup" class="error-message" style="display: none;">Email is required!</span>
+      <span id="exists-email-signup" class="error-message" style="display: none;">Email already Exists!</span>
 
       <label for="password-signup" class="input-label">Password:</label>
       <input type="password" id="password-signup" placeholder="Enter your password..." />
@@ -95,7 +104,7 @@
       <button type="submit" class="login-btn">VERIFT</button>
     </form>
     <p class="signup-text">
-      Back to: <a href="" id="back-to-signup">SIGNUP</a>
+      Back to: <a href="" id="otp-to-signup">SIGNUP</a>
     </p>
   </div>
 </div>
@@ -105,66 +114,7 @@
 
 
 
-<!-- Register Form -->
-<!-- <div class="register-container" id="register-container">
-  <div class="login-box">
-    <button class="close-btn" id="close-register-btn">×</button>
-    <h2>Create an Account</h2>
-    <form id="register-form">
-      <div class="avatar-upload-container">
-        <div class="avatar-container">
-          <img 
-            id="avatar" 
-            src="{% static 'Images/user3.svg' %}" 
-            alt="Profile Avatar" 
-            class="avatar-img"
-          />
-        </div>
-        <label for="profile-image" class="image-upload">UPLOAD IMAGE</label>
-        
-        <input 
-          type="file" 
-          id="profile-image" 
-          name="profile_image" 
-          accept="image/*" 
-          onchange="previewImage(event)"
-          required 
-        />
-      </div>
-      
-      
-      <label for="email-register" class="input-label">Email:</label>
-      <input 
-        type="email" 
-        id="email-register" 
-        name="email" 
-        value="{{ email }}"
-        readonly
-      />
 
-      
-      <label for="username" class="input-label">Username:</label>
-      <input 
-        type="text" 
-        id="username" 
-        name="username" 
-        placeholder="Enter your username..." 
-      />
-
-      <div class="role-selection">
-        <input type="radio" name="role" id="organizer" checked="checked">
-        <label for="organizer" class="role-label">ORGANIZER</label>
-        <input type="radio" name="role" id="attender">
-        <label for="attender" class="role-label">ATTENDER</label>
-      </div>
-
-      <button type="submit" class="login-btn">REGISTER</button>
-    </form>
-    <p class="signup-text">
-      Already have an account? <a href="" id="login-link">LOG IN</a>
-    </p>
-  </div>
-</div> -->
 
 
 <div class="register-container" id="register-container">
@@ -172,14 +122,6 @@
     <button class="close-btn" id="close-register-btn">×</button>
     <h2>Create an Account</h2>
     <form id="register-form">
-      <div class="avatar-upload-container">
-        <div class="avatar-container">
-          <img id="avatar" src="{% static 'Images/user3.svg' %}" alt="Profile Avatar" class="avatar-img" />
-        </div>
-        <label for="profile-image" class="image-upload">UPLOAD IMAGE</label>
-        <input type="file" id="profile-image" name="profile_image" accept="image/*" onchange="previewImage(event)" />
-      </div>
-
       <label for="email-register" class="input-label">Email:</label>
       <input type="email" id="email-register" name="email" value="{{ email }}" readonly />
       <div class="role-selection">
@@ -189,11 +131,11 @@
         <label for="attender" class="role-label">ATTENDER</label>
       </div>
       <!-- Username Field -->
-      <label for="username" class="input-label">Username:</label>
-      <input type="text" id="username" name="username" placeholder="Enter your username..." />
+      <label for="username" class="input-label" ">Username/Organizer name:</label>
+      <input type=" text" id="username" name="username" placeholder="Enter your username..." style="display: none;" />
+      <input type="text" id="organizername" name="username" placeholder="Enter Organizer name..."
+        style="display: none;" />
       <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
-      <label for="uorganizername" class="input-label">Organizer name:</label>
-      <input type="text" id="organizername" name="username" placeholder="Enter Organizer name..." />
       <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
       <br>
 
@@ -201,7 +143,7 @@
       <button type="submit" class="login-btn">REGISTER</button>
     </form>
     <p class="signup-text">
-      Already have an account? <a href="" id="login-link">LOG IN</a>
+      Already have an account? <a href="" id="register-to-login">LOG IN</a>
     </p>
   </div>
 </div>

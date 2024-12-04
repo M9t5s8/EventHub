@@ -17,6 +17,7 @@
 <body>
     {% block navbar %}{% include 'navbar.html' %}{% endblock %}
 
+    
     {% block content %}{% endblock %}
 
     {% block footer %}
@@ -30,11 +31,11 @@
                 <a href=""><i class="fa-brands fa-youtube"></i></a>
             </div>
             <div class="footer-nav">
-                <ul><li><a href="/">Home</a></li>
+                <ul><li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="">News</a></li>
-                    <li><a href="/about/">About</a></li>
-                    <li><a href="/contactus/">Contact Us</a></li>
-                    <li><a href="/ourteam/">Our Team</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+                    <li><a href="{% url 'ourteam' %}">Our Team</a></li>
                 </ul>
             </div>
         </div>
