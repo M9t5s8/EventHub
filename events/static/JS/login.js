@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+//this is for the navigation bar when user doesnot login
   if (!loggedin) {
     const loginBtn = document.getElementById("login-btn");
     const heroLoginBtn = document.getElementById("hero-login-btn");

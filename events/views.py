@@ -25,11 +25,11 @@ def ourteam(request):
     return render(request,"events/ourteam.html")
 
 
+
+
+
+
 # login view
-
-
-
-
 def login_view(request):
     if request.method == "POST":
         try:
