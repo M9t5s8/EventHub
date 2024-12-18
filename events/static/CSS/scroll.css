@@ -21,7 +21,6 @@
   background-color: #e0e0e0; /* Lighter track color on hover */
 }
 
-/* Prevent scrolling when login/signup is open */
 .no-scroll {
   overflow: hidden;
 }
@@ -43,4 +42,7 @@ textarea:focus {
   outline: 2px solid #fff; /* White outline when focused */
   outline-offset: 2px;
   border: none;  /* Optional: Remove default border */
+}
+textarea {
+  resize: none; /* Disable resizing */
 }

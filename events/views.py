@@ -6,29 +6,48 @@ import json
 import random
 from attender.models import Attender
 from organizer.models import Organizer
+from event.models import Event
+from contact.models import Contact
 from django.contrib.auth.hashers import check_password 
 
 
+
+
+
+
+# home page
 def home(request):
     return render(request, "events/index.html")  # Render the homepage template
 
+# about page
 def about(request):
     return render(request,"events/about.html")
 
-def contactus(request):
-    return render(request,"events/contactus.html")
-
+# events page
 def events(request):
-    return render(request,"events/events.html")
+    events = Event.objects.all() 
+    
+    
+    print("Fetching events from the database:")
+    for event in events:
+        print(f"Event Title: {event.event_name}")  # Correct field name
+        print(f"Event Date: {event.event_date}")  # Correct field name
+        print(f"Event Location: {event.event_location}")  # Correct field name
+        print(f"Event Description: {event.event_description}")  # Correct field name
+        print("-" * 50)  # Separator between events for better readability
+        
+        
+     
+    context = {'events': events}
+    return render(request,"events/events.html",context)
 
+# ourteam page
 def ourteam(request):
     return render(request,"events/ourteam.html")
 
 
 
-
-
-
+# this is all for the form submission in the database
 # login view
 def login_view(request):
     if request.method == "POST":
@@ -52,13 +71,13 @@ def login_view(request):
                 return JsonResponse({"email_not_exists": True}, status=200)
             if user_type == 'organizer':
                 if password==user.organizer_password:
-                    return JsonResponse({"email_not_exists": False, "correct_pass": True, "redirect_url": "/"}, status=200)
+                    return JsonResponse({"email_not_exists": False, "correct_pass": True}, status=200)
                 else:
                     return JsonResponse({"email_not_exists": False, "correct_pass": False}, status=200)
             elif user_type == 'attender':
                 print("Password from frontend:",password,"Password from backend:",user.attender_password)
                 if password==user.attender_password:
-                    return JsonResponse({"email_not_exists": False, "correct_pass": True, "redirect_url": "/"}, status=200)
+                    return JsonResponse({"email_not_exists": False, "correct_pass": True}, status=200)
                 else:
                     return JsonResponse({"email_not_exists": False, "correct_pass": False}, status=200)
 
@@ -66,16 +85,7 @@ def login_view(request):
             return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Invalid request method."}, status=405)
-
-
-
-
-
 # signup view
-import json
-import random
-from django.http import JsonResponse
-
 def signup_view(request):
     if request.method == "POST":
         try:
@@ -92,11 +102,11 @@ def signup_view(request):
             if email_exists:
                 print("Email already exists")
                 return JsonResponse({"check_for_email": True}, status=200)
-            print("Email doesnot exists")
+            
+            
             # Generate an OTP and store it in the session
             otp = random.randint(100000, 999999)
-            request.session['otp'] = otp  # Ensure session settings are secure
-            print("Generated OTP:", otp)
+            request.session['otp'] = otp
 
             # Return a success response with the OTP
             return JsonResponse({
@@ -116,8 +126,6 @@ def signup_view(request):
 
     # Handle non-POST requests
     return JsonResponse({"error": "Invalid request method."}, status=405)
-
-
 # register view
 def register_view(request):
     if request.method == "POST":
@@ -178,5 +186,37 @@ def register_view(request):
         except Exception as e:
             # Handle any other exceptions
             return JsonResponse({"error": "An unexpected error occurred."}, status=400)
+    return JsonResponse({"error": "Invalid request method."}, status=405)
+# contact view
+def contact_view(request):
+    
+    # to get the form value as the post method
+    if request.method == "POST":
+        try:
+            
+            # getting the data from the js
+            data = json.loads(request.body)
+            email = data.get('email')
+            name = data.get('name')
+            message=data.get('message')
 
-   
+            
+            # entering the data in the database
+            contact_data = Contact(
+                    contact_email=email,
+                    contact_name=name,
+                    contact_message=message
+            )
+            contact_data.save()
+            
+            # to display the contact successful message
+            return JsonResponse({"message": "Contact data saved successfully."}, status=200)
+
+
+        # to give the error according to the case
+        except ValueError as e:
+            return JsonResponse({"error": "Invalid JSON format."}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": "An unexpected error occurred."}, status=400)
+
+    return JsonResponse({"error": "Only POST requests are allowed."}, status=405)

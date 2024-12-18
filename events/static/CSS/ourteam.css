@@ -3,21 +3,22 @@
     padding: 30px;
     background: linear-gradient(135deg, #1a103e, #3e2c8d); /* Gradient background */
     color: #fff; /* White text color for contrast */
-    height: 100vh; 
     display: flex;
     flex-direction: column;
     justify-content: center; /* Vertically center the content */
-}
+    height: 100vh;
 
+}
 /* Sub-container for the team members */
 .ourteam-sub-container {
     max-width: 1200px;
-    margin: 30px auto; /* Center the container horizontally */
+    margin: 30px auto;
     padding: 30px 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center; /* Center the items */
 }
+
 
 /* Individual team member box */
 .ourteams {
@@ -95,7 +96,7 @@
 }
 
 .ourteam-social-links a i {
-    font-size: 1.5rem;  /* Fixed size for the icons */
+    font-size: 1.7rem;  /* Fixed size for the icons */
     color: black;
     opacity: 0.9;
 }
@@ -113,15 +114,4 @@
 
 
 
-/* Responsive design for smaller screens */
-@media screen and (max-width: 768px) {
-    .ourteams {
-        max-width: 45%; /* Adjust width for medium screens */
-    }
-}
 
-@media screen and (max-width: 480px) {
-    .ourteams {
-        max-width: 90%; /* Take up most of the width on small screens */
-    }
-}

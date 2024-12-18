@@ -44,7 +44,9 @@ EXTERNAL_APPS=[
     'rest_framework',
     'events',
     'attender',
-    'organizer'
+    'organizer',
+    'contact',
+    'event'
 ]
 INSTALLED_APPS+=EXTERNAL_APPS
 

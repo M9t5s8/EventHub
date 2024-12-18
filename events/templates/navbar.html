@@ -1,17 +1,22 @@
 <!-- Navigation Bar -->
-{% load static %}
+<!-- this is the navigation bar for the bigger screen -->
 <div>
   <nav class="navbar">
-    <ul class="nav-list">
-      <li class="logo">EventHub</li>
-      <li><a href="{% url 'home' %}">Home</a></li>
+    <ul class="horizontal-bar">
       <li>
+        <button class="navi-open-btn" id="show-nav-btn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </li>
+      <li class="logo">EventHub</li>
+      <li class="hideonMobile"><a href="{% url 'home' %}">Home</a></li>
+      <li class="hideonMobile">
         <a href="{% url 'events' %}" id="event-btn" style="display: none;">Events</a>
         <a href="" id="event-login-btn">Events</a>
       </li>
-      <li><a href="{% url 'about' %}">About</a></li>
-      <li><a href="{% url 'contactus' %}">Contact Us</a></li>
-      <li>
+      <li class="hideonMobile"><a href="{% url 'about' %}">About</a></li>
+      <li class="hideonMobile"><a href="" id="contact-btn">Contact Us</a></li>
+      <li class="nav-login">
         <a href="" id="login-btn">Login</a>
         <a href="" id="user-profile" style="display: none;">Profile</a>
       </li>
@@ -19,10 +24,26 @@
   </nav>
 </div>
 
+<div class="navbar-container" id="navbar-container">
+  <nav>
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li>
+        <a href="{% url 'events' %}" id="event-btn" style="display: none;">Events</a>
+        <a href="" id="event-login-btn">Events</a>
+      </li>
+      <li><a href="{% url 'about' %}">About</a></li>
+      <li><a href="" id="contact-btn">Contact Us</a></li>
+    </ul>
+  </nav>
+</div>
+
+
+
 <!-- Login Form -->
 <div class="login-container" id="login-container">
-  <div class="login-box">
-    <button class="close-btn" id="close-login-btn">×</button>
+  <div class="form-box">
+    <button class="close-btn" id="close-login-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Welcome Back</h2>
     <form id="form-login">
       <label for="email-login" class="input-label">Email:</label>
@@ -51,8 +72,8 @@
 
 <!-- Signup Form -->
 <div class="signup-container" id="signup-container">
-  <div class="login-box">
-    <button class="close-btn" id="close-signup-btn">×</button>
+  <div class="form-box">
+    <button class="close-btn" id="close-signup-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Create an Account</h2>
     <form id="form-signup">
       <label for="email-signup" class="input-label">Email:</label>
@@ -88,8 +109,8 @@
 
 <!-- OTP form -->
 <div class="otp-container" id="otp-container">
-  <div class="login-box">
-    <button class="close-btn" id="close-otp-btn">×</button>
+  <div class="form-box">
+    <button class="close-btn" id="close-otp-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Verify Your Account</h2>
     <form id="form-otp">
       <label for="otp" class="input-label">OTP:</label>
@@ -118,8 +139,8 @@
 
 
 <div class="register-container" id="register-container">
-  <div class="login-box">
-    <button class="close-btn" id="close-register-btn">×</button>
+  <div class="form-box">
+    <button class="close-btn" id="close-register-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Create an Account</h2>
     <form id="register-form">
       <label for="email-register" class="input-label">Email:</label>
@@ -130,20 +151,47 @@
         <input type="radio" name="role" id="attender">
         <label for="attender" class="role-label">ATTENDER</label>
       </div>
-      <!-- Username Field -->
       <label for="username" class="input-label" ">Username/Organizer name:</label>
-      <input type=" text" id="username" name="username" placeholder="Enter your username..." style="display: none;" />
-      <input type="text" id="organizername" name="username" placeholder="Enter Organizer name..."
-        style="display: none;" />
-      <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
-      <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
-      <br>
+      <input type=" text" id="username" placeholder="Enter your username...">
+        <input type="text" id="organizername" placeholder="Enter Organizer name...">
+        <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
+        <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
+        <br>
 
 
-      <button type="submit" class="login-btn">REGISTER</button>
+        <button type="submit" class="login-btn">REGISTER</button>
     </form>
     <p class="signup-text">
       Already have an account? <a href="" id="register-to-login">LOG IN</a>
     </p>
+  </div>
+</div>
+
+
+
+
+
+<div class="contact-container" id="contact-container">
+  <div class="form-box">
+    <button class="close-btn" id="close-contact-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+    <h2>Contact Us</h2>
+    <form id="contact-form">
+      <label for="contact-name" class="input-label">Name:</label>
+      <input type="text" id="contact-name" name="contact-name" placeholder="Enter your Name..." />
+      <span id="empty-name-contact" class="error-message" style="display: none;">Name is required!</span>
+
+
+      <label for="email-contact" class="input-label">Email:</label>
+      <input type="email" id="email-contact" placeholder="Enter your Gmail..." />
+      <span id="empty-email-contact" class="error-message" style="display: none;">Email is required!</span>
+
+      <label for="message-contact" class="input-label">Message:</label>
+      <textarea id="message-contact" rows="5" placeholder="Enter your Message..."></textarea>
+      <span id="empty-message-contact" class="error-message" style="display: none;">Message is required!</span>
+      <span id="message-length" class="error-message" style="display: none;">Message should be between 10 to 100
+        character!</span>
+      <br><br>
+      <button type="submit" class="login-btn">SUBMIT</button>
+    </form>
   </div>
 </div>

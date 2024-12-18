@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+
+
+  // this is for to save the user login data in the local storage
   let loggedin = true;
   document.getElementById('user-profile').addEventListener('click', function (event) {
     event.preventDefault();
@@ -11,20 +14,57 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("user-profile").style.display = "block";
     document.getElementById("event-login-btn").style.display = "none";
     document.getElementById("login-btn").style.display = "none";
-    document.getElementById("hero-event-btn").style.display = "inline";
-    document.getElementById("hero-login-btn").style.display = "none";
+    const heroLoginBtn = document.getElementById("hero-login-btn");
+    if (heroLoginBtn) {
+      heroLoginBtn.style.display = "none";
+    }
+    const heroEventBtn = document.getElementById("hero-event-btn");
+    if (heroEventBtn) {
+      heroEventBtn.style.display = "inline";
+    }
     loggedin = true;
   } else {
+
     document.getElementById("event-btn").style.display = "none";
     document.getElementById("user-profile").style.display = "none";
     document.getElementById("event-login-btn").style.display = "block";
     document.getElementById("login-btn").style.display = "block";
-    document.getElementById("hero-event-btn").style.display = "none";
-    document.getElementById("hero-login-btn").style.display = "inline";
+    const heroLoginBtn = document.getElementById("hero-login-btn");
+    if (heroLoginBtn) {
+      heroLoginBtn.style.display = "inline";
+    }
+    const heroEventBtn = document.getElementById("hero-event-btn");
+    if (heroEventBtn) {
+      heroEventBtn.style.display = "none";
+    }
     loggedin = false;
   }
 
 
+  document.getElementById('show-nav-btn').addEventListener('click', (e) => {
+
+    verticalnavBar = document.getElementById("vertical-navbar");
+    e.preventDefault();
+
+  });
+
+
+
+
+  
+  const navbarBtn = document.getElementById("show-nav-btn");
+  const navbarContainer = document.getElementById("navbar-container");
+    function showNavbar() {
+      console.log("Showing nav bar");
+      navbarContainer.style.display = "flex";
+      navbarContainer.style.zIndex = "2000";
+      document.body.classList.add("no-scroll");
+    }
+    navbarBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showNavbar();
+    });
+  
 
 
 
@@ -33,7 +73,155 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-//this is for the navigation bar when user doesnot login
+  //this is so that when the contact button is pressed the contact form will open
+  const contactBtn = document.getElementById("contact-btn");
+  const contactFooterBtn = document.getElementById("contact-footer-btn");
+  const contactContainer = document.getElementById("contact-container");
+  const closeContactBtn = document.getElementById("close-contact-btn");
+  function showContactForm() {
+    contactContainer.style.display = "flex";
+    contactContainer.style.zIndex = "2000";
+    document.body.classList.add("no-scroll");
+  }
+  contactBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showContactForm();
+  });
+  contactFooterBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showContactForm();
+  });
+  closeContactBtn.addEventListener("click", () => {
+    contactContainer.style.display = "none";
+    document.body.classList.remove("no-scroll");
+  });
+
+  [contactContainer,navbarContainer].forEach((container) => {
+      if (container) {
+        container.addEventListener("click", (e) => {
+          if (e.target === container) {
+            container.style.display = "none";
+            document.body.classList.remove("no-scroll");
+          }
+        });
+      }
+    });
+
+
+  //this is so that the user can contact the admin even without the login
+  document.getElementById('contact-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById('contact-name');
+    const email = document.getElementById('email-contact');
+    const message = document.getElementById('message-contact');
+
+
+    const nameEmpty = document.getElementById('empty-name-contact');
+    const emailEmpty = document.getElementById('empty-email-contact');
+    const emptyMessage = document.getElementById('empty-message-contact');
+    const shortMessage = document.getElementById('message-length');
+    let contact_valid = true;
+    //empty email
+    if (email.value.trim() === '') {
+      emailEmpty.style.display = 'block';
+      contact_valid = false;
+    } else {
+      emailEmpty.style.display = 'none';
+      email.style.border = '';
+    }
+
+    //empty name
+    if (name.value.trim() === '') {
+      nameEmpty.style.display = 'block';
+      contact_valid = false;
+    }
+    else {
+      nameEmpty.style.display = 'none';
+      name.style.border = '';
+    }
+
+    //empty message
+    if (message.value.trim() === '') {
+      emptyMessage.style.display = 'block';
+      contact_valid = false;
+    } else {
+      emptyMessage.style.display = 'none';
+      message.style.border = '';
+      if (message.value.length < 10 || message.value.length > 100) {
+        shortMessage.style.display = 'block';
+        contact_valid = false;
+      }
+      else {
+        shortMessage.style.display = 'none';
+      }
+    }
+    if (contact_valid) {
+      fetch('/contact/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify({
+          email: email.value,
+          name: name.value,
+          message: message.value,
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to send contact data');
+          }
+        })
+        .then(data => {
+          console.log("Contact successful");
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+    }
+  });
+
+
+
+
+  //to remove error when focus on the text area
+  document.getElementById('email-contact').addEventListener('focus', function () {
+    const emailEmpty = document.getElementById('empty-email-contact');
+    if (emailEmpty.style.display === 'block') {
+      emailEmpty.style.display = 'none';
+    }
+  });
+  document.getElementById('contact-name').addEventListener('focus', function () {
+    const nameEmpty = document.getElementById('empty-name-contact');
+    if (nameEmpty.style.display === 'block') {
+      nameEmpty.style.display = 'none';
+    }
+  });
+  document.getElementById('message-contact').addEventListener('focus', function () {
+    const messageEmpty = document.getElementById('empty-message-contact');
+    const messageShort = document.getElementById('message-length');
+    if (messageEmpty.style.display === 'block') {
+      messageEmpty.style.display = 'none';
+    }
+    if (messageShort.style.display === 'block') {
+      messageShort.style.display = 'none';
+    }
+  });
+
+
+
+
+
+
+
+
+
+  //this is for the navigation bar when user doesnot login
   if (!loggedin) {
     const loginBtn = document.getElementById("login-btn");
     const heroLoginBtn = document.getElementById("hero-login-btn");
@@ -56,11 +244,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const otploginLink = document.getElementById("otp-to-signup");
     const registerloginLink = document.getElementById("register-to-login");
 
+
+    //to show login form
     function showLoginForm() {
       loginContainer.style.display = "flex";
       signupContainer.style.display = "none";
       otpContainer.style.display = "none";
       registerContainer.style.display = "none";
+      contactContainer.style.display = "none";
       loginContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     }
@@ -79,12 +270,16 @@ document.addEventListener("DOMContentLoaded", () => {
       showLoginForm();
     });
 
+
+
+    // to link to sigmup/login/register form
     signupLink.addEventListener("click", (e) => {
       e.preventDefault();
       signupContainer.style.display = "flex";
       loginContainer.style.display = "none";
       otpContainer.style.display = 'none';
       registerContainer.style.display = "none";
+      contactContainer.style.display = "none";
       signupContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     });
@@ -94,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
       signupContainer.style.display = "none";
       otpContainer.style.display = "none";
       registerContainer.style.display = "none";
+      contactContainer.style.display = "none";
       loginContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     });
@@ -103,6 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loginContainer.style.display = "none";
       otpContainer.style.display = 'none';
       registerContainer.style.display = "none";
+      contactContainer.style.display = "none";
       signupContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     });
@@ -112,10 +309,16 @@ document.addEventListener("DOMContentLoaded", () => {
       signupContainer.style.display = "none";
       otpContainer.style.display = "none";
       registerContainer.style.display = "none";
+      contactContainer.style.display = "none";
       loginContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     });
 
+
+
+
+
+    //to close every pages
     closeLoginBtn.addEventListener("click", () => {
       loginContainer.style.display = "none";
       document.body.classList.remove("no-scroll");
@@ -132,6 +335,11 @@ document.addEventListener("DOMContentLoaded", () => {
       registerContainer.style.display = "none";
       document.body.classList.remove("no-scroll");
     });
+
+
+
+
+
     [loginContainer, signupContainer, otpContainer, registerContainer].forEach((container) => {
       if (container) {
         container.addEventListener("click", (e) => {
@@ -143,6 +351,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+
+    //to toggle between the show password and hide password needed to be add in the future
     document.querySelectorAll(".toggle-password").forEach((toggleBtn) => {
       toggleBtn.addEventListener("click", () => {
         const passwordInput = toggleBtn.previousElementSibling;
@@ -152,6 +362,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+
+    //to handle login/signup/otp from after submitting
     document.getElementById('form-login').addEventListener('submit', function (event) {
       event.preventDefault();
       const email = document.getElementById('email-login');
@@ -228,7 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       }
     });
-
     document.getElementById('form-signup').addEventListener('submit', function (event) {
       event.preventDefault();
       const email = document.getElementById('email-signup');
@@ -297,9 +508,9 @@ document.addEventListener("DOMContentLoaded", () => {
               console.log("Email doesnot exists");
               document.getElementById('email-register').value = data.email_signup;
               generatedOTP = data.otp;
+              console.log(generatedOTP);
               user_email = data.email;
               user_password = data.password_signup;
-
               signupContainer.style.display = "none";
               loginContainer.style.display = "none";
               otpContainer.style.display = "flex";
@@ -314,7 +525,6 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       }
     });
-
     document.getElementById('form-otp').addEventListener('submit', function (event) {
       event.preventDefault();
       const otp = document.getElementById('otp');
@@ -341,18 +551,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
+
+
+    // to toggle between the name of organization and name of user
     const organizerRadio = document.getElementById('organizer');
     const attenderRadio = document.getElementById('attender');
     let orgname_req = true;
     let username_req = false;
     function toggleFields() {
-      const organizerNameField = document.getElementById('organizername');
+      const organizernameField = document.getElementById('organizername');
       const usernameField = document.getElementById('username');
       const emptyusername = document.getElementById('empty-username');
       const emptyorgname = document.getElementById('empty-nameoforg');
 
       if (organizerRadio.checked) {
-        organizerNameField.style.display = 'block';
+        organizernameField.style.display = 'block';
         orgname_req = true;
         usernameField.style.display = 'none';
         emptyorgname.style.display = 'none';
@@ -362,16 +576,21 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (attenderRadio.checked) {
         usernameField.style.display = 'block';
         username_req = true;
-        organizerNameField.style.display = 'none';
+        organizernameField.style.display = 'none';
         emptyorgname.style.display = 'none';
         emptyusername.style.display = 'none';
         orgname_req = false;
-        organizerNameField.value = '';
+        organizernameField.value = '';
       }
     }
     organizerRadio.addEventListener('change', toggleFields);
     attenderRadio.addEventListener('change', toggleFields);
     toggleFields();
+
+
+
+
+    //to handle register form
     document.getElementById('register-form').addEventListener('submit', function (event) {
       event.preventDefault();
       const username = document.getElementById('username');
@@ -427,7 +646,7 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .then(data => {
             localStorage.setItem('isLoggedIn', 'true');
-            console.log("Accoutn Creation sucessful")
+            console.log("Account Creation sucessful")
             window.location.reload();
           })
           .catch(error => {
@@ -437,19 +656,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    function getCSRFToken() {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
 
-      if (!cookieValue) {
-        console.error('CSRF token not found in cookies');
-      }
 
-      return cookieValue;
-    }
 
+    //to remove the error when focusing on the area
     document.getElementById('email-login').addEventListener('focus', function () {
       const emailEmpty = document.getElementById('empty-email');
       const noemailexistslogin = document.getElementById('no-email_exists_login');
@@ -531,5 +741,18 @@ document.addEventListener("DOMContentLoaded", () => {
       emptyusername.style.display = 'none';
       emptyorgname.style.display = 'none';
     });
+  }
+
+
+
+  //this is csrftoken which is used to send data to the back end
+  function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      const [key, value] = cookie.split('=');
+      if (key === name) return value;
+    }
+    return '';
   }
 });

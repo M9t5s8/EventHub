@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
- height: 100vh;
+  height: 100vh;
   background: linear-gradient(135deg, #1a103e, #3e2c8d);
   text-align: left;
   padding: 0 40px;
@@ -54,7 +54,7 @@
 
 /* Login Button */
 .login-hero {
-  background-color: #000000;
+  background-color: #111;
   color: #ffffff;
   padding: 15px 40px;
   text-decoration: none;
@@ -66,13 +66,9 @@
 }
 
 .login-hero:hover {
-  background-color: #333;
+  background-color: #000;
   text-decoration: underline;
-}
-
-.login-hero:active {
-  background-color: #000000;
-  
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.395); 
 }
 
 
@@ -98,19 +94,6 @@
 }
 
 
-
-.how-it-works {
-  background: linear-gradient(135deg, #1a103e, #3e2c8d);
-  color: white;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.how-it-works .container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 /* Feature Cards Container */
 .boxs {
   display: flex;
@@ -122,30 +105,35 @@
 
 /* Individual Card */
 .box-card {
-  background-color: #111;
+  background-color: #000;
   color: #fff;
   padding: 30px;
-  width: 250px;
-  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.395); /* Softer shadow */
+  width: 200px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 10px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
 }
 
 .box-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
   background-color: #000;
+  box-shadow: 
+  0 0 20px rgba(0, 153, 255, 0.8),
+  0 0 30px rgba(0, 153, 255, 0.6),
+  0 0 60px rgba(0, 153, 255, 0.4);
+
 }
 
 /* Box Icon */
 .box-icon {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .box-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-bottom: 15px;
   color: #ffffff;
 }
@@ -166,27 +154,8 @@
 
 
 
-@media (max-width: 768px) {
-  .steps {
-    flex-direction: column;
-  }
 
-  .step {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-}
-
-@media (max-width: 768px) {
-  .features-cards {
-    flex-direction: column;
-  }
-  .feature-card {
-    width: 100%; 
-    padding: 20px;
-  }
-}
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .hero h1 {
     font-size: 3rem;
   }
@@ -199,8 +168,92 @@
     font-size: 1rem;
   }
 
+
   .login-hero {
     padding: 12px 30px;
     font-size: 1rem;
+  }
+  .box-card{
+    width: 250px;
+  }
+  .box-icon {
+    font-size: 1.8rem;
+  }
+  
+  .box-card h3 {
+    font-size: 1.5rem;
+  }
+  
+  .box-card p {
+    font-size: 1.2rem;
+  }
+  .features-cards {
+    flex-direction: column;
+  }
+  .feature-card {
+    width: 100%; 
+    padding: 20px;
+  }
+  .steps {
+    flex-direction: column;
+  }
+
+  .step {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
+
+
+@media (max-width: 500px) {
+  .hero{
+    padding: 0 15px;
+  }
+  .hero h1 {
+    font-size: 2.3rem;
+  }
+  .hero h2 {
+    font-size:1.3rem;
+  }
+
+  .hero p {
+    display: none;
+  }
+  .box-card{
+    width: 300px;
+  }
+  .box-icon {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .box-card h3 {
+    font-size: 1.7rem;
+  }
+  
+  .box-card p {
+    font-size: 1.4rem;
+  }
+  .login-hero {
+    padding: 12px 30px;
+    font-size: 1rem;
+    transition: none;
+  }
+
+  .features-cards {
+    flex-direction: column;
+  }
+  .feature-card {
+    width: 100%; 
+    padding: 20px;
+  }
+  .steps {
+    flex-direction: column;
+  }
+
+  .step {
+    width: 100%;
+    margin-bottom: 30px;
   }
 }
