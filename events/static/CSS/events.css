@@ -1,3 +1,4 @@
+/* event container */
 .event-show-container {
     text-align: center;
     padding: 30px;
@@ -6,9 +7,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    min-height: 100vh;
 }
-
 .event-show-sub-container {
     max-width: 1200px;
     margin: 30px auto;
@@ -17,10 +17,9 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
-
-
 .event {
+    display: flex;
+    flex-direction: column;
     margin: 15px;
     padding: 30px;
     width: 350px;
@@ -32,27 +31,47 @@
     border-radius: 12px;
     color: #fff;
 }
-
+/* event hover  */
 .event:hover {
     background: #000;
-    box-shadow: 
-    0 0 20px rgba(0, 153, 255, 0.8),
-    0 0 30px rgba(0, 153, 255, 0.6),
-    0 0 60px rgba(0, 153, 255, 0.4);
+    box-shadow:
+        0 0 20px rgba(0, 153, 255, 0.8),
+        0 0 30px rgba(0, 153, 255, 0.6),
+        0 0 60px rgba(0, 153, 255, 0.4);
 }
-.event h2{
+
+
+/* event title */
+.event h2 {
     font-size: 20px;
 }
 
 
+/* style username and time in event showcase */
+.user-time{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.user-time p{
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 15px;
+}
 
-.add-event{
 
+
+
+
+
+
+/* add event button */
+.add-event {
     margin: 0 auto;
     margin-top: 100px;
     width: 400px;
 }
-
 .add-event-btn {
     background-color: #111;
     color: white;
@@ -66,16 +85,34 @@
     transition: background-color 0.3s, box-shadow 0.3s;
     text-transform: uppercase;
 }
-
 .add-event-btn:hover {
     background-color: #000;
     text-decoration: underline;
     box-shadow: 0 6px 12px rgba(255, 255, 255, 0.395);
 }
-.add-event-btn:active{
-    background-color:#111 ;
+.add-event-btn:active {
+    background-color: #111;
 }
-.inspect{
+
+@media (max-width: 500px){
+    .add-event{
+        width: 200px;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+/* inspect button */
+.inspect {
+    margin-top: auto;
     background-color: #fff;
     color: #000;
     padding: 13px;
@@ -87,18 +124,25 @@
     font-weight: bold;
     transition: background-color 0.3s, box-shadow 0.3s;
     text-transform: uppercase;
+
 }
-.inspect:hover{
+.inspect:hover {
     background-color: #eee;
     text-decoration: underline;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.395);
 }
-.inspect:active{
-    background-color:#fff;
+.inspect:active {
+    background-color: #fff;
 }
 
 
 
-.event-not-found{
+
+
+
+/* event not found */
+.event-not-found {
     text-align: center;
 }
+
+

@@ -73,14 +73,15 @@
 
 
 /* Features Section */
-.features {
+.features, .how-it-works {
   background: linear-gradient(135deg, #1a103e, #3e2c8d); 
   color: #ffffff;
   padding: 60px 20px;
   text-align: center;
 }
 
-.features .container {
+.features .container,
+.how-it-works .container {
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -105,7 +106,7 @@
 
 /* Individual Card */
 .box-card {
-  background-color: #000;
+  background-color: #111;
   color: #fff;
   padding: 30px;
   width: 200px;
@@ -208,32 +209,35 @@
 
 @media (max-width: 500px) {
   .hero{
+    height: 600px;
     padding: 0 15px;
   }
   .hero h1 {
     font-size: 2.3rem;
   }
   .hero h2 {
-    font-size:1.3rem;
+    font-size:1.2rem;
   }
 
   .hero p {
     display: none;
   }
+.section-title{
+  font-size: 1.8rem;
+}
+  
   .box-card{
-    width: 300px;
+    width: 250px;
   }
   .box-icon {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
   }
-  
   .box-card h3 {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
   }
-  
   .box-card p {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
   }
   .login-hero {
     padding: 12px 30px;

@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center; /* Vertically center the content */
-    height: 100vh;
+    /* height: 100vh; */
 
 }
 /* Sub-container for the team members */
@@ -111,7 +111,10 @@
     transition: 0.5s;
 }
 
-
-
+@media (min-width: 1060px) {
+    .ourteam-container {
+        height: 100vh;
+    }
+}
 
 

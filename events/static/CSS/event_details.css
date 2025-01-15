@@ -1,0 +1,19 @@
+/* In static/css/styles.css */
+.event-detail-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.event-detail-container h1 {
+    font-size: 2em;
+    color: #333;
+}
+
+.event-detail-container p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 10px;
+}

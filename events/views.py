@@ -1,49 +1,171 @@
-
 # events/views.py
-from django.shortcuts import render
 from django.http import JsonResponse
 import json
 import random
-from attender.models import Attender
-from organizer.models import Organizer
-from event.models import Event
+from attender.models import Active_Attender,All_Attender
+from organizer.models import Active_Organizer,All_Organizer
 from contact.models import Contact
-from django.contrib.auth.hashers import check_password 
+from eventmodule.models import Event
+from datetime import datetime
+from django.utils import timezone
+from django.shortcuts import render, get_object_or_404
 
-
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)  # Retrieve the event by its ID
+    return render(request, 'events/event_detail.html', {'event': event})
 
 
 
 
 # home page
 def home(request):
-    return render(request, "events/index.html")  # Render the homepage template
+    user_info = {}
+
+    if request.session.get('user_logined'):
+        user_id = request.session.get('user_id')  # Corrected access method
+        user_role = request.session.get('user_role')  # Corrected access method
+         
+        try:
+            if user_role == 'organizer':
+                # Corrected: Use 'user.organizer.id' to access the organizer ID
+                user = Active_Organizer.objects.get(organizer__id=user_id)
+                username = user.organizer.organizer_name  # Access organizer's username
+                email = user.organizer.organizer_email  # Access organizer's email
+            elif user_role == 'attender':
+                # Corrected: Use 'user.attender.id' to access the attender ID
+                user = Active_Attender.objects.get(attender__id=user_id)
+                username = user.attender.attender_username  # Access attender's username
+                email = user.attender.attender_email  # Access attender's email
+            else:
+                raise ValueError("Invalid user role")
+
+            user_info = {  # Initialize context here
+                'username': username,
+                'email': email,
+                'role': user_role
+            }
+        except (Active_Organizer.DoesNotExist, Active_Attender.DoesNotExist):
+            user_info['error'] = "User not found"
+        except ValueError as ve:
+            user_info['error'] = str(ve)
+
+    context = {'user_info': user_info}
+    return render(request, "events/index.html", context)
+
+
 
 # about page
 def about(request):
-    return render(request,"events/about.html")
+    user_info = {}
+
+    if request.session.get('user_logined'):
+        user_id = request.session.get('user_id')  # Corrected access method
+        user_role = request.session.get('user_role')  # Corrected access method
+         
+        try:
+            if user_role == 'organizer':
+                # Corrected: Use 'user.organizer.id' to access the organizer ID
+                user = Active_Organizer.objects.get(organizer__id=user_id)
+                username = user.organizer.organizer_name  # Access organizer's username
+                email = user.organizer.organizer_email  # Access organizer's email
+            elif user_role == 'attender':
+                # Corrected: Use 'user.attender.id' to access the attender ID
+                user = Active_Attender.objects.get(attender__id=user_id)
+                username = user.attender.attender_username  # Access attender's username
+                email = user.attender.attender_email  # Access attender's email
+            else:
+                raise ValueError("Invalid user role")
+
+            user_info = {  # Initialize context here
+                'username': username,
+                'email': email,
+                'role': user_role
+            }
+        except (Active_Organizer.DoesNotExist, Active_Attender.DoesNotExist):
+            user_info['error'] = "User not found"
+        except ValueError as ve:
+            user_info['error'] = str(ve)
+    context = {'user_info': user_info}
+    return render(request,"events/about.html",context)
 
 # events page
 def events(request):
-    events = Event.objects.all() 
-    
-    
-    print("Fetching events from the database:")
-    for event in events:
-        print(f"Event Title: {event.event_name}")  # Correct field name
-        print(f"Event Date: {event.event_date}")  # Correct field name
-        print(f"Event Location: {event.event_location}")  # Correct field name
-        print(f"Event Description: {event.event_description}")  # Correct field name
-        print("-" * 50)  # Separator between events for better readability
-        
-        
-     
-    context = {'events': events}
-    return render(request,"events/events.html",context)
+    user_info = {}
+    events = Event.objects.all()  # Fetch all events or apply filters as needed
+
+    # Fetch user info if the user is logged in
+    if request.session.get('user_logined'):
+        user_id = request.session.get('user_id')
+        user_role = request.session.get('user_role')
+
+        try:
+            if user_role == 'organizer':
+                user = Active_Organizer.objects.get(organizer__id=user_id)
+                username = user.organizer.organizer_name
+                email = user.organizer.organizer_email
+            elif user_role == 'attender':
+                user = Active_Attender.objects.get(attender__id=user_id)
+                username = user.attender.attender_username
+                email = user.attender.attender_email
+            else:
+                raise ValueError("Invalid user role")
+
+            user_info = {  # Initialize context here
+                'username': username,
+                'email': email,
+                'role': user_role
+            }
+        except (Active_Organizer.DoesNotExist, Active_Attender.DoesNotExist):
+            user_info['error'] = "User not found"
+        except ValueError as ve:
+            user_info['error'] = str(ve)
+
+    context = {
+        'user_info': user_info,  # Send user details to the template
+        'events': events,  # Send event details to the template
+    }
+
+    return render(request, "events/events.html", context)
+
+
+
+
+
+
 
 # ourteam page
 def ourteam(request):
-    return render(request,"events/ourteam.html")
+    user_info = {}
+
+    if request.session.get('user_logined'):
+        user_id = request.session.get('user_id')  # Corrected access method
+        user_role = request.session.get('user_role')  # Corrected access method
+         
+        try:
+            if user_role == 'organizer':
+                # Corrected: Use 'user.organizer.id' to access the organizer ID
+                user = Active_Organizer.objects.get(organizer__id=user_id)
+                username = user.organizer.organizer_name  # Access organizer's username
+                email = user.organizer.organizer_email  # Access organizer's email
+            elif user_role == 'attender':
+                # Corrected: Use 'user.attender.id' to access the attender ID
+                user = Active_Attender.objects.get(attender__id=user_id)
+                username = user.attender.attender_username  # Access attender's username
+                email = user.attender.attender_email  # Access attender's email
+            else:
+                raise ValueError("Invalid user role")
+
+            user_info = {  # Initialize context here
+                'username': username,
+                'email': email,
+                'role': user_role
+            }
+        except (Active_Organizer.DoesNotExist, Active_Attender.DoesNotExist):
+            user_info['error'] = "User not found"
+        except ValueError as ve:
+            user_info['error'] = str(ve)
+    context = {'user_info': user_info}
+    return render(request,"events/ourteam.html",context)
 
 
 
@@ -58,33 +180,50 @@ def login_view(request):
             password = data.get('password')
             user = None
             user_type = None
-            email_exists = False
-            if Organizer.objects.filter(organizer_email=email).exists():
-                user = Organizer.objects.get(organizer_email=email)
+            
+            
+            
+            
+            
+            # Check if email belongs to an Active_Organizer
+            if Active_Organizer.objects.filter(organizer__organizer_email=email).exists():
+                user = Active_Organizer.objects.get(organizer__organizer_email=email)
                 user_type = 'organizer'
-                email_exists = True
-            elif Attender.objects.filter(attender_email=email).exists():
-                user = Attender.objects.get(attender_email=email)
+            elif Active_Attender.objects.filter(attender__attender_email=email).exists():
+                user = Active_Attender.objects.get(attender__attender_email=email)
                 user_type = 'attender'
-                email_exists = True
-            if not email_exists:
+            else:
                 return JsonResponse({"email_not_exists": True}, status=200)
+
+
             if user_type == 'organizer':
-                if password==user.organizer_password:
-                    return JsonResponse({"email_not_exists": False, "correct_pass": True}, status=200)
-                else:
-                    return JsonResponse({"email_not_exists": False, "correct_pass": False}, status=200)
-            elif user_type == 'attender':
-                print("Password from frontend:",password,"Password from backend:",user.attender_password)
-                if password==user.attender_password:
+                if user.organizer.organizer_password == password:
+                    request.session['user_id'] = user.organizer.id
+                    request.session['user_role']= user_type
+                    request.session['user_logined']=True
                     return JsonResponse({"email_not_exists": False, "correct_pass": True}, status=200)
                 else:
                     return JsonResponse({"email_not_exists": False, "correct_pass": False}, status=200)
 
+            elif user_type == 'attender':
+                if user.attender.attender_password == password:
+                    request.session['user_id'] = user.attender.id
+                    request.session['user_role']= user_type
+                    request.session['user_logined']=True
+                    return JsonResponse({"email_not_exists": False, "correct_pass": True}, status=200)
+                else:
+                    return JsonResponse({"email_not_exists": False, "correct_pass": False}, status=200)
+
+        
         except Exception as e:
+            # Handle any exceptions that occur during the process
             return JsonResponse({"error": str(e)}, status=400)
 
+    # Return response for invalid request method
     return JsonResponse({"error": "Invalid request method."}, status=405)
+
+
+
 # signup view
 def signup_view(request):
     if request.method == "POST":
@@ -96,16 +235,16 @@ def signup_view(request):
 
             # Check if the email already exists in either Organizer or Attender
             email_exists = (
-                Organizer.objects.filter(organizer_email=email).exists() or
-                Attender.objects.filter(attender_email=email).exists()
+                Active_Organizer.objects.filter(organizer__organizer_email=email).exists() or
+                Active_Attender.objects.filter(attender__attender_email=email).exists()
             )
             if email_exists:
-                print("Email already exists")
                 return JsonResponse({"check_for_email": True}, status=200)
             
             
             # Generate an OTP and store it in the session
             otp = random.randint(100000, 999999)
+            print("OTP:",otp)
             request.session['otp'] = otp
 
             # Return a success response with the OTP
@@ -126,6 +265,8 @@ def signup_view(request):
 
     # Handle non-POST requests
     return JsonResponse({"error": "Invalid request method."}, status=405)
+
+
 # register view
 def register_view(request):
     if request.method == "POST":
@@ -138,58 +279,71 @@ def register_view(request):
             organizername = data.get('organizername')
             role = data.get('role')
 
-            print("Email:", email, "Password:", password, "Username:", username, "Role:", role, "Organizer name:", organizername)
-
-            # Check for required fields based on role
-            if not email or not password or not role:
-                raise ValueError("Email, password, and role are required.")
-
-            # Check if email already exists in either Organizer or Attender
-            
             if role == 'organizer':
-                if not organizername:
-                    raise ValueError("Organizer name is required for the organizer role.")
-                
-                # Create and save Organizer data
-                org_data = Organizer(
+                # Create All_Organizer entry (store plain password)
+                all_organizer_data = All_Organizer(
                     organizer_email=email,
                     organizer_password=password,
                     organizer_name=organizername
                 )
-                org_data.save()
-            
+                all_organizer_data.save()
+
+                # Create Active_Organizer entry
+                active_organizer_data = Active_Organizer(
+                    organizer=all_organizer_data, 
+                    organizer_email=email,
+                    organizer_name=organizername,
+                    organizer_password=password
+                )
+                active_organizer_data.save()
+
+                # Save session data
+                request.session['user_id'] = active_organizer_data.id
+                request.session['user_role'] = 'organizer'
+                request.session['user_logined'] = True
+
             elif role == 'attender':
-                if not username:
-                    raise ValueError("Username is required for the attender role.")
-                
-                # Create and save Attender data
-                atten_data = Attender(
+                # Create All_Attender entry (store plain password)
+                all_attender_data = All_Attender(
                     attender_email=email,
                     attender_password=password,
                     attender_username=username
                 )
-                atten_data.save()
+                all_attender_data.save()
 
-            else:
-                raise ValueError("Invalid role specified.")
+                # Create Active_Attender entry
+                active_attender_data = Active_Attender(
+                    attender=all_attender_data, 
+                    attender_email=email,
+                    attender_username=username,
+                    attender_password=password
+                )
+                active_attender_data.save()
 
+                # Save session data
+                request.session['user_id'] = active_attender_data.id
+                request.session['user_role'] = 'attender'
+                request.session['user_logined'] = True
 
-
-                messages.success(request, "Account created successfully!")
-                return redirect('register_page')    
-            
             return JsonResponse({"message": "Account Created!"}, status=200)
 
         except ValueError as e:
             # Handle specific value errors
             return JsonResponse({"error": str(e)}, status=400)
+        except json.JSONDecodeError:
+            # Handle invalid JSON
+            return JsonResponse({"error": "Invalid JSON format."}, status=400)
         except Exception as e:
             # Handle any other exceptions
-            return JsonResponse({"error": "An unexpected error occurred."}, status=400)
+            return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
     return JsonResponse({"error": "Invalid request method."}, status=405)
+
+
+
+
 # contact view
 def contact_view(request):
-    
     # to get the form value as the post method
     if request.method == "POST":
         try:
@@ -220,3 +374,62 @@ def contact_view(request):
             return JsonResponse({"error": "An unexpected error occurred."}, status=400)
 
     return JsonResponse({"error": "Only POST requests are allowed."}, status=405)
+
+
+
+def add_event_view(request):
+    if request.method == 'POST':
+        try:
+            # Parse the JSON body of the request
+            data = json.loads(request.body)
+            title = data.get('event_name')
+            description = data.get('event_description')
+            event_date = data.get('event_date')
+            event_time = data.get('event_time')
+            location = data.get('event_location')
+
+            user_id = request.session.get('user_id')
+            try:
+                organizer = All_Organizer.objects.get(id=user_id)  # Assuming 'user_id' is the field in All_Organizer
+            except All_Organizer.DoesNotExist:
+                return JsonResponse({'success': False, 'message': 'Organizer not found for this user.'})
+            # Create a new Event object
+            
+            
+            
+            event = Event(
+                title=title,
+                description=description,
+                event_date=event_date,
+                event_time=event_time,
+                location=location,
+                organizer=organizer,
+            )
+            event.save()
+            
+
+            return JsonResponse({'success': True, 'message': 'Event created successfully.'})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+
+
+
+
+
+
+
+
+
+
+def logout_view(request):
+    try:
+        # Clear session data
+        request.session.flush()  # This will remove all session data
+        return JsonResponse({"success": True}, status=200)  # Replace 'home' with the actual URL name for your homepage or login page
+    except Exception as e:
+        # Handle any errors that may occur
+        return JsonResponse({"error": str(e)}, status=400)

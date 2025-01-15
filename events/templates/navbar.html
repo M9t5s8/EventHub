@@ -195,3 +195,40 @@
     </form>
   </div>
 </div>
+
+
+
+
+
+
+
+
+<div class="profile-container" id="profile-container">
+  {% if user_info.username and user_info.email %}
+    <p class="username">{{ user_info.username }}</p>
+    <p class="email">{{ user_info.email }}</p>
+{% else %}
+    <p>Not found</p>
+{% endif %}
+
+
+
+  <div class="menu-item">
+    <a href="/profile">Profile</a>
+  </div>
+  <div class="menu-item">
+    <a href="/my-events">My Events</a>
+  </div>
+  <div class="menu-item">
+    <a href="/watch-list">Upcoming Events</a>
+  </div>
+  <div class="menu-item">
+    <a href="/notifications">Notification</a>
+  </div>
+  <div class="menu-item">
+    <a href="/settings">Settings</a>
+  </div>
+  <div class="menu-item logout">
+    <a href="" id="logout-btn">Logout<i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+</div>

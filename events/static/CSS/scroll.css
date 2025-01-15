@@ -38,6 +38,8 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus,
 input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
 textarea:focus {
   outline: 2px solid #fff; /* White outline when focused */
   outline-offset: 2px;
@@ -46,3 +48,8 @@ textarea:focus {
 textarea {
   resize: none; /* Disable resizing */
 }
+
+
+
+
+

@@ -15,59 +15,111 @@
 {% block content %}
 
 <div class="event-show-container">
-    <!-- Add Event Button -->
-    <div class="add-event">
-        <button class="add-event-btn" id="add-event-btn">Add Events</button>
-    </div>
-    <!-- Event Sub-container -->
-    <div class="event-show-sub-container">
-        {% if events %}
-        {% for event in events %}
-        <div class="event">
-            <h1>{{ event.event_name }}</h1>
-            <p>{{ event.event_date }}</p>
-            <p>{{ event.event_location }}</p> 
-            <button class="inspect">Inspect</button>
-        </div>
-        {% endfor %}
-        {% else %}
+  {% if user_info.role == 'organizer' %}
+  <div class="add-event">
+    <button class="add-event-btn" id="add-event-btn">Add Events</button>
+  </div>
+  {% elif user_info.role == 'attender' %}
+  {% endif %}
 
-        <p class="event-not-found">No events available at the moment.</p>
-        {% endif %}
+
+  
+
+
+
+
+  <div class="event-show-sub-container">
+    {% if events %}
+    {% for event in events %}
+    <div class="event">
+      <div class="user-time">
+        <!-- Access the organizer's name properly -->
+        <p>{{ event.organizer.organizer_name }}</p>
+      </div>
+      <div>
+        <!-- Use the correct field names from your model -->
+        <h1>{{ event.title }}</h1>
+        <p>{{ event.event_time }}</p>
+        <p>{{ event.event_date }}</p>
+        <p>{{ event.location }}</p>
+      </div>
+      <div>
+        <button class="inspect" onclick="window.location.href='{% url 'event_detail' event.event_id %}'">Inspect</button>
     </div>
+    
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="event-not-found">No events available at the moment.</p>
+    {% endif %}
+  </div>
 </div>
 
 
 
 
-<!-- add events -->
-<div class="event1-container" id="event1-container">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Event Basic Details Form -->
+  <div class="event1-container" id="event1-container">
     <div class="form-box">
-      <button class="close-btn" id="close-event-add-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
-      <h2>Add Events</h2>
+      <button class="close-btn" id="close-event-add-btn">
+        <i class="fa-sharp fa-solid fa-xmark"></i>
+      </button>
+      <h2>Basic Details</h2>
       <form id="form-event">
         <label for="event-title" class="input-label">Event Title:</label>
         <input type="text" id="event-title" placeholder="Enter Event Title..." />
         <span id="empty-event-title" class="error-message" style="display: none;">Title is required!</span>
-  
+
+        <label for="event-description" class="input-label">Event Description:</label>
+        <textarea id="event-description" rows="3" placeholder="Enter Event Description..."></textarea>
+        <span id="empty-event-description" class="error-message" style="display: none;">Description is required!</span>
+
         <label for="event-date" class="input-label">Event Date:</label>
-        <input type="date" id="event-date" placeholder="Enter Event Date..." />
+        <input type="date" id="event-date" />
         <span id="empty-event-date" class="error-message" style="display: none;">Date is required!</span>
 
-        <label for="event-time" class="input-label">Event Date:</label>
-        <input type="time" id="event-time" placeholder="Enter Event Date..." />
-        <span id="empty-event-date" class="error-message" style="display: none;">Date is required!</span>
+        <label for="event-time" class="input-label">Event Time:</label>
+        <input type="time" id="event-time" />
+        <span id="empty-event-time" class="error-message" style="display: none;">Time is required!</span>
 
         <label for="event-location" class="input-label">Event Location:</label>
         <input type="text" id="event-location" placeholder="Enter Event Location..." />
         <span id="empty-event-location" class="error-message" style="display: none;">Location is required!</span>
+
         <br><br>
-  
-        <button type="submit" class="login-btn">NEXT</button>
+        <button type="submit" class="login-btn">ADD EVENT</button>
       </form>
     </div>
   </div>
 
 
 
-{% endblock %}
+
+
+
+
+
+  {% endblock %}

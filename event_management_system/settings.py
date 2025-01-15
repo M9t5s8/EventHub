@@ -46,7 +46,7 @@ EXTERNAL_APPS=[
     'attender',
     'organizer',
     'contact',
-    'event'
+    'eventmodule'
 ]
 INSTALLED_APPS+=EXTERNAL_APPS
 
@@ -133,7 +133,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+import os
 STATIC_URL = '/static/'  # This defines the base URL for static files
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # For custom static files folder
+    os.path.join(BASE_DIR, 'static'),  # Adjust the path as needed
 ]

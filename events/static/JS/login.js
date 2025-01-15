@@ -4,11 +4,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // this is for to save the user login data in the local storage
   let loggedin = true;
-  document.getElementById('user-profile').addEventListener('click', function (event) {
+  document.getElementById('logout-btn').addEventListener('click', function (event) {
     event.preventDefault();
-    localStorage.removeItem('isLoggedIn');
-    window.location.reload();
+
+    if (confirm("Are you sure you want to log out?")) {
+      fetch('/logout/', {
+        method: 'POST',  // Changed to POST for better security
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log("Logout Successful");
+
+
+            window.location.href = '/';
+            localStorage.removeItem('isLoggedIn');
+          } else {
+
+            alert('Logout failed: ' + data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Error logging out:', error);
+          alert('An error occurred while logging out.');
+        });
+    }
   });
+
+
+
+
+
   if (localStorage.getItem('isLoggedIn') === 'true') {
     document.getElementById("event-btn").style.display = "block";
     document.getElementById("user-profile").style.display = "block";
@@ -41,30 +71,49 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+
+
+
+  const profileContainer = document.getElementById("profile-container");
+
+
+
+  document.getElementById('user-profile').addEventListener('click', function (event) {
+    event.preventDefault();
+    if (profileContainer.style.display === "block") {
+      profileContainer.style.display = "none";
+    } else {
+      profileContainer.style.display = "block";
+    }
+  });
+
+
+
+  // this is for responsive nav bar i guess
   document.getElementById('show-nav-btn').addEventListener('click', (e) => {
 
     verticalnavBar = document.getElementById("vertical-navbar");
     e.preventDefault();
 
   });
-
-
-
-
-  
   const navbarBtn = document.getElementById("show-nav-btn");
   const navbarContainer = document.getElementById("navbar-container");
-    function showNavbar() {
-      console.log("Showing nav bar");
-      navbarContainer.style.display = "flex";
-      navbarContainer.style.zIndex = "2000";
-      document.body.classList.add("no-scroll");
-    }
-    navbarBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      showNavbar();
-    });
-  
+  function showNavbar() {
+    console.log("Showing nav bar");
+    navbarContainer.style.display = "flex";
+    navbarContainer.style.zIndex = "2000";
+    document.body.classList.add("no-scroll");
+  }
+  navbarBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    showNavbar();
+  });
+
+
+
+
+
+
 
 
 
@@ -96,17 +145,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("no-scroll");
   });
 
-  [contactContainer,navbarContainer].forEach((container) => {
-      if (container) {
-        container.addEventListener("click", (e) => {
-          if (e.target === container) {
-            container.style.display = "none";
-            document.body.classList.remove("no-scroll");
-          }
-        });
-      }
-    });
-
+  [contactContainer, navbarContainer, profileContainer].forEach((container) => {
+    if (container) {
+      container.addEventListener("click", (e) => {
+        if (e.target === container) {
+          container.style.display = "none";
+          document.body.classList.remove("no-scroll");
+        }
+      });
+    }
+  });
 
   //this is so that the user can contact the admin even without the login
   document.getElementById('contact-form').addEventListener('submit', function (event) {
@@ -373,6 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const passwordShort = document.getElementById('short-password');
       const noemailexistslogin = document.getElementById('no-email_exists_login');
       const incorrectpassword = document.getElementById('incorrect_password');
+      console.log("email:", email.value);
       let login_valid = true;
       if (email.value.trim() === '') {
         emailEmpty.style.display = 'block';
@@ -413,9 +462,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
               return response.json();
             } else {
-              throw new Error('Failed to send login data');
+              return response.json().then(errData => {
+                throw new Error(`Error ${response.status}: ${errData.message || 'Failed to send login data'}`);
+              });
             }
           })
+
           .then(data => {
             if (data.email_not_exists) {
               console.log("Email not found");
@@ -436,8 +488,9 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            alert(`An error occurred: ${error.message}. Please try again.`);
           });
+
       }
     });
     document.getElementById('form-signup').addEventListener('submit', function (event) {
@@ -742,9 +795,6 @@ document.addEventListener("DOMContentLoaded", () => {
       emptyorgname.style.display = 'none';
     });
   }
-
-
-
   //this is csrftoken which is used to send data to the back end
   function getCSRFToken() {
     const name = 'csrftoken';
