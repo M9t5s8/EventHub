@@ -4,12 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // this is for to save the user login data in the local storage
   let loggedin = true;
+
+
+  // for logout
   document.getElementById('logout-btn').addEventListener('click', function (event) {
     event.preventDefault();
 
     if (confirm("Are you sure you want to log out?")) {
       fetch('/logout/', {
-        method: 'POST',  // Changed to POST for better security
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': getCSRFToken(),
@@ -18,13 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            console.log("Logout Successful");
-
-
             window.location.href = '/';
             localStorage.removeItem('isLoggedIn');
           } else {
-
             alert('Logout failed: ' + data.error);
           }
         })
@@ -38,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+  // to save the login information when the page is refreshed
   if (localStorage.getItem('isLoggedIn') === 'true') {
     document.getElementById("event-btn").style.display = "block";
     document.getElementById("user-profile").style.display = "block";
@@ -73,11 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+  // for the profile button
   const profileContainer = document.getElementById("profile-container");
-
-
-
   document.getElementById('user-profile').addEventListener('click', function (event) {
     event.preventDefault();
     if (profileContainer.style.display === "block") {
@@ -91,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // this is for responsive nav bar i guess
   document.getElementById('show-nav-btn').addEventListener('click', (e) => {
-
     verticalnavBar = document.getElementById("vertical-navbar");
     e.preventDefault();
 
@@ -226,6 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(data => {
           console.log("Contact successful");
+          window.location.reload();
         })
         .catch(error => {
           console.error('Error:', error);
@@ -613,6 +609,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let orgname_req = true;
     let username_req = false;
     function toggleFields() {
+      const orgnameLabel=document.getElementById('orgname-label');
+      const usernameLabel=document.getElementById('username-label');
       const organizernameField = document.getElementById('organizername');
       const usernameField = document.getElementById('username');
       const emptyusername = document.getElementById('empty-username');
@@ -621,6 +619,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (organizerRadio.checked) {
         organizernameField.style.display = 'block';
         orgname_req = true;
+        orgnameLabel.style.display='block';
+        usernameLabel.style.display='none';
         usernameField.style.display = 'none';
         emptyorgname.style.display = 'none';
         emptyusername.style.display = 'none';
@@ -629,6 +629,8 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (attenderRadio.checked) {
         usernameField.style.display = 'block';
         username_req = true;
+        orgnameLabel.style.display='none';
+        usernameLabel.style.display='block';
         organizernameField.style.display = 'none';
         emptyorgname.style.display = 'none';
         emptyusername.style.display = 'none';

@@ -72,9 +72,8 @@
 }
 
 
-/* Features Section */
+
 .features, .how-it-works {
-  background: linear-gradient(135deg, #1a103e, #3e2c8d); 
   color: #ffffff;
   padding: 60px 20px;
   text-align: center;

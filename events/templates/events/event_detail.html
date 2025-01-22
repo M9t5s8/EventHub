@@ -7,15 +7,20 @@
     <link rel="stylesheet" href="{% static 'CSS/event_details.css' %}" />
 {% endblock %}
 
+{% block downbar %}{% endblock %}
+
 {% block content %}
-<div class="event-detail-container">
-    <h1>{{ event.title }}</h1>
-    <p><strong>Organizer:</strong> {{ event.organizer.organizer_name }}</p>
-    <p><strong>Description:</strong> {{ event.description }}</p>
-    <p><strong>Location:</strong> {{ event.location }}</p>
-    <p><strong>Event Date:</strong> {{ event.event_date }}</p>
-    <p><strong>Event Time:</strong> {{ event.event_time }}</p>
+<div class="event-detail-container"> 
+    <div class="detail-container">
+        <h1>{{ event.title }}</h1>
+        <p><strong>Organizer:</strong> {{ event.organizer.organizer_name }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Event Date:</strong> {{ event.event_date }}</p>
+        <p><strong>Event Time:</strong> {{ event.event_time }}</p>
+        <p><strong>Description:</strong> {{ event.description }}</p>
+    </div>
 </div>
 
-<a href="{% url 'events' %}">Back to Events</a>
+
+
 {% endblock %}

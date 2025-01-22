@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/profile.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="profile-title">
+    <h2>
+        <i class="fa-solid fa-user" style="color: #ffffff;"></i>
+        User Profile
+    </h2>
+</div>
+
+<div class="userprofile-container">
+    <div class="profile-info">
+        <!-- Display Name -->
+        <div class="profile-item">
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="{{ user_info.username}}" readonly>
+        </div>
+        <!-- Display Email -->
+        <div class="profile-item">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="{{ user_info.email }}" readonly>
+        </div>
+        <!-- Display Role -->
+        <div class="profile-item">
+            <label for="role">Role:</label>
+            <input type="text" id="role" value="{{ user_info.role }}" readonly>
+        </div>
+        <div class="profile-item">
+            <label for="joinedat">Joined At:</label>
+            <input type="text" id="joinedat" value="2025-01-18" readonly>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

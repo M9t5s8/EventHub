@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-from organizer.models import All_Organizer
-import uuid
+from organizer.models import Organizer
 
 
 class Event(models.Model):
@@ -10,7 +9,7 @@ class Event(models.Model):
     description = models.TextField()
     event_date = models.DateField() 
     event_time = models.TimeField()
-    organizer = models.ForeignKey(All_Organizer, on_delete=models.CASCADE)
+    organizer = models.ForeignKey(Organizer, on_delete=models.CASCADE)
     location = models.CharField(max_length=200)
 
     def __str__(self):

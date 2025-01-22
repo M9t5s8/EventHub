@@ -7,11 +7,17 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/events.css' %}" />
 {% endblock %}
+
+{% block downbar %}{% endblock %}
+
 {% block extra_js%}
 <script src="{% static 'JS/event.js' %}">
   document.cookie = "csrftoken={{ csrf_token }}";
 </script>
 {% endblock %}
+
+
+
 {% block content %}
 
 <div class="event-show-container">

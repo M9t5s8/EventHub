@@ -11,7 +11,9 @@
     {% comment %} this is the common css used in the website {% endcomment %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static 'CSS/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/downbar.css' %}" />
     <link rel="stylesheet" href="{% static 'CSS/scroll.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/color.css' %}" />
     {% block extra_css %}{% endblock %}
     <script src="{% static 'JS/login.js' %}">
         document.cookie = "csrftoken={{ csrf_token }}";
@@ -20,7 +22,10 @@
 </head>
 <body>
     {% block navbar %}{% include 'navbar.html' %}{% endblock %}
-
+    {% if show_downbar %}
+    {% block downbar %}{% include 'downbar.html' %}{% endblock %}
+    {% endif %}
+    
     
     {% block content %}{% endblock %}
 

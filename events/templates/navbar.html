@@ -9,13 +9,30 @@
         </button>
       </li>
       <li class="logo">EventHub</li>
-      <li class="hideonMobile"><a href="{% url 'home' %}">Home</a></li>
       <li class="hideonMobile">
-        <a href="{% url 'events' %}" id="event-btn" style="display: none;">Events</a>
-        <a href="" id="event-login-btn">Events</a>
+        <a href="{% url 'home' %}">
+
+          Home
+        </a>
       </li>
-      <li class="hideonMobile"><a href="{% url 'about' %}">About</a></li>
-      <li class="hideonMobile"><a href="" id="contact-btn">Contact Us</a></li>
+      <li class="hideonMobile">
+        <a href="{% url 'events' %}" id="event-btn" style="display: none;">
+          Events
+        </a>
+        <a href="" id="event-login-btn">
+          Events
+        </a>
+      </li>
+      <li class="hideonMobile">
+        <a href="{% url 'about' %}">
+          About
+        </a>
+      </li>
+      <li class="hideonMobile">
+        <a href="" id="contact-btn">
+          Contact Us
+        </a>
+      </li>
       <li class="nav-login">
         <a href="" id="login-btn">Login</a>
         <a href="" id="user-profile" style="display: none;">Profile</a>
@@ -58,7 +75,7 @@
         character!</span>
       <span id="incorrect_password" class="error-message" style="display: none;">Incorrect Password!</span>
       <div class="remember-me">
-        <input type="checkbox" id="remember-login" />
+        <input type="checkbox" id="remember-login"  checked/>
         <label for="remember-login">Remember me?</label>
       </div>
 
@@ -94,7 +111,7 @@
         match!</span>
 
       <div class="remember-me">
-        <input type="checkbox" id="terms-condtn" required />
+        <input type="checkbox" id="terms-condtn" required checked />
         <label for="terms-condtn">I agree terms and conditions!</label>
       </div>
 
@@ -151,15 +168,17 @@
         <input type="radio" name="role" id="attender">
         <label for="attender" class="role-label">ATTENDER</label>
       </div>
-      <label for="username" class="input-label" ">Username/Organizer name:</label>
-      <input type=" text" id="username" placeholder="Enter your username...">
-        <input type="text" id="organizername" placeholder="Enter Organizer name...">
-        <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
-        <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
-        <br>
+      <label for="username" class="input-label" id="username-label" style="display: none;">Username:</label>
+      <input type="text" id="username" placeholder="Enter your username..." style="display: none;">
+      <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
+      <label for="organizername" class="input-label" id="orgname-label">Organizer name:</label>
+      <input type="text" id="organizername" placeholder="Enter Organizer name...">
+      <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
+
+      <br>
 
 
-        <button type="submit" class="login-btn">REGISTER</button>
+      <button type="submit" class="login-btn">REGISTER</button>
     </form>
     <p class="signup-text">
       Already have an account? <a href="" id="register-to-login">LOG IN</a>
@@ -205,30 +224,51 @@
 
 <div class="profile-container" id="profile-container">
   {% if user_info.username and user_info.email %}
-    <p class="username">{{ user_info.username }}</p>
-    <p class="email">{{ user_info.email }}</p>
-{% else %}
-    <p>Not found</p>
-{% endif %}
+  <p class="username">{{ user_info.username }}</p>
+  <p class="email">{{ user_info.email }}</p>
+  {% else %}
+  <p>Not found</p>
+  {% endif %}
 
+  <div class="menu-item ">
+    <a href="{% url 'profile' %}">
+      <i class="fa-solid fa-user" style="color: #ffffff;"></i>
+      Profile
+    </a>
+  </div>
 
+  <div class="menu-item ">
+    <a href="{% url 'my_events' %}">
+      <i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i>
+      My Events
+    </a>
+  </div>
 
-  <div class="menu-item">
-    <a href="/profile">Profile</a>
+  <div class="menu-item ">
+    <a href="{% url 'upcoming_events' %}">
+      <i class="fa-solid fa-calendar-alt" style="color: #ffffff;"></i>
+      Upcoming Events
+    </a>
   </div>
-  <div class="menu-item">
-    <a href="/my-events">My Events</a>
+
+  <div class="menu-item ">
+    <a href="{% url 'notifications' %}">
+      <i class="fa-solid fa-bell" style="color: #ffffff;"></i>
+      Notification
+    </a>
   </div>
-  <div class="menu-item">
-    <a href="/watch-list">Upcoming Events</a>
+
+  <div class="menu-item ">
+    <a href="{% url 'settings' %}">
+      <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
+      Settings
+    </a>
   </div>
-  <div class="menu-item">
-    <a href="/notifications">Notification</a>
-  </div>
-  <div class="menu-item">
-    <a href="/settings">Settings</a>
-  </div>
-  <div class="menu-item logout">
-    <a href="" id="logout-btn">Logout<i class="fa-solid fa-arrow-right"></i></a>
+
+  <div class="menu-item ">
+    <a id="logout-btn">
+      <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+      Logout
+    </a>
   </div>
 </div>

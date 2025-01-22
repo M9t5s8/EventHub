@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
+import os
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     
 ]
 EXTERNAL_APPS=[
-    'rest_framework',
     'events',
     'attender',
     'organizer',
@@ -66,6 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / "templates"],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,7 +134,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-import os
+
 STATIC_URL = '/static/'  # This defines the base URL for static files
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Adjust the path as needed

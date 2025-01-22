@@ -41,9 +41,9 @@ input[type="text"]:focus,
 input[type="date"]:focus,
 input[type="time"]:focus,
 textarea:focus {
-  outline: 2px solid #fff; /* White outline when focused */
+  outline: 2px solid #fff;
   outline-offset: 2px;
-  border: none;  /* Optional: Remove default border */
+  border: none;
 }
 textarea {
   resize: none; /* Disable resizing */

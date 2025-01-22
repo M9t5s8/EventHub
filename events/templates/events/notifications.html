@@ -1,0 +1,35 @@
+<!-- contact.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Notification{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/notifications.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="profile-title">
+    <h2>
+        <i class="fa-solid fa-bell" style="color: #ffffff;"></i>
+        Notifications
+    </h2>
+</div>
+<div class="notifications-container">
+    <div class="notification-info">
+        {% if events %}
+        {% for event in events %}
+        <div class="notifications">
+            <p>
+                <a href="{% url 'event_detail' event.event_id %}">{{ event.title }}</a>
+                is near, so be ready for it on {{ event.event_time }}, {{ event.event_date }} at {{ event.location }}
+            </p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="no-notification">You will be notified later</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
