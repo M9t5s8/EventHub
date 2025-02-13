@@ -21,21 +21,21 @@
         <!-- Display Name -->
         <div class="profile-item">
             <label for="username">Username:</label>
-            <input type="text" id="username" value="{{ user_info.username}}" readonly>
+            <input type="text" id="username" value="{{ user.name}}" readonly>
         </div>
         <!-- Display Email -->
         <div class="profile-item">
             <label for="email">Email:</label>
-            <input type="email" id="email" value="{{ user_info.email }}" readonly>
+            <input type="email" id="email" value="{{ user.email }}" readonly>
         </div>
         <!-- Display Role -->
         <div class="profile-item">
             <label for="role">Role:</label>
-            <input type="text" id="role" value="{{ user_info.role }}" readonly>
+            <input type="text" id="role" value="{{ user.role }}" readonly>
         </div>
         <div class="profile-item">
             <label for="joinedat">Joined At:</label>
-            <input type="text" id="joinedat" value="2025-01-18" readonly>
+            <input type="text" id="joinedat" value="{{ user.joined_at}}" readonly>
         </div>
     </div>
 

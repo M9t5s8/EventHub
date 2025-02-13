@@ -1,8 +1,7 @@
 :root {
-    /* color of the font */
-    --fontcolor:#fff;
-    /* hover color for font */
-    --mainfonthover:#ffcc00;
-    
-  }
-  
+  --navigationbar: #111;
+  --fontcolor:#fff;
+
+  --mainfonthover: #ffcc00;
+
+}

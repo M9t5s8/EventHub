@@ -1,41 +1,46 @@
-<!-- Navigation Bar -->
-<!-- this is the navigation bar for the bigger screen -->
 <div>
   <nav class="navbar">
     <ul class="horizontal-bar">
       <li>
         <button class="navi-open-btn" id="show-nav-btn">
-          <i class="fa-solid fa-bars"></i>
+          <i class="fa-solid fa-bars nav-icon"></i>
         </button>
       </li>
       <li class="logo">EventHub</li>
-      <li class="hideonMobile">
-        <a href="{% url 'home' %}">
-
+      <li class="hideonMobile {% if request.path == '/' %}nav-active{% endif %}">
+        <a href="{% url 'home' %}" >
           Home
         </a>
       </li>
-      <li class="hideonMobile">
-        <a href="{% url 'events' %}" id="event-btn" style="display: none;">
-          Events
-        </a>
-        <a href="" id="event-login-btn">
-          Events
-        </a>
+      <li class="hideonMobile {% if request.path == '/events/' %}nav-active{% endif %}">
+        {% if user.is_authenticated %}
+          <a href="{% url 'events' %}" id="event-btn">
+            Events
+          </a>
+        {% else %}
+          <a href="" id="event-login-btn" class="login-container-open">
+            Events
+          </a>
+        {% endif %}
       </li>
-      <li class="hideonMobile">
+      <li class="hideonMobile {% if request.path == '/about/' %}nav-active{% endif %}">
         <a href="{% url 'about' %}">
           About
         </a>
       </li>
       <li class="hideonMobile">
         <a href="" id="contact-btn">
-          Contact Us
+          Contact
         </a>
       </li>
       <li class="nav-login">
-        <a href="" id="login-btn">Login</a>
-        <a href="" id="user-profile" style="display: none;">Profile</a>
+        {% if user.is_authenticated %}
+          <button id="user-profile" class="profile-btn">
+            <img src="{{ user.profile_picture.url }}" alt="Profile Picture" onerror="this.src='/media/user_images/default.png'">
+          </button>
+        {% else %}
+          <a href="" id="login-btn" class="login-container-open">Login</a>
+        {% endif %}
       </li>
     </ul>
   </nav>
@@ -57,75 +62,112 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 <!-- Login Form -->
-<div class="login-container" id="login-container">
+<div class="form-container" id="login-container">
   <div class="form-box">
     <button class="close-btn" id="close-login-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
-    <h2>Welcome Back</h2>
+    <h2>welcome back</h2>
     <form id="form-login">
-      <label for="email-login" class="input-label">Email:</label>
+      <label for="email-login" class="input-label">email:</label>
       <input type="email" id="email-login" placeholder="Enter your Gmail..." />
       <span id="empty-email" class="error-message" style="display: none;">Email is required!</span>
-      <span id="no-email_exists_login" class="error-message" style="display: none;">Email doesnot Exists!</span>
+      <span id="no-email-login" class="error-message" style="display: none;">Email doesnot Exists!</span>
 
-      <label for="password-login" class="input-label">Password:</label>
+      <label for="password-login" class="input-label">password:</label>
       <input type="password" id="password-login" placeholder="Enter your password..." />
       <span id="empty-password" class="error-message" style="display: none;">Password is required!</span>
       <span id="short-password" class="error-message" style="display: none;">Password should br between 8 to 15
         character!</span>
       <span id="incorrect_password" class="error-message" style="display: none;">Incorrect Password!</span>
       <div class="remember-me">
-        <input type="checkbox" id="remember-login"  checked/>
-        <label for="remember-login">Remember me?</label>
+        <label class="custom-checkbox">
+          <input type="checkbox" id="checkbox" / checked>
+          <span class="checkmark"></span>
+          <h3>remember me</h3>
+      </label>
       </div>
-
-      <button type="submit" class="login-btn">LOG IN</button>
+      <button type="submit" class="form-submit-btn">LOG IN</button>
     </form>
-    <p class="signup-text">
+    <p class="another-link">
       Don’t have an account? <a href="#" id="signup-link">SIGN UP</a>
     </p>
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Signup Form -->
-<div class="signup-container" id="signup-container">
+<div class="form-container" id="signup-container">
   <div class="form-box">
     <button class="close-btn" id="close-signup-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
-    <h2>Create an Account</h2>
+    <h2>create an account</h2>
     <form id="form-signup">
-      <label for="email-signup" class="input-label">Email:</label>
+      <label for="email-signup" class="input-label">email:</label>
       <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
       <span id="empty-email-signup" class="error-message" style="display: none;">Email is required!</span>
       <span id="exists-email-signup" class="error-message" style="display: none;">Email already Exists!</span>
 
-      <label for="password-signup" class="input-label">Password:</label>
+      <label for="password-signup" class="input-label">password:</label>
       <input type="password" id="password-signup" placeholder="Enter your password..." />
       <span id="empty-password-signup" class="error-message" style="display: none;">Password is required!</span>
       <span id="short-password-signup" class="error-message" style="display: none;">Password should be between 8 to 15
         character!</span>
       <span id="password-not-same-signup" class="error-message" style="display: none;">Password doesnot match!</span>
 
-      <label for="confirm-password" class="input-label">Confirm Password:</label>
+      <label for="confirm-password" class="input-label">confirm password:</label>
       <input type="password" id="confirm-password" placeholder="Confirm your password..." />
       <span id="confirmpassword-not-same-signup" class="error-message" style="display: none;">Password doesnot
         match!</span>
 
-      <div class="remember-me">
-        <input type="checkbox" id="terms-condtn" required checked />
-        <label for="terms-condtn">I agree terms and conditions!</label>
-      </div>
+        <div class="remember-me">
+          <label class="custom-checkbox">
+            <input type="checkbox" id="checkbox" / checked>
+            <span class="checkmark"></span>
+            <h3>i agree terms and condition!</h3>
+        </label>
+        </div>
 
-      <button type="submit" class="login-btn">NEXT</button>
+      <button type="submit" class="form-submit-btn">NEXT</button>
     </form>
-    <p class="signup-text">
+    <p class="another-link">
       Already have an account? <a href="#" id="login-link">LOG IN</a>
     </p>
   </div>
 </div>
 
 
+
+
+
+
+
+
+
+
 <!-- OTP form -->
-<div class="otp-container" id="otp-container">
+<div class="form-container" id="otp-container">
   <div class="form-box">
     <button class="close-btn" id="close-otp-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Verify Your Account</h2>
@@ -136,12 +178,11 @@
       <span id="not-match-otp" class="error-message" style="display: none;">OTP doesnot match!</span>
       <div class="resend-otp">
         <p>Didn't receive the OTP?</p>
-        <a href="#" id="resend-otp-link">Resend OTP</a>
+        <a href="" id="resend-otp-link">Resend OTP</a>
       </div>
-
-      <button type="submit" class="login-btn">VERIFT</button>
+      <button type="submit" class="form-submit-btn">VERIFT</button>
     </form>
-    <p class="signup-text">
+    <p class="another-link">
       Back to: <a href="" id="otp-to-signup">SIGNUP</a>
     </p>
   </div>
@@ -155,32 +196,44 @@
 
 
 
-<div class="register-container" id="register-container">
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="form-container" id="register-container">
   <div class="form-box">
     <button class="close-btn" id="close-register-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Create an Account</h2>
     <form id="register-form">
-      <label for="email-register" class="input-label">Email:</label>
+      <label for="email-register" class="input-label">email:</label>
       <input type="email" id="email-register" name="email" value="{{ email }}" readonly />
       <div class="role-selection">
         <input type="radio" name="role" id="organizer" checked="checked">
-        <label for="organizer" class="role-label">ORGANIZER</label>
+        <label for="organizer" class="role-label">organizer</label>
         <input type="radio" name="role" id="attender">
-        <label for="attender" class="role-label">ATTENDER</label>
+        <label for="attender" class="role-label">attendee</label>
       </div>
-      <label for="username" class="input-label" id="username-label" style="display: none;">Username:</label>
+      <label for="username" class="input-label" id="username-label" style="display: none;">username:</label>
       <input type="text" id="username" placeholder="Enter your username..." style="display: none;">
       <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
-      <label for="organizername" class="input-label" id="orgname-label">Organizer name:</label>
+      <label for="organizername" class="input-label" id="orgname-label">organizer name:</label>
       <input type="text" id="organizername" placeholder="Enter Organizer name...">
       <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
 
       <br>
 
 
-      <button type="submit" class="login-btn">REGISTER</button>
+      <button type="submit" class="form-submit-btn">REGISTER</button>
     </form>
-    <p class="signup-text">
+    <p class="another-link">
       Already have an account? <a href="" id="register-to-login">LOG IN</a>
     </p>
   </div>
@@ -190,7 +243,13 @@
 
 
 
-<div class="contact-container" id="contact-container">
+
+
+
+
+
+
+<div class="form-container" id="contact-container">
   <div class="form-box">
     <button class="close-btn" id="close-contact-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Contact Us</h2>
@@ -210,7 +269,7 @@
       <span id="message-length" class="error-message" style="display: none;">Message should be between 10 to 100
         character!</span>
       <br><br>
-      <button type="submit" class="login-btn">SUBMIT</button>
+      <button type="submit" class="form-submit-btn">SUBMIT</button>
     </form>
   </div>
 </div>
@@ -222,10 +281,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div class="profile-container" id="profile-container">
-  {% if user_info.username and user_info.email %}
-  <p class="username">{{ user_info.username }}</p>
-  <p class="email">{{ user_info.email }}</p>
+  {% if user.name and user.email %}
+  <p class="username">{{ user.name }}</p>
+  <p class="email">{{ user.email }}</p>
   {% else %}
   <p>Not found</p>
   {% endif %}

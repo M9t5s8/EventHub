@@ -6,9 +6,11 @@
 {% block title %}Upcoming Events{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'CSS/upcmoing_events.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/upcoming_events.css' %}" />
 {% endblock %}
-
+{% block extra_js%}
+<script src="{% static 'JS/ellipsis.js' %}"></script>
+{% endblock %}
 {% block content %}
 <div class="profile-title">
     <h2>
@@ -16,8 +18,68 @@
         Upcoming Events
     </h2>
 </div>
-<div class="upcoming-event-container" style="height:100vh;">
-    
+<div class="event-show-container">
+    <div class="event-show-sub-container">
+        {% if active_events %}
+        {% for event in active_events %}
+        <div class="event">
+            <div class="user-time">
+                <div class="organizer-profile">
+                    <div class="profile-image-wrapper">
+                        {% if event.organizer.profile_picture %}
+                        <img src="{{ event.organizer.profile_picture.url }}" alt="Organizer Image" class="profile-img">
+                        {% endif %}
+                    </div>
+                    <div class="organizer-info">
+                        <p class="organizer-name">{{ event.organizer.name }}</p>
+                        <p class="event-created-time">{{ event.created_at|timesince }} ago</p>
+                    </div>
+                    <div class="more-option">
+                        <button id="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
+                        <div id="dropdown-menu" class="dropdown-menu">
+                            <ul>
+                                <li><a href="#">Edit Event</a></li>
+                                <li><a href="#">Delete Event</a></li>
+                                <li><a href="#">View Profile</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="event-image">
+                {% if event.event_image %}
+                <img src="{{ event.event_image.url }}" alt="Event Image">
+                {% endif %}
+            </div>
+            <div class="event-title">
+                <p>{{ event.title }}</p>
+            </div>
+            <div class="event-datetime">
+                <p class="event-date">{{ event.event_date }},</p>
+                <p class="event-time">{{ event.event_time }}</p>
+            </div>
+            <div class="event-lotick">
+                <p class="event-location">{{ event.location }}</p>
+                <p class="event-ticket">
+                    {% if event.has_ticket %}
+                    Rs {{ event.ticket_price }}
+                    {% else %}
+                    free
+                    {% endif %}
+                </p>
+            </div>
+            <div class="inspect-div">
+                <button class="inspect" data-id="{{ event.event_id }}"
+                    onclick="window.location.href='{% url 'event_detail' event.event_id %}'">
+                    inspect
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="event-not-found" id="event-not-found">No events available at the moment.</p>
+        {% endif %}
+    </div>
+
 </div>
 {% endblock %}
-  

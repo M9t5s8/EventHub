@@ -6,58 +6,214 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/events.css' %}" />
+
 {% endblock %}
-
-{% block downbar %}{% endblock %}
-
 {% block extra_js%}
 <script src="{% static 'JS/event.js' %}">
+  document.cookie = "csrftoken={{ csrf_token }}";
+</script>
+<script src="{% static 'JS/ellipsis.js' %}">
   document.cookie = "csrftoken={{ csrf_token }}";
 </script>
 {% endblock %}
 
 
-
 {% block content %}
 
+
 <div class="event-show-container">
-  {% if user_info.role == 'organizer' %}
-  <div class="add-event">
-    <button class="add-event-btn" id="add-event-btn">Add Events</button>
+  {% if billboard_event %}
+  <div class="billboard-container">
+    {% for event in billboard_event %}
+    <div class="billboard-subcontainer" id="billboard-{{ forloop.counter }}">
+      <div class="billboard-img" style="background-image: url('{{ event.event_image.url }}');"></div>
+      <div class="billboard-detail">
+        <div class="bildetail-container">
+          <div class="spotlight">
+            <span class="spotlight-tag">#{{ forloop.counter }} Spotlight</span>
+          </div>
+          <div class="bill-title">
+            <p>{{ event.title }}</p>
+          </div>
+          <div class="bill-description">
+            <p>{{ event.description|truncatewords:30 }}</p>
+          </div>
+          <div class="bill-datetime">
+            <p class="bill-date">{{ event.event_date }},</p>
+            <p class="bill-time">{{ event.event_time }}</p>
+          </div>
+          <div class="bill-lotick">
+            <p class="bill-location">{{ event.location }}</p>
+          </div>
+          <div class="view-details-btn">
+            <button class="view-details" data-id="{{ event.event_id }}"
+              onclick="window.location.href='{% url 'event_detail' event.event_id %}'">
+              Detail<i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="billboard-overlay"></div>
+    </div>
+
+    {% endfor %}
   </div>
-  {% elif user_info.role == 'attender' %}
+  <div class="change-btn">
+    <button class="previous"><i class="fas fa-chevron-left"></i></button>
+    <button class="next"><i class="fas fa-chevron-right"></i></button>
+  </div>
   {% endif %}
+  <div class="slide-indicators"></div>
 
 
-  
 
 
 
+
+
+
+
+
+  {% if user.role == 'organizer' or user.role == 'admin' %}
+  <div class="add-event">
+    <button class="add-event-btn" id="add-event-btn">add events</button>
+  </div>
+  {% elif user.role == 'attender' %}
+  <div style="height:80px;"></div>
+  {% endif %}
 
   <div class="event-show-sub-container">
     {% if events %}
     {% for event in events %}
     <div class="event">
       <div class="user-time">
-        <!-- Access the organizer's name properly -->
-        <p>{{ event.organizer.organizer_name }}</p>
+        <div class="organizer-profile">
+          <div class="profile-image-wrapper">
+            {% if event.organizer.profile_picture %}
+            <img src="{{ event.organizer.profile_picture.url }}" alt="Organizer Image" class="profile-img">
+            {% endif %}
+          </div>
+          <div class="organizer-info">
+            <p class="organizer-name">{{ event.organizer.name }}</p>
+            <p class="event-created-time">{{ event.created_at|timesince }} ago</p>
+          </div>
+          <div class="more-option">
+            <button id="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
+            {% if user.role == 'admin' %}
+            <div id="dropdown-menu" class="dropdown-menu">
+              <ul>
+                <li><a href="#">Edit Event</a></li>
+                <li>
+                  <a href="#" class="delete-event" data-id="{{ event.event_id }}">Delete Event</a>
+                </li>
+                <li><a href="#">View Profile</a></li>
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+        </div>
       </div>
-      <div>
-        <!-- Use the correct field names from your model -->
-        <h1>{{ event.title }}</h1>
-        <p>{{ event.event_time }}</p>
-        <p>{{ event.event_date }}</p>
-        <p>{{ event.location }}</p>
+      <div class="event-image">
+        {% if event.event_image %}
+        <img src="{{ event.event_image.url }}" alt="Event Image">
+        {% endif %}
       </div>
-      <div>
-        <button class="inspect" onclick="window.location.href='{% url 'event_detail' event.event_id %}'">Inspect</button>
-    </div>
-    
+      <div class="event-title">
+        <p>{{ event.title }}</p>
+      </div>
+      <div class="event-datetime">
+        <p class="event-date">{{ event.event_date }},</p>
+        <p class="event-time">{{ event.event_time }}</p>
+      </div>
+      <div class="event-lotick">
+        <p class="event-location">{{ event.location }}</p>
+        <p class="event-ticket">
+          {% if event.has_ticket %}
+          Rs {{ event.ticket_price }}
+          {% else %}
+          free
+          {% endif %}
+        </p>
+      </div>
+      <div class="inspect-div">
+        <button class="inspect" data-id="{{ event.event_id }}"
+          onclick="window.location.href='{% url 'event_detail' event.event_id %}'">
+          inspect
+        </button>
+      </div>
     </div>
     {% endfor %}
     {% else %}
-    <p class="event-not-found">No events available at the moment.</p>
+    <p class="event-not-found" id="event-not-found">No events available at the moment.</p>
     {% endif %}
+  </div>
+</div>
+
+
+<div class="form-container" id="event1-container">
+  <div class="form-box">
+    <button class="close-btn" id="close-event-add-btn">
+      <i class="fa-sharp fa-solid fa-xmark"></i>
+    </button>
+    <h2>Event Details</h2>
+    <div class="event-form-toggle">
+      <input type="radio" name="event-toggle" id="basic" checked>
+      <label for="basic" class="event-add-event-toggle">Basic</label>
+      <input type="radio" name="event-toggle" id="additional">
+      <label for="additional" class="event-add-event-toggle">Additional</label>
+    </div>
+    <form id="form-event">
+      <div id="event-basic">
+        <label for="event-title" class="input-label">event title:</label>
+        <input type="text" id="event-title" placeholder="Enter Event Title..." />
+        <span id="empty-event-title" class="error-message" style="display: none;">Title is required!</span>
+
+        <label for="event-date" class="input-label">event date:</label>
+        <input type="date" id="event-date" />
+        <span id="empty-event-date" class="error-message" style="display: none;">Date is required!</span>
+
+        <label for="event-time" class="input-label">event time:</label>
+        <input type="time" id="event-time" />
+        <span id="empty-event-time" class="error-message" style="display: none;">Time is required!</span>
+
+        <label for="event-location" class="input-label">event location:</label>
+        <input type="text" id="event-location" placeholder="Enter Event Location..." />
+        <span id="empty-event-location" class="error-message" style="display: none;">Location is required!</span>
+      </div>
+      <div id="event-extra-detail" style="display:none;">
+        <!-- Event Image -->
+        <label for="event-image" class="input-label">event image:</label>
+        <!-- Custom file input button -->
+        <label class="custom-file-upload">
+          <input type="file" id="event-image" name="event_image" accept="image/*" />
+          CHOOSE FILE
+        </label>
+
+
+
+        <div class="ticket">
+          <label class="ticket-custom-checkbox">
+            <input type="checkbox" id="has-ticket" />
+            <span class="ticket-checkmark"></span>
+            <h3>: ticket</h3>
+          </label>
+        </div>
+
+        <!-- Ticket Price -->
+        <label for="ticket-price" id="ticket-label" class="input-label" style="display: none;">Ticket Price:</label>
+        <input type="number" id="ticket-price" name="ticket_price" style="display: none;"
+          placeholder="Enter Ticket Price..." />
+        <span id="empty-ticket-price" class="error-message" style="display: none;">Ticket price is required when tickets
+          are enabled.</span>
+
+        <label for="event-description" class="input-label">Event Description:</label>
+        <textarea id="event-description" rows="3" placeholder="Enter Event Description..."></textarea>
+        <span id="empty-event-description" class="error-message" style="display: none;">Description is required!</span>
+      </div>
+
+      <br><br>
+      <button type="submit" class="form-submit-btn">ADD EVENT</button>
+    </form>
   </div>
 </div>
 
@@ -77,55 +233,4 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-  <!-- Event Basic Details Form -->
-  <div class="event1-container" id="event1-container">
-    <div class="form-box">
-      <button class="close-btn" id="close-event-add-btn">
-        <i class="fa-sharp fa-solid fa-xmark"></i>
-      </button>
-      <h2>Basic Details</h2>
-      <form id="form-event">
-        <label for="event-title" class="input-label">Event Title:</label>
-        <input type="text" id="event-title" placeholder="Enter Event Title..." />
-        <span id="empty-event-title" class="error-message" style="display: none;">Title is required!</span>
-
-        <label for="event-description" class="input-label">Event Description:</label>
-        <textarea id="event-description" rows="3" placeholder="Enter Event Description..."></textarea>
-        <span id="empty-event-description" class="error-message" style="display: none;">Description is required!</span>
-
-        <label for="event-date" class="input-label">Event Date:</label>
-        <input type="date" id="event-date" />
-        <span id="empty-event-date" class="error-message" style="display: none;">Date is required!</span>
-
-        <label for="event-time" class="input-label">Event Time:</label>
-        <input type="time" id="event-time" />
-        <span id="empty-event-time" class="error-message" style="display: none;">Time is required!</span>
-
-        <label for="event-location" class="input-label">Event Location:</label>
-        <input type="text" id="event-location" placeholder="Enter Event Location..." />
-        <span id="empty-event-location" class="error-message" style="display: none;">Location is required!</span>
-
-        <br><br>
-        <button type="submit" class="login-btn">ADD EVENT</button>
-      </form>
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-  {% endblock %}
+{% endblock %}

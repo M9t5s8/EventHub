@@ -1,7 +1,7 @@
 <div class="downbar-container">
     <div class="downbar-name">
-        {% if user_info.username and user_info.email %}
-        <p>Hi, {{ user_info.username }}</p>
+        {% if user.name and user.email %}
+        <p>Hi, {{ user.name }}</p>
         {% else %}
         <p>Not found</p>
         {% endif %}
@@ -10,31 +10,32 @@
         <div class="down-item {% if request.path == '/profile/' %}active{% endif %}">
             <a href="{% url 'profile' %}" class="down-link">
                 <i class="fa-solid fa-user" style="color: #ffffff;"></i>
-                Profile
+                <p class="hideonMobile">Profile</p>
+                
             </a>
         </div>
         <div class="down-item {% if request.path == '/my_events/' %}active{% endif %}">
             <a href="{% url 'my_events' %}" class="down-link">
                 <i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i>
-                My Events
+                <p class="hideonMobile">My Events</p>
             </a>
         </div>
         <div class="down-item {% if request.path == '/upcoming_events/' %}active{% endif %}">
             <a href="{% url 'upcoming_events' %}" class="down-link">
                 <i class="fa-solid fa-calendar-alt" style="color: #ffffff;"></i>
-                Upcoming Events
+                <p class="hideonMobile">Upcoming Events</p>
             </a>
         </div>
         <div class="down-item {% if request.path == '/notifications/' %}active{% endif %}">
             <a href="{% url 'notifications' %}" class="down-link">
                 <i class="fa-solid fa-bell" style="color: #ffffff;"></i>
-                Notification
+                <p class="hideonMobile">Notification</p>
             </a>
         </div>
         <div class="down-item {% if request.path == '/settings/' %}active{% endif %}">
             <a href="{% url 'settings' %}" class="down-link">
                 <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
-                Settings
+                <p class="hideonMobile">Settings</p>
             </a>
         </div>
     </div>

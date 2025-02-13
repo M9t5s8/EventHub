@@ -10,6 +10,7 @@
 
     {% comment %} this is the common css used in the website {% endcomment %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'CSS/navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'CSS/downbar.css' %}" />
     <link rel="stylesheet" href="{% static 'CSS/scroll.css' %}" />
@@ -18,6 +19,7 @@
     <script src="{% static 'JS/login.js' %}">
         document.cookie = "csrftoken={{ csrf_token }}";
     </script>
+    <script src="{% static 'JS/opencontainer.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </head>
 <body>
@@ -39,7 +41,6 @@
                 <a href=""><i class="fa-brands fa-youtube"></i></a>
             </div>
             <div class="footer-nav">
-
                 <ul>
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
