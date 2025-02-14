@@ -1,0 +1,262 @@
+<!-- contact.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Event Details{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Features/comment.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Pages/event_detail.css' %}" />
+{% endblock %}
+
+{% block downbar %}{% endblock %}
+
+{% block extra_js%}
+<script src="{% static 'JS/comment.js' %}"></script>
+<script src="{% static 'JS/event_detail.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="event-detail-container">
+    <div class="event">
+        <div class="event-details">
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-img">
+                <img src="{{ event.event_image.url }}" alt="Event Image">
+            </div>
+            <div class="event-detail">
+                <div class="event-location">{{ event.location }}</div>
+                <div class="event-date">{{ event.event_date }}</div>
+                <div class="event-time">{{ event.event_time }} onwards</div>
+            </div>
+            <div class="event-description">
+                <p class="description-title">Description</p>
+                <p class="desccription">
+                    {{ event.description }}
+                </p>
+
+            </div>
+        </div>
+        <div class="ticket-rsvp">
+            {% if event.has_ticket %}
+            <div class="ticket-container">
+                <div>
+                    <h3>Select Ticket</h3>
+                </div>
+
+                <div class="ticket">
+                    <p class="ticket-price">Rs {{event.ticket_price}}</p>
+                    <button class="add-btn">ADD</button>
+                </div>
+                <div class="inspect-div">
+                    <button class="inspect">
+                        buy ticket
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            <div class="rsvp-container">
+                <a href="" id="rsvp-container-open">RSVP</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="comment-container">
+    <div class="comment-title">
+        <h2>Comments</h2>
+        <hr>
+    </div>
+
+    <div class="comment-box">
+        <form id="form-comment">
+            <input type="hidden" id="event-id" value="{{event.event_id}}">
+            <textarea id="comment-content" placeholder="Write your comment here..." rows="1"></textarea>
+            <button type="submit">Comment</button>
+        </form>
+    </div>
+
+    <div class="comment-list">
+        {% for comment in comments %}
+        <div class="comment-portion">
+            <div class="comment-part">
+                <div class="organizer-profile">
+                    <div class="profile-image-wrapper">
+                        {% if comment.user.profile_picture %}
+                        <img src="{{ comment.user.profile_picture.url }}" alt="{{ comment.user.name }}"
+                            class="profile-img">
+                        {% endif %}
+                    </div>
+                    <div class="organizer-info">
+                        <p class="organizer-name">{{ comment.user.name }}</p>
+                        <p class="event-created-time">{{ comment.commented_at|timesince }} ago</p>
+                    </div>
+                </div>
+                <div class="comments">
+                    <p class="comment">{{ comment.content }}</p>
+                    <hr style="background: #bbb; height: 2px; margin: 3px 0 3px 0;">
+                    <div class="comment-actions">
+                        {% with action=comment_actions|get_item:comment.comment_id %}
+                        <button class="like-btn {% if action.user_liked %} liked {% endif %}"
+                            data-comment-id="{{ comment.comment_id }}">
+                            <i class="fa-regular fa-thumbs-up regular-icon"></i>
+                            <i class="fa-solid fa-thumbs-up solid-icon"></i>
+                            <span class="like-count">{{ comment.likes.count }}</span>
+                        </button>
+                        <button class="dislike-btn {% if action.user_disliked %} disliked {% endif %}"
+                            data-comment-id="{{ comment.comment_id }}">
+                            <i class="fa-regular fa-thumbs-down regular-icon"></i>
+                            <i class="fa-solid fa-thumbs-down solid-icon"></i>
+                            <span class="dislike-count">{{ comment.dislikes.count }}</span>
+                        </button>
+                        {% endwith %}
+                        <button class="reply-btn" data-comment-id="{{ comment.comment_id }}">Reply</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reply-section" id="reply-section-{{ comment.comment_id }}" style="display: none;">
+                <div class="reply-box">
+                    <form id="form-reply" data-comment-id="{{ comment.comment_id }}">
+                        <textarea id="reply-content" placeholder="Write your reply here..." rows="1"></textarea>
+                        <button type="submit" class="submit-reply-btn">Reply</button>
+                    </form>
+                </div>
+                {% for reply in replies|get_item:comment.comment_id %}
+                <div class="reply-part">
+                    <div class="organizer-profile">
+                        <div class="profile-image-wrapper">
+                            {% if reply.user.profile_picture %}
+                            <img src="{{ reply.user.profile_picture.url }}" alt="{{ reply.user.name }}"
+                                class="profile-img">
+                            {% endif %}
+                        </div>
+                        <div class="organizer-info">
+                            <p class="organizer-name">{{ reply.user.name }}</p>
+                            <p class="event-created-time">{{ reply.replied_at|timesince }} ago</p>
+                        </div>
+                    </div>
+                    <div class="replies">
+                        <p class="reply">{{ reply.content }}</p>
+                        <hr style="background: #bbb; height: 1px; margin: 3px 0 3px 0;">
+                        <div class="reply-actions">
+                            {% with action=reply_actions|get_item:reply.reply_id %}
+                            <button class="like-btn {% if action.user_liked %} liked {% endif %}"
+                                data-reply-id="{{ reply.reply_id }}">
+                                <i class="fa-regular fa-thumbs-up regular-icon"></i>
+                                <i class="fa-solid fa-thumbs-up solid-icon"></i>
+                                <span class="like-count">{{ reply.likes.count }}</span>
+                            </button>
+                            <button class="dislike-btn {% if action.user_disliked %} disliked {% endif %}"
+                                data-reply-id="{{ reply.reply_id }}">
+                                <i class="fa-regular fa-thumbs-down regular-icon"></i>
+                                <i class="fa-solid fa-thumbs-down solid-icon"></i>
+                                <span class="dislike-count">{{ reply.dislikes.count }}</span>
+                            </button>
+                            {% endwith %}
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        {% empty %}
+        <p class="no-comment" id="no-comment">No comments yet. Be the first to comment!</p>
+
+
+        {% endfor %}
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="form-container" id="rsvp-container">
+    <div class="form-box">
+      <button class="close-btn" id="close-rsvp-btn">
+        <i class="fa-sharp fa-solid fa-xmark"></i>
+      </button>
+      <h2>RSVP for the Event</h2>
+      <form id="form-rsvp">
+        <label for="rsvp-name" class="input-label">full name:</label>
+        <input type="text" id="rsvp-name" placeholder="Enter your full name"/>
+        <span id="empty-name-rsvp" class="error-message" style="display: none;">Name is required!</span>
+  
+        <label for="rsvp-email" class="input-label">email:</label>
+        <input type="email" id="rsvp-email" placeholder="Enter your email" />
+        <span id="empty-email-rsvp" class="error-message" style="display: none;">Email is required!</span>
+
+        <div class="confirmation-message">
+          <p>You'll receive a confirmation email once RSVP is successful.</p>
+        </div>
+        <div class="inspect-div">
+            <button class="inspect" type="submit">
+              confirm rsvp
+            </button>
+          </div>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}

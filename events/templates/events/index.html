@@ -5,8 +5,10 @@
 {% block title %}Home{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'CSS/style.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Pages/home.css' %}" />
 {% endblock %}
+
+{% block downbar %}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -19,14 +21,19 @@
       and community gatherings. Our platform makes it easy to browse,
       register, and participate in exciting events!
     </p>
-    <a href="" id="hero-login-btn" class="login-hero">LOGIN</a>
-    <a href="{% url 'events' %}" id="hero-event-btn" class="login-hero" style="display: none;" >EVENTS</a>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'events' %}" id="hero-event-btn" class="login-hero">EVENTS</a>
+    {% else %}
+      <a href="" id="hero-login-btn" class="login-hero login-container-open">LOGIN</a>
+    {% endif %}
+
 
   </div>
 </section>
 
 <!-- Features Section -->
-<section id="features" class="features">
+<section class="features">
   <div class="container">
     <h2 class="section-title">Key Features</h2>
     <div class="boxs">

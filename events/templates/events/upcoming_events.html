@@ -1,0 +1,22 @@
+<!-- contact.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Upcoming Events{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Pages/upcoming_events.css' %}" />
+{% endblock %}
+{% block extra_js%}
+<script src="{% static 'JS/ellipsis.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="profile-title">
+    <h2>
+        <i class="fa-solid fa-calendar-alt" style="color: #ffffff;"></i>
+        Upcoming Events
+    </h2>
+</div>
+
+{% endblock %}

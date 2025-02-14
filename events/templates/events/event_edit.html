@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}
+    Event Details
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'CSS/Pages/event_edit.css' %}" />
+{% endblock %}
+
+{% block downbar %}
+{% endblock %}
+{% block extra_js%}<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('event-image-preview');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block'; 
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none'; 
+        }
+    }
+</script>
+<script src="{% static 'JS/event_edit.js' %}">
+    document.cookie = "csrftoken={{ csrf_token }}";
+</script>
+{% endblock %}
+{% block content %}
+<div class="edit-event-container">
+    <div class="event-edit-form">
+        <h2>Edit Event</h2>
+        <form id="form-edit-events">
+
+            <label for="title" class="input-label">Event ID:</label>
+            <div class="input-container">
+                <input type="text" id="event_id" name="event_id" value="{{ event.event_id }}" readonly />
+            </div>
+
+            <label for="title" class="input-label">Event Title:</label>
+            <div class="input-container">
+                <input type="text" id="title" name="title" value="{{ event.title }}" placeholder="Enter event title..." />
+            </div>
+
+            <label for="event_date" class="input-label">Event Date:</label>
+            <div class="input-container">
+                <input type="date" id="event_date" name="event_date" value="{{ event.event_date|date:'Y-m-d' }}" />
+            </div>
+
+
+            <label for="event_time" class="input-label">Event Time:</label>
+            <div class="input-container">
+                <input type="time" id="event_time" name="event_time" value="{{ event.event_time|time:'H:i' }}" />
+            </div>
+
+            <label for="location" class="input-label">Location:</label>
+            <div class="input-container">
+                <input type="text" id="location" name="location" value="{{ event.location }}" placeholder="Enter event location..."  />
+            </div>
+
+            <div class="ticket">
+                <label class="ticket-custom-checkbox">
+                    <div class="input-container"></div>
+                  <input type="checkbox" id="has_ticket" {% if event.has_ticket %}checked{% endif %} disabled />
+                  <span class="ticket-checkmark"></span>
+                  <h3>: ticket</h3>
+                </label>
+              </div>
+              
+            {% if user.role == 'admin' %}
+            <div class="ticket">
+                <label class="ticket-custom-checkbox">
+                  <input type="checkbox" id="is_billboard" {% if event.is_billboard %}checked{% endif %}/>
+                  <span class="ticket-checkmark"></span>
+                  <h3>: billboard</h3>
+                </label>
+            </div>
+            {% endif %}
+
+            <label for="ticket_price" class="input-label">Ticket Price:</label>
+            <div class="input-container">
+                <input type="number" id="ticket_price" name="ticket_price" value="{{ event.ticket_price }}" placeholder="Enter ticket price..." readonly/>
+            </div>
+
+            
+
+            <label for="event-image" class="input-label">Event Image:</label>
+            <label class="custom-file-upload">
+                <input type="file" id="event_image" name="event_image" accept="image/*" onchange="previewImage(event)" />
+                choose file
+            </label>
+            
+            <!-- Image Preview -->
+            {% if event.event_image %}
+                <img id="event-image-preview" src="{{ event.event_image.url }}" alt="Event Image" style="max-width: 300px; margin:10px auto 10px auto; height:100px; border:1px solid #bbb;">
+            {% else %}
+                <img id="event-image-preview" src="" alt="Event Image" style="max-width: 300px; margin:10px auto 10px auto; display: none; height:100px; border:1px solid #bbb;">
+            {% endif %}
+            <div class="inspect-div">
+                <button  type="submit" class="inspect">
+                  save changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

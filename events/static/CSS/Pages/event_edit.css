@@ -1,0 +1,140 @@
+.edit-event-container {
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.event-edit-form {
+    margin: 150px auto 100px auto;
+    max-width: 500px;
+    background-color: #111;
+    padding: 40px 40px;
+    border-radius: 10px;
+    position: relative;
+    color: var(--fontcolor);
+    text-align: center;
+    box-shadow:
+        0 0 20px rgba(0, 153, 255, 0.8),
+        0 0 30px rgba(0, 153, 255, 0.6),
+        0 0 60px rgba(0, 153, 255, 0.4);
+}
+
+
+
+
+input[type="file"] {
+    display: none;
+}
+
+
+.custom-file-upload {
+    margin: 5px auto 0 auto;
+    width:40%;
+    padding: 10px;
+    background-color: #aaa;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    
+}
+
+.custom-file-upload:hover {
+    background-color: #999;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+.ticket-custom-checkbox {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.ticket-custom-checkbox h3 {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.ticket-custom-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.ticket-checkmark {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+    position: relative;
+    background-color:#1a1a1a;
+}
+
+input[type="checkbox"]:checked+.ticket-checkmark::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+}
+.inspect-div {
+    text-align: center;
+}
+
+.inspect {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #aaa;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.inspect:hover {
+    background-color: #999;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+.profile-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.event-edit-form label {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.event-edit-form input {
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    background-color: #1a1a1a;
+    color:white;
+}
+
+.event-edit-form input[readonly] { 
+    cursor: not-allowed;
+}

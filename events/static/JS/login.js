@@ -1,535 +1,552 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  let loggedin = true;
-  document.getElementById('user-profile').addEventListener('click', function (event) {
+
+
+  // logout code
+  document.getElementById('logout-btn').addEventListener('click', function (event) {
     event.preventDefault();
-    localStorage.removeItem('isLoggedIn');
-    window.location.reload();
+    if (confirm("Are you sure you want to log out?")) {
+      fetch('/logout/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(), // Ensure CSRF token is correctly fetched
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/';
+          } else {
+            alert('Logout failed: ' + data.error);
+          }
+        })
+        .catch(error => {
+          console.error('Error logging out:', error);
+          alert('An error occurred while logging out.');
+        });
+    }
   });
-  if (localStorage.getItem('isLoggedIn') === 'true') {
-    document.getElementById("event-btn").style.display = "block";
-    document.getElementById("user-profile").style.display = "block";
-    document.getElementById("event-login-btn").style.display = "none";
-    document.getElementById("login-btn").style.display = "none";
-    document.getElementById("hero-event-btn").style.display = "inline";
-    document.getElementById("hero-login-btn").style.display = "none";
-    loggedin = true;
-  } else {
-    document.getElementById("event-btn").style.display = "none";
-    document.getElementById("user-profile").style.display = "none";
-    document.getElementById("event-login-btn").style.display = "block";
-    document.getElementById("login-btn").style.display = "block";
-    document.getElementById("hero-event-btn").style.display = "none";
-    document.getElementById("hero-login-btn").style.display = "inline";
-    loggedin = false;
+
+  document.getElementById('contact-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const name = document.getElementById('contact-name');
+    const email = document.getElementById('email-contact');
+    const message = document.getElementById('message-contact');
+    const nameEmpty = document.getElementById('empty-name-contact');
+    const emailEmpty = document.getElementById('empty-email-contact');
+    const emptyMessage = document.getElementById('empty-message-contact');
+    const shortMessage = document.getElementById('message-length');
+    let contact_valid = true;
+    if (email.value.trim() === '') {
+      emailEmpty.style.display = 'block';
+      contact_valid = false;
+    } else {
+      emailEmpty.style.display = 'none';
+      email.style.border = '';
+    }
+    if (name.value.trim() === '') {
+      nameEmpty.style.display = 'block';
+      contact_valid = false;
+    } else {
+      nameEmpty.style.display = 'none';
+      name.style.border = '';
+    }
+    if (message.value.trim() === '') {
+      emptyMessage.style.display = 'block';
+      contact_valid = false;
+    } else {
+      emptyMessage.style.display = 'none';
+      message.style.border = '';
+      if (message.value.length < 10 || message.value.length > 100) {
+        shortMessage.style.display = 'block';
+        contact_valid = false;
+      }
+      else {
+        shortMessage.style.display = 'none';
+      }
+    }
+    if (contact_valid) {
+      fetch('/contact/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify({
+          email: email.value,
+          name: name.value,
+          message: message.value,
+        }),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to send contact data');
+          }
+        })
+        .then(data => {
+          console.log("Contact successful");
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+    }
+  });
+
+
+
+
+
+
+
+
+  let generatedOTP;
+  let user_email, user_password;
+  const loginContainer = document.getElementById("login-container");
+  const signupContainer = document.getElementById("signup-container");
+  const otpContainer = document.getElementById("otp-container");
+  const registerContainer = document.getElementById("register-container");
+
+
+
+
+
+
+
+  
+  const togglePasswordLogin = document.getElementById("togglePasswordLogin");
+  const passwordLogin = document.getElementById("password-login");
+  const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+  const confirmPassword = document.getElementById("confirm-password");
+  const togglePasswordSignup = document.getElementById("togglePasswordSignup");
+  const passwordSignup = document.getElementById("password-signup");
+
+  togglePasswordLogin.addEventListener("click", function () {
+    const type = passwordLogin.type === "password" ? "text" : "password";
+    passwordLogin.type = type;
+    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
+  });
+
+  
+  
+
+  togglePasswordSignup.addEventListener("click", function () {
+    const type = passwordSignup.type === "password" ? "text" : "password";
+    passwordSignup.type = type;
+    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
+  });
+
+  
+  
+
+  toggleConfirmPassword.addEventListener("click", function () {
+    const type = confirmPassword.type === "password" ? "text" : "password";
+    confirmPassword.type = type;
+    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+  //display error
+  const toggleError = (element, condition) => {
+    element.style.display = condition ? "block" : "none";
+  };
+
+  //input check
+  const validateInput = (input, errorElement, minLength = 0, maxLength = Infinity) => {
+    const value = input.value.trim();
+    const isValid = value !== "" && value.length >= minLength && value.length <= maxLength;
+    toggleError(errorElement, !isValid);
+    return isValid;
+  };
+
+
+
+
+
+
+
+  //login form
+  const loginForm = document.getElementById("form-login");
+  loginForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const email = document.getElementById("email-login");
+    const password = document.getElementById("password-login");
+
+    const emailValid = validateInput(email, document.getElementById("empty-email"));
+    const passwordValid = validateInput(password, document.getElementById("empty-password"), 8, 15);
+
+    if (emailValid && passwordValid) {
+      fetch("/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ email: email.value, password: password.value }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Login Response Data:", data); // Debugging Line
+
+          if (typeof data.email_exists === "undefined") {
+            console.error("emailexists is missing in the response!");
+          }
+
+          if (!data.email_exists) {
+            console.log("Email does not exist:", data.email_exists);
+            email.value = "";
+            toggleError(document.getElementById("no-email-login"), true);
+          } else {
+            if (!data.correct_pass) {
+              toggleError(document.getElementById("incorrect_password"), true);
+            } else {
+              window.location.href = '/';
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+
+        });
+    }
+  });
+
+  //signup form
+  const signupForm = document.getElementById("form-signup");
+  signupForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const email = document.getElementById("email-signup");
+    const password = document.getElementById("password-signup");
+    const confirmPassword = document.getElementById("confirm-password");
+    const emailValid = validateInput(email, document.getElementById("empty-email-signup"));
+    const passwordValid = validateInput(
+      password,
+      document.getElementById("empty-password-signup"),
+      8,
+      15
+    );
+    const passwordsMatch = password.value === confirmPassword.value;
+    toggleError(
+      document.getElementById("password-not-same-signup"),
+      !passwordsMatch
+    );
+    if (emailValid && passwordValid && passwordsMatch) {
+      fetch("/signup/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken(),
+        },
+        body: JSON.stringify({ email: email.value, password: password.value }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.email_exists) {
+            toggleError(document.getElementById("exists-email-signup"), true);
+          } else {
+            document.getElementById("email-register").value = data.email_signup;
+            user_email = data.email_signup;
+            user_password = data.password_signup;
+            sendOtp(user_email);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+  });
+
+  //resend otp 
+  document.getElementById("resend-otp-link").addEventListener("click", function (event) {
+    event.preventDefault();
+    sendOtp(user_email);
+  });
+
+  //otp successfull
+  function sendOtp(email) {
+    fetch("/send-otp/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken(),
+      },
+      body: JSON.stringify({ email: email })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          generatedOTP = data.otp;
+          console.log("OTP:", generatedOTP);
+          signupContainer.style.display = "none";
+          loginContainer.style.display = "none";
+          otpContainer.style.display = "flex";
+          otpContainer.style.zIndex = "2000";
+          document.body.classList.add("no-scroll");
+        } else {
+          console.error("OTP sending failed.");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
   }
 
-
-
-
-
-
-
-
-
-
-//this is for the navigation bar when user doesnot login
-  if (!loggedin) {
-    const loginBtn = document.getElementById("login-btn");
-    const heroLoginBtn = document.getElementById("hero-login-btn");
-    const eventLoginBtn = document.getElementById("event-login-btn");
-
-    let generatedOTP;
-
-    const loginContainer = document.getElementById("login-container");
-    const signupContainer = document.getElementById("signup-container");
-    const otpContainer = document.getElementById("otp-container");
-    const registerContainer = document.getElementById("register-container");
-
-    const closeSignupBtn = document.getElementById("close-signup-btn");
-    const closeOTPBtn = document.getElementById("close-otp-btn");
-    const closeLoginBtn = document.getElementById("close-login-btn");
-    const closeRegisterBtn = document.getElementById("close-register-btn");
-
-    const signupLink = document.getElementById("signup-link");
-    const loginLink = document.getElementById("login-link");
-    const otploginLink = document.getElementById("otp-to-signup");
-    const registerloginLink = document.getElementById("register-to-login");
-
-    function showLoginForm() {
-      loginContainer.style.display = "flex";
+  //otp form
+  const otpForm = document.getElementById("form-otp");
+  otpForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const otp = document.getElementById("otp");
+    const otpValid = validateInput(otp, document.getElementById("empty-otp")) &&
+      generatedOTP == otp.value;
+    toggleError(document.getElementById("not-match-otp"), generatedOTP != otp.value);
+    if (otpValid) {
       signupContainer.style.display = "none";
+      loginContainer.style.display = "none";
       otpContainer.style.display = "none";
-      registerContainer.style.display = "none";
-      loginContainer.style.zIndex = "2000";
+      registerContainer.style.display = "flex";
+      registerContainer.style.zIndex = "2000";
       document.body.classList.add("no-scroll");
     }
-    if (heroLoginBtn) {
-      heroLoginBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        showLoginForm();
-      });
+  });
+
+  //register form
+  const registerForm = document.getElementById('register-form');
+  registerForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const username = document.getElementById('username');
+    const organizername = document.getElementById('organizername');
+    const organizer = document.getElementById('organizer');
+    const attendee = document.getElementById('attender');
+
+    const usernameError = document.getElementById('empty-username');
+    const organizernameError = document.getElementById('empty-nameoforg');
+
+
+
+    let isValid = true;
+
+
+    if (username.value.trim() === '' && username_req) {
+      usernameError.style.display = 'block';
+      isValid = false;
+    } else {
+      usernameError.style.display = 'none';
     }
-    eventLoginBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      showLoginForm();
-    });
-    loginBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      showLoginForm();
-    });
+    if (organizername.value.trim() === '' && orgname_req) {
+      organizernameError.style.display = 'block';
+      isValid = false;
+    } else {
+      organizernameError.style.display = 'none';
+    }
 
-    signupLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      signupContainer.style.display = "flex";
-      loginContainer.style.display = "none";
-      otpContainer.style.display = 'none';
-      registerContainer.style.display = "none";
-      signupContainer.style.zIndex = "2000";
-      document.body.classList.add("no-scroll");
-    });
-    loginLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      loginContainer.style.display = "flex";
-      signupContainer.style.display = "none";
-      otpContainer.style.display = "none";
-      registerContainer.style.display = "none";
-      loginContainer.style.zIndex = "2000";
-      document.body.classList.add("no-scroll");
-    });
-    otploginLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      signupContainer.style.display = "flex";
-      loginContainer.style.display = "none";
-      otpContainer.style.display = 'none';
-      registerContainer.style.display = "none";
-      signupContainer.style.zIndex = "2000";
-      document.body.classList.add("no-scroll");
-    });
-    registerloginLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      loginContainer.style.display = "flex";
-      signupContainer.style.display = "none";
-      otpContainer.style.display = "none";
-      registerContainer.style.display = "none";
-      loginContainer.style.zIndex = "2000";
-      document.body.classList.add("no-scroll");
-    });
 
-    closeLoginBtn.addEventListener("click", () => {
-      loginContainer.style.display = "none";
-      document.body.classList.remove("no-scroll");
-    });
-    closeSignupBtn.addEventListener("click", () => {
-      signupContainer.style.display = "none";
-      document.body.classList.remove("no-scroll");
-    });
-    closeOTPBtn.addEventListener("click", () => {
-      otpContainer.style.display = "none";
-      document.body.classList.remove("no-scroll");
-    });
-    closeRegisterBtn.addEventListener("click", () => {
-      registerContainer.style.display = "none";
-      document.body.classList.remove("no-scroll");
-    });
-    [loginContainer, signupContainer, otpContainer, registerContainer].forEach((container) => {
-      if (container) {
-        container.addEventListener("click", (e) => {
-          if (e.target === container) {
-            container.style.display = "none";
-            document.body.classList.remove("no-scroll");
-          }
+    if (isValid) {
+      const selectedRole = organizer.checked ? 'organizer' : 'attendee';
+      console.log("Email:", user_email);
+      console.log("Password:", user_password);
+      console.log("Username:", username.value);
+      console.log("Organizer name:", organizername.value);
+      console.log("Selected Role:", selectedRole);
+      fetch('/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify({
+          email: user_email,
+          password: user_password,
+          username: username.value,
+          organizername: organizername.value,
+          role: selectedRole,
+        }),
+      })
+        .then(response => {
+
+        })
+        .then(data => {
+          console.log("Account Creation sucessful")
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error:', error);
         });
-      }
-    });
 
-    document.querySelectorAll(".toggle-password").forEach((toggleBtn) => {
-      toggleBtn.addEventListener("click", () => {
-        const passwordInput = toggleBtn.previousElementSibling;
-        const type = passwordInput.type === "password" ? "text" : "password";
-        passwordInput.type = type;
-        toggleBtn.textContent = type === "password" ? "👁️" : "🙈";
-      });
-    });
-
-    document.getElementById('form-login').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const email = document.getElementById('email-login');
-      const password = document.getElementById('password-login');
-      const emailEmpty = document.getElementById('empty-email');
-      const passwordEmpty = document.getElementById('empty-password');
-      const passwordShort = document.getElementById('short-password');
-      const noemailexistslogin = document.getElementById('no-email_exists_login');
-      const incorrectpassword = document.getElementById('incorrect_password');
-      let login_valid = true;
-      if (email.value.trim() === '') {
-        emailEmpty.style.display = 'block';
-        login_valid = false;
-      } else {
-        emailEmpty.style.display = 'none';
-        email.style.border = '';
-      }
-      if (password.value.trim() === '') {
-        passwordEmpty.style.display = 'block';
-        login_valid = false;
-      }
-      else {
-        passwordEmpty.style.display = 'none';
-        password.style.border = '';
-
-        if (password.value.length < 8 || password.value.length > 15) {
-          passwordShort.style.display = 'block';
-          login_valid = false;
-        }
-        else {
-          passwordShort.style.display = 'none';
-        }
-      }
-      if (login_valid) {
-        fetch('/login/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken(),
-          },
-          body: JSON.stringify({
-            email: email.value,
-            password: password.value
-          }),
-        })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Failed to send login data');
-            }
-          })
-          .then(data => {
-            if (data.email_not_exists) {
-              console.log("Email not found");
-              noemailexistslogin.style.display = 'block';
-              email.value = '';
-            } else {
-              if (data.correct_pass) {
-                localStorage.setItem('isLoggedIn', 'true');
-                console.log("Login sucessful")
-                window.location.reload();
-              }
-              else {
-                console.log("Password Incorrect");
-                incorrectpassword.style.display = 'block';
-                password.value = '';
-              }
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-          });
-      }
-    });
-
-    document.getElementById('form-signup').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const email = document.getElementById('email-signup');
-      const password = document.getElementById('password-signup');
-      const confirmPassword = document.getElementById('confirm-password');
-      const emailEmpty = document.getElementById('empty-email-signup');
-      const passwordEmpty = document.getElementById('empty-password-signup');
-      const passwordShort = document.getElementById('short-password-signup');
-      const passwordCompare = document.getElementById('password-not-same-signup');
-      const confirmpasswordCompare = document.getElementById('confirmpassword-not-same-signup');
-      const emailexixtsError = document.getElementById('exists-email-signup');
-      let signup_valid = true;
-      if (email.value.trim() === '') {
-        emailEmpty.style.display = 'block';
-        signup_valid = false;
-      } else {
-        emailEmpty.style.display = 'none';
-        email.style.border = '';
-      }
-      if (password.value.trim() === '') {
-        passwordEmpty.style.display = 'block';
-        signup_valid = false;
-      }
-      else {
-        passwordEmpty.style.display = 'none';
-        password.style.border = '';
-        if (password.value.length < 8 || password.value.length > 15) {
-          passwordShort.style.display = 'block';
-          signup_valid = false;
-        }
-        else {
-          passwordShort.style.display = 'none';
-        }
-      }
-      if (password.value !== confirmPassword.value) {
-        confirmpasswordCompare.style.display = 'block';
-        signup_valid = false;
-      } else {
-        passwordCompare.style.display = 'none';
-      }
-      if (signup_valid) {
-        fetch('/signup/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken(),
-          },
-          body: JSON.stringify({
-            email: email.value,
-            password: password.value
-          }),
-        })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Failed to send signup data');
-            }
-          })
-          .then(data => {
-            if (data.check_for_email) {
-              console.log("Email exists");
-              emailexixtsError.style.display = 'block';
-              email.value = '';
-            } else {
-              console.log("Email doesnot exists");
-              document.getElementById('email-register').value = data.email_signup;
-              generatedOTP = data.otp;
-              user_email = data.email;
-              user_password = data.password_signup;
-
-              signupContainer.style.display = "none";
-              loginContainer.style.display = "none";
-              otpContainer.style.display = "flex";
-              registerContainer.style.display = "none";
-              otpContainer.style.zIndex = "2000";
-              document.body.classList.add("no-scroll");
-            }
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-          });
-      }
-    });
-
-    document.getElementById('form-otp').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const otp = document.getElementById('otp');
-      const emptyOTP = document.getElementById('empty-otp');
-      const notmatchOTP = document.getElementById('not-match-otp');
-      let otp_valid = true;
-      if (otp.value.trim() === '') {
-        emptyOTP.style.display = "block";
-        otp_valid = false;
-      }
-      else if (generatedOTP != otp.value) {
-        notmatchOTP.style.display = "block";
-        otp_valid = false;
-      }
-      if (otp_valid) {
-        console.log("OTP:", otp.value);
-        signupContainer.style.display = "none";
-        loginContainer.style.display = "none";
-        otpContainer.style.display = "none";
-        registerContainer.style.display = "flex";
-        registerContainer.style.zIndex = "2000";
-        document.body.classList.add("no-scroll");
-      }
-
-    });
-
-    const organizerRadio = document.getElementById('organizer');
-    const attenderRadio = document.getElementById('attender');
-    let orgname_req = true;
-    let username_req = false;
-    function toggleFields() {
-      const organizerNameField = document.getElementById('organizername');
-      const usernameField = document.getElementById('username');
-      const emptyusername = document.getElementById('empty-username');
-      const emptyorgname = document.getElementById('empty-nameoforg');
-
-      if (organizerRadio.checked) {
-        organizerNameField.style.display = 'block';
-        orgname_req = true;
-        usernameField.style.display = 'none';
-        emptyorgname.style.display = 'none';
-        emptyusername.style.display = 'none';
-        username_req = false;
-        usernameField.value = '';
-      } else if (attenderRadio.checked) {
-        usernameField.style.display = 'block';
-        username_req = true;
-        organizerNameField.style.display = 'none';
-        emptyorgname.style.display = 'none';
-        emptyusername.style.display = 'none';
-        orgname_req = false;
-        organizerNameField.value = '';
-      }
     }
-    organizerRadio.addEventListener('change', toggleFields);
-    attenderRadio.addEventListener('change', toggleFields);
-    toggleFields();
-    document.getElementById('register-form').addEventListener('submit', function (event) {
-      event.preventDefault();
-      const username = document.getElementById('username');
-      const organizername = document.getElementById('organizername');
-      const organizer = document.getElementById('organizer');
-      const attender = document.getElementById('attender');
-
-      const usernameError = document.getElementById('empty-username');
-      const organizernameError = document.getElementById('empty-nameoforg');
+  });
 
 
 
-      let isValid = true;
 
-      // Check if username is provided
-      if (username.value.trim() === '' && username_req) {
-        usernameError.style.display = 'block';
-        isValid = false;
-      } else {
-        usernameError.style.display = 'none';
-      }
-      if (organizername.value.trim() === '' && orgname_req) {
-        organizernameError.style.display = 'block';
-        isValid = false;
-      } else {
-        organizernameError.style.display = 'none';
-      }
-
-
-      if (isValid) {
-        const selectedRole = organizer.checked ? 'organizer' : 'attender';
-        console.log("Email:", user_email);
-        console.log("Password:", user_password);
-        console.log("Username:", username.value);
-        console.log("Organizer name:", organizername.value);
-        console.log("Selected Role:", selectedRole);
-        fetch('/register/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCSRFToken(),
-          },
-          body: JSON.stringify({
-            email: user_email,
-            password: user_password,
-            username: username.value,
-            organizername: organizername.value,
-            role: selectedRole,
-          }),
-        })
-          .then(response => {
-
-          })
-          .then(data => {
-            localStorage.setItem('isLoggedIn', 'true');
-            console.log("Accoutn Creation sucessful")
-            window.location.reload();
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-
-      }
-    });
-
-    function getCSRFToken() {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
-
-      if (!cookieValue) {
-        console.error('CSRF token not found in cookies');
-      }
-
-      return cookieValue;
+  //register form radio toggle
+  const organizerRadio = document.getElementById('organizer');
+  const attenderRadio = document.getElementById('attender');
+  let orgname_req = true;
+  let username_req = false;
+  function toggleFields() {
+    const orgnameLabel = document.getElementById('orgname-label');
+    const usernameLabel = document.getElementById('username-label');
+    const organizernameField = document.getElementById('organizername');
+    const usernameField = document.getElementById('username');
+    const emptyusername = document.getElementById('empty-username');
+    const emptyorgname = document.getElementById('empty-nameoforg');
+    if (organizerRadio.checked) {
+      organizernameField.style.display = 'block';
+      orgname_req = true;
+      orgnameLabel.style.display = 'block';
+      usernameLabel.style.display = 'none';
+      usernameField.style.display = 'none';
+      emptyorgname.style.display = 'none';
+      emptyusername.style.display = 'none';
+      username_req = false;
+      usernameField.value = '';
+    } else if (attenderRadio.checked) {
+      usernameField.style.display = 'block';
+      username_req = true;
+      orgnameLabel.style.display = 'none';
+      usernameLabel.style.display = 'block';
+      organizernameField.style.display = 'none';
+      emptyorgname.style.display = 'none';
+      emptyusername.style.display = 'none';
+      orgname_req = false;
+      organizernameField.value = '';
     }
+  }
+  organizerRadio.addEventListener('change', toggleFields);
+  attenderRadio.addEventListener('change', toggleFields);
+  toggleFields();
 
-    document.getElementById('email-login').addEventListener('focus', function () {
-      const emailEmpty = document.getElementById('empty-email');
-      const noemailexistslogin = document.getElementById('no-email_exists_login');
 
-      if (emailEmpty.style.display === 'block') {
-        emailEmpty.style.display = 'none';
-      }
-      if (noemailexistslogin.style.display === 'block') {
-        noemailexistslogin.style.display = 'none';
-      }
-    });
-    document.getElementById('password-login').addEventListener('focus', function () {
-      const passwordEmpty = document.getElementById('empty-password');
-      const shortPassword = document.getElementById('short-password');
-      const incorrectpassword = document.getElementById('incorrect_password');
-      // Hide error messages when focused
-      if (passwordEmpty.style.display === 'block') {
-        passwordEmpty.style.display = 'none';
-      }
-      if (shortPassword.style.display === 'block') {
-        shortPassword.style.display = 'none';
-      }
-      if (incorrectpassword.style.display === 'block') {
-        incorrectpassword.style.display = 'none';
-      }
-    });
-    document.getElementById('email-signup').addEventListener('focus', function () {
-      const emailEmpty = document.getElementById('empty-email-signup');
-      const emailexixtsError = document.getElementById('exists-email-signup');
-      if (emailEmpty.style.display === 'block') {
-        emailEmpty.style.display = 'none';
-      }
-      if (emailexixtsError.style.display === 'block') {
-        emailexixtsError.style.display = 'none';
-      }
-    });
-    document.getElementById('password-signup').addEventListener('focus', function () {
-      const passwordEmpty = document.getElementById('empty-password-signup');
-      const shortPassword = document.getElementById('short-password-signup');
-      const passwordCompare = document.getElementById('password-not-same-signup');
-      // Hide error messages when focused
-      if (passwordEmpty.style.display === 'block') {
-        passwordEmpty.style.display = 'none';
-      }
-      if (shortPassword.style.display === 'block') {
-        shortPassword.style.display = 'none';
-      }
-      if (passwordCompare.style.display === 'block') {
-        passwordCompare.style.display = 'none';
-      }
-    });
-    document.getElementById('confirm-password').addEventListener('focus', function () {
-      const confirmpasswordCompare = document.getElementById('confirmpassword-not-same-signup');
-      if (confirmpasswordCompare.display === 'block') {
-        confirmpasswordCompare.style.display = 'none';
-      }
-    });
-    document.getElementById('otp').addEventListener('focus', function () {
-      const emptyOTP = document.getElementById('empty-otp');
-      const notmatchOTP = document.getElementById('not-match-otp');
 
-      // Check and hide the elements if they are visible
-      if (notmatchOTP.style.display === 'block') {
-        notmatchOTP.style.display = 'none';
-      }
-      if (emptyOTP.style.display === 'block') {
-        emptyOTP.style.display = 'none';
-      }
-    });
-    document.getElementById('username').addEventListener('focus', function () {
-      const emptyusername = document.getElementById('empty-username');
-      const emptyorgname = document.getElementById('empty-nameoforg');
-      emptyusername.style.display = 'none';
-      emptyorgname.style.display = 'none';
-    });
-    document.getElementById('organizername').addEventListener('focus', function () {
-      const emptyusername = document.getElementById('empty-username');
-      const emptyorgname = document.getElementById('empty-nameoforg');
-      emptyusername.style.display = 'none';
-      emptyorgname.style.display = 'none';
-    });
+
+
+
+
+
+  //login form focus
+  document.getElementById('email-login').addEventListener('focus', function () {
+    const emailEmpty = document.getElementById('empty-email');
+    const noemailexistslogin = document.getElementById('no-email_exists_login');
+    if (emailEmpty.style.display === 'block') {
+      emailEmpty.style.display = 'none';
+    }
+    if (noemailexistslogin.style.display === 'block') {
+      noemailexistslogin.style.display = 'none';
+    }
+  });
+  document.getElementById('password-login').addEventListener('focus', function () {
+    const passwordEmpty = document.getElementById('empty-password');
+    const shortPassword = document.getElementById('short-password');
+    const incorrectpassword = document.getElementById('incorrect_password');
+    if (passwordEmpty.style.display === 'block') {
+      passwordEmpty.style.display = 'none';
+    }
+    if (shortPassword.style.display === 'block') {
+      shortPassword.style.display = 'none';
+    }
+    if (incorrectpassword.style.display === 'block') {
+      incorrectpassword.style.display = 'none';
+    }
+  });
+
+  //signup form focus
+  document.getElementById('email-signup').addEventListener('focus', function () {
+    const emailEmpty = document.getElementById('empty-email-signup');
+    const emailexixtsError = document.getElementById('exists-email-signup');
+    if (emailEmpty.style.display === 'block') {
+      emailEmpty.style.display = 'none';
+    }
+    if (emailexixtsError.style.display === 'block') {
+      emailexixtsError.style.display = 'none';
+    }
+  });
+  document.getElementById('password-signup').addEventListener('focus', function () {
+    const passwordEmpty = document.getElementById('empty-password-signup');
+    const shortPassword = document.getElementById('short-password-signup');
+    const passwordCompare = document.getElementById('password-not-same-signup');
+    if (passwordEmpty.style.display === 'block') {
+      passwordEmpty.style.display = 'none';
+    }
+    if (shortPassword.style.display === 'block') {
+      shortPassword.style.display = 'none';
+    }
+    if (passwordCompare.style.display === 'block') {
+      passwordCompare.style.display = 'none';
+    }
+  });
+  document.getElementById('confirm-password').addEventListener('focus', function () {
+    const confirmpasswordCompare = document.getElementById('confirmpassword-not-same-signup');
+    if (confirmpasswordCompare.display === 'block') {
+      confirmpasswordCompare.style.display = 'none';
+    }
+  });
+
+  //otp form focus
+  document.getElementById('otp').addEventListener('focus', function () {
+    const emptyOTP = document.getElementById('empty-otp');
+    const notmatchOTP = document.getElementById('not-match-otp');
+    if (notmatchOTP.style.display === 'block') {
+      notmatchOTP.style.display = 'none';
+    }
+    if (emptyOTP.style.display === 'block') {
+      emptyOTP.style.display = 'none';
+    }
+  });
+
+  //register form focus
+  document.getElementById('username').addEventListener('focus', function () {
+    const emptyusername = document.getElementById('empty-username');
+    const emptyorgname = document.getElementById('empty-nameoforg');
+    emptyusername.style.display = 'none';
+    emptyorgname.style.display = 'none';
+  });
+  document.getElementById('organizername').addEventListener('focus', function () {
+    const emptyusername = document.getElementById('empty-username');
+    const emptyorgname = document.getElementById('empty-nameoforg');
+    emptyusername.style.display = 'none';
+    emptyorgname.style.display = 'none';
+  });
+
+  //contact form focus
+  document.getElementById('email-contact').addEventListener('focus', function () {
+    const emailEmpty = document.getElementById('empty-email-contact');
+    if (emailEmpty.style.display === 'block') {
+      emailEmpty.style.display = 'none';
+    }
+  });
+  document.getElementById('contact-name').addEventListener('focus', function () {
+    const nameEmpty = document.getElementById('empty-name-contact');
+    if (nameEmpty.style.display === 'block') {
+      nameEmpty.style.display = 'none';
+    }
+  });
+  document.getElementById('message-contact').addEventListener('focus', function () {
+    const messageEmpty = document.getElementById('empty-message-contact');
+    const messageShort = document.getElementById('message-length');
+    if (messageEmpty.style.display === 'block') {
+      messageEmpty.style.display = 'none';
+    }
+    if (messageShort.style.display === 'block') {
+      messageShort.style.display = 'none';
+    }
+  });
+  function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split('; ');
+    for (let cookie of cookies) {
+      const [key, value] = cookie.split('=');
+      if (key === name) return value;
+    }
+    return '';
   }
 });

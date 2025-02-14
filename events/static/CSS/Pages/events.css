@@ -1,0 +1,768 @@
+.event-show-container {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #1a103e, #3e2c8d);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+
+.event-show-sub-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+
+.event {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    width: 300px;
+    height: auto;
+    /* cursor: pointer; */
+    transition: 0.3s;
+    background: #111;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+/* Hover Effect */
+.event:hover {
+    background: #000;
+    box-shadow:
+        0 0 20px rgba(0, 153, 255, 0.8),
+        0 0 30px rgba(0, 153, 255, 0.6),
+        0 0 60px rgba(0, 153, 255, 0.4);
+}
+
+
+.user-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.organizer-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.profile-image-wrapper {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.organizer-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    align-items: flex-start;
+}
+.organizer-profile .more-option{
+    margin-left: auto;
+}
+.more-option button{
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    width:20px;
+    cursor: pointer;
+    transition:  0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.more-option button:hover{
+    color: #bbb;
+}
+.more-option button:active{
+    color: white;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 25px;
+    background-color: #000;
+    border-radius: 5px;
+    width: 130px;
+    z-index: 1;
+}
+
+.dropdown-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu ul li {
+    /* padding: 10px; */
+    font-size: 1rem;
+    text-align: end;
+    display: block; 
+}
+
+.dropdown-menu ul li a {
+    display: block; 
+    width: 100%;  
+    height: 100%; 
+    text-decoration: none;
+    color: #bbb;
+    padding: 10px; 
+    box-sizing: border-box; 
+}
+
+.dropdown-menu ul li:hover {
+    background-color: #111;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.organizer-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin: 0;
+    cursor: pointer;
+    text-decoration: none;
+    color:white;
+}
+
+.event-created-time {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: #bbb;
+    margin: 0;
+}
+
+
+.event-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    aspect-ratio: 16/9;
+    margin: 5px 0;
+    border-radius: 10px;
+    border: 1px solid rgb(53, 48, 48);
+    overflow: hidden;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Event Title */
+.event-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 5px 0;
+    text-align: start;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+    height: 62px;
+}
+
+.event-title p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Event Date & Time */
+.event-datetime {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: 1.1rem;
+    color: #bbb;
+    margin-top: 5px;
+}
+
+.event-date,
+.event-time {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Location & Ticket Info */
+.event-lotick {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    color: #eee;
+    width: 100%;
+    height: 60px;
+}
+
+.event-location {
+    text-align: start;
+    width: 70%;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.event-ticket {
+    width: 25%;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+/* Inspect Button */
+.inspect-div {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.inspect {
+    width: 100%;
+    padding: 10px;
+    background-color: #aaa;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.inspect:hover {
+    background-color: #999;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .event {
+        width: 100%;
+    }
+
+    .event-title {
+        font-size: 1.3rem;
+    }
+
+    .event-datetime,
+    .event-lotick {
+        font-size: 1rem;
+    }
+
+    .inspect {
+        font-size: 0.9rem;
+    }
+}
+
+
+
+
+
+
+
+
+.billboard-container {
+    width: 100%;
+    height: 500px;
+    margin-top: 45px;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    
+}
+.billboard-subcontainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s ease-in-out;
+}
+
+.billboard-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 68%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.billboard-detail {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex;
+    background-color: rgba(0, 0, 0, 1);
+    background: linear-gradient(to right,
+        rgba(0, 0, 0, 1) 0%,    
+        rgba(0, 0, 0, 1 ) 80%,
+        rgba(0, 0, 0, 0 ) 100%
+
+    );
+    z-index: 2;
+}
+
+.billboard-overlay {
+    position: absolute;
+    top: 0;
+    left: 32%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+        rgba(0, 0, 0, 0.9) 0%,    
+        rgba(0, 0, 0, 0.3) 50%,  
+        rgba(0, 0, 0, 0) 100%    
+    );
+    z-index: 1;
+}
+.bildetail-container{
+    width: 100%;
+    padding: 20px;
+    /* background-color: #3e2c8d; */
+}
+.bill-title {
+    font-size: 2.3rem;
+    font-weight: bold;
+    text-align: start;
+    position: absolute;
+    left: 20px;
+    bottom: 280px;
+    white-space: normal;
+    max-width: 100%;
+    margin-bottom: 5px;
+}
+
+.bill-title p {
+    margin: 0;
+    padding: 0;
+}
+.bill-description{
+    text-align: start;
+    font-size: 1rem;
+    line-height: 1.2rem;
+    position: absolute;
+    left: 20px;
+    bottom: 210px;
+    height: 3.7rem;
+}
+.bill-description p{
+    margin: 0;
+}
+.bill-datetime {
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    left: 20px;
+    bottom: 180px;
+    gap: 10px;
+    font-size: 1.1rem;
+    color: #bbb;
+}
+
+.bill-date,
+.bill-time {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+}
+
+
+.bill-lotick {
+    position: absolute;
+    left: 20px;
+    bottom: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 15px;
+    color: #eee;
+    width: 100%;
+    height: 60px;
+}
+
+.bill-location {
+    text-align: start;
+    width: 70%;
+    font-weight: 500;
+    margin: 0;
+}
+
+
+.view-details-btn{
+    position: absolute;
+    left: 20px;
+    bottom: 50px;
+    width: 130px;
+}
+.view-details {
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    color: #aaa;
+    border: 2px solid #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.view-details:hover {
+    background-color: #aaa;
+    color: black;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+.view-details i{
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+.spotlight{
+    position: absolute;
+    left: 20px;
+    bottom: 380px;
+    font-size: 1.2rem;
+    text-align: start;
+    margin-bottom: 5px;
+    color:#bbb;
+}
+
+
+.change-btn {
+    position: absolute;
+    top: 450px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    z-index: 3;
+}
+
+.change-btn button {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change-btn button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.change-btn i {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+
+/* Styling for the dots */
+.slide-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #bbb;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #000; /* Highlight active dot */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.add-event {
+    margin: 0 auto;
+    margin-top: 50px;
+    width: 350px;
+}
+
+.add-event-btn {
+    background-color: #111;
+    color: white;
+    padding: 18px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 400;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
+}
+
+.add-event-btn:hover {
+    background-color: #000;
+    text-decoration: underline;
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.395);
+}
+
+.add-event-btn:active {
+    background-color: #111;
+}
+
+@media (max-width: 500px) {
+    .add-event {
+        width: 200px;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.event-not-found {
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+.event-form-toggle {
+    display: flex;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.event-add-event-toggle {
+    font-size: 1.2rem;
+    position: relative;
+    display: flex;
+    border: none;
+    cursor: pointer;
+}
+
+.event-add-event-toggle::before {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    background-color: white;
+
+}
+
+input[type="radio"]:checked+.event-add-event-toggle::before {
+    height: 2px;
+    border-radius: 1px;
+    width: 100%;
+    background-color: white;
+}
+
+
+
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    margin: 5px auto 0 auto;
+    width:40%;
+    padding: 10px;
+    background-color: #aaa;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    
+}
+
+.custom-file-upload:hover {
+    background-color: #999;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+
+
+
+
+#event-basic,
+#event-extra-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+
+
+
+
+.ticket {
+    margin-top: 20px;
+    display: flex;
+    padding: 0;
+    height: 35px;
+}
+
+.ticket-custom-checkbox {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.ticket-custom-checkbox h3 {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.ticket-custom-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.ticket-checkmark {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+    position: relative;
+    background-color: #1a1a1a;
+}
+
+input[type="checkbox"]:checked+.ticket-checkmark::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+}
