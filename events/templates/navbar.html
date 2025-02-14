@@ -8,19 +8,19 @@
       </li>
       <li class="logo">EventHub</li>
       <li class="hideonMobile {% if request.path == '/' %}nav-active{% endif %}">
-        <a href="{% url 'home' %}" >
+        <a href="{% url 'home' %}">
           Home
         </a>
       </li>
       <li class="hideonMobile {% if request.path == '/events/' %}nav-active{% endif %}">
         {% if user.is_authenticated %}
-          <a href="{% url 'events' %}" id="event-btn">
-            Events
-          </a>
+        <a href="{% url 'events' %}" id="event-btn">
+          Events
+        </a>
         {% else %}
-          <a href="" id="event-login-btn" class="login-container-open">
-            Events
-          </a>
+        <a href="" id="event-login-btn" class="login-container-open">
+          Events
+        </a>
         {% endif %}
       </li>
       <li class="hideonMobile {% if request.path == '/about/' %}nav-active{% endif %}">
@@ -35,18 +35,19 @@
       </li>
       <li class="nav-login">
         {% if user.is_authenticated %}
-          <button id="user-profile" class="profile-btn">
-            <img src="{{ user.profile_picture.url }}" alt="Profile Picture" onerror="this.src='/media/user_images/default.png'">
-          </button>
+        <button id="user-profile" class="profile-btn">
+          <img src="{{ user.profile_picture.url }}" alt="Profile Picture"
+            onerror="this.src='/media/user_images/default.png'">
+        </button>
         {% else %}
-          <a href="" id="login-btn" class="login-container-open">Login</a>
+        <a href="" id="login-btn" class="login-container-open">Login</a>
         {% endif %}
       </li>
     </ul>
   </nav>
 </div>
 
-<div class="navbar-container" id="navbar-container">
+<div class="navbar-container" id="navbar-container" style="display: none;">
   <nav>
     <ul>
       <li><a href="{% url 'home' %}">Home</a></li>
@@ -60,19 +61,6 @@
   </nav>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- Login Form -->
 <div class="form-container" id="login-container">
   <div class="form-box">
@@ -80,43 +68,39 @@
     <h2>welcome back</h2>
     <form id="form-login">
       <label for="email-login" class="input-label">email:</label>
-      <input type="email" id="email-login" placeholder="Enter your Gmail..." />
+      <div class="input-container">
+        <input type="email" id="email-login" placeholder="Enter your Gmail..." />
+      </div>
       <span id="empty-email" class="error-message" style="display: none;">Email is required!</span>
-      <span id="no-email-login" class="error-message" style="display: none;">Email doesnot Exists!</span>
+      <span id="no-email-login" class="error-message" style="display: none;">Email does not Exist!</span>
 
       <label for="password-login" class="input-label">password:</label>
-      <input type="password" id="password-login" placeholder="Enter your password..." />
+      <div class="input-container">
+        <input type="password" id="password-login" placeholder="Enter your password..." />
+        <i id="togglePasswordLogin" class="fa fa-eye"></i>
+      </div>
+
       <span id="empty-password" class="error-message" style="display: none;">Password is required!</span>
-      <span id="short-password" class="error-message" style="display: none;">Password should br between 8 to 15
-        character!</span>
+      <span id="short-password" class="error-message" style="display: none;">Password should be between 8 to 15 characters!</span>
       <span id="incorrect_password" class="error-message" style="display: none;">Incorrect Password!</span>
       <div class="remember-me">
         <label class="custom-checkbox">
-          <input type="checkbox" id="checkbox" / checked>
+          <input type="checkbox" id="checkbox" checked>
           <span class="checkmark"></span>
           <h3>remember me</h3>
-      </label>
+        </label>
       </div>
-      <button type="submit" class="form-submit-btn">LOG IN</button>
+      <div class="inspect-div">
+        <button class="inspect" type="submit">
+          log in
+        </button>
+      </div>
     </form>
     <p class="another-link">
       Don’t have an account? <a href="#" id="signup-link">SIGN UP</a>
     </p>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- Signup Form -->
 <div class="form-container" id="signup-container">
@@ -125,46 +109,47 @@
     <h2>create an account</h2>
     <form id="form-signup">
       <label for="email-signup" class="input-label">email:</label>
-      <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
+      <div class="input-container">
+        <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
+      </div>
       <span id="empty-email-signup" class="error-message" style="display: none;">Email is required!</span>
       <span id="exists-email-signup" class="error-message" style="display: none;">Email already Exists!</span>
 
       <label for="password-signup" class="input-label">password:</label>
-      <input type="password" id="password-signup" placeholder="Enter your password..." />
+      <div class="input-container">
+        <input type="password" id="password-signup" placeholder="Enter your password..." />
+        <i id="togglePasswordSignup" class="fa fa-eye"></i>
+      </div>
       <span id="empty-password-signup" class="error-message" style="display: none;">Password is required!</span>
-      <span id="short-password-signup" class="error-message" style="display: none;">Password should be between 8 to 15
-        character!</span>
-      <span id="password-not-same-signup" class="error-message" style="display: none;">Password doesnot match!</span>
+      <span id="short-password-signup" class="error-message" style="display: none;">Password should be between 8 to 15 characters!</span>
+      <span id="password-not-same-signup" class="error-message" style="display: none;">Password does not match!</span>
 
       <label for="confirm-password" class="input-label">confirm password:</label>
-      <input type="password" id="confirm-password" placeholder="Confirm your password..." />
-      <span id="confirmpassword-not-same-signup" class="error-message" style="display: none;">Password doesnot
-        match!</span>
+      <div class="input-container">
+        <input type="password" id="confirm-password" placeholder="Confirm your password..." />
+        <i id="toggleConfirmPassword" class="fa fa-eye"></i>
+      </div>
+      <span id="confirmpassword-not-same-signup" class="error-message" style="display: none;">Password does not match!</span>
 
-        <div class="remember-me">
-          <label class="custom-checkbox">
-            <input type="checkbox" id="checkbox" / checked>
-            <span class="checkmark"></span>
-            <h3>i agree terms and condition!</h3>
+      <div class="remember-me">
+        <label class="custom-checkbox">
+          <input type="checkbox" id="checkbox" checked>
+          <span class="checkmark"></span>
+          <h3>i agree to terms and condition!</h3>
         </label>
-        </div>
+      </div>
 
-      <button type="submit" class="form-submit-btn">NEXT</button>
+      <div class="inspect-div">
+        <button class="inspect" type="submit">
+          sign up
+        </button>
+      </div>
     </form>
     <p class="another-link">
       Already have an account? <a href="#" id="login-link">LOG IN</a>
     </p>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
 
 <!-- OTP form -->
 <div class="form-container" id="otp-container">
@@ -173,14 +158,20 @@
     <h2>Verify Your Account</h2>
     <form id="form-otp">
       <label for="otp" class="input-label">OTP:</label>
-      <input type="number" id="otp" maxlength="6" placeholder="Enter the 6-digit OTP" />
+      <div class="input-container">
+        <input type="number" id="otp" maxlength="6" placeholder="Enter the 6-digit OTP" />
+      </div>
       <span id="empty-otp" class="error-message" style="display: none;">OTP required!</span>
-      <span id="not-match-otp" class="error-message" style="display: none;">OTP doesnot match!</span>
+      <span id="not-match-otp" class="error-message" style="display: none;">OTP does not match!</span>
       <div class="resend-otp">
         <p>Didn't receive the OTP?</p>
         <a href="" id="resend-otp-link">Resend OTP</a>
       </div>
-      <button type="submit" class="form-submit-btn">VERIFT</button>
+      <div class="inspect-div">
+        <button class="inspect" type="submit">
+          verify
+        </button>
+      </div>
     </form>
     <p class="another-link">
       Back to: <a href="" id="otp-to-signup">SIGNUP</a>
@@ -188,56 +179,42 @@
   </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="form-container" id="register-container">
   <div class="form-box">
     <button class="close-btn" id="close-register-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
     <h2>Create an Account</h2>
     <form id="register-form">
       <label for="email-register" class="input-label">email:</label>
-      <input type="email" id="email-register" name="email" value="{{ email }}" readonly />
+      <div class="input-container">
+        <input type="email" id="email-register" name="email" value="{{ email }}" readonly />
+      </div>
+
       <div class="role-selection">
         <input type="radio" name="role" id="organizer" checked="checked">
         <label for="organizer" class="role-label">organizer</label>
         <input type="radio" name="role" id="attender">
-        <label for="attender" class="role-label">attendee</label>
+        <label for="attender" class="role-label">attender</label>
       </div>
       <label for="username" class="input-label" id="username-label" style="display: none;">username:</label>
-      <input type="text" id="username" placeholder="Enter your username..." style="display: none;">
+      <div class="input-container">
+        <input type="text" id="username" placeholder="Enter your username..." style="display: none;">
+      </div>
       <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
       <label for="organizername" class="input-label" id="orgname-label">organizer name:</label>
-      <input type="text" id="organizername" placeholder="Enter Organizer name...">
+      <div class="input-container">
+        <input type="text" id="organizername" placeholder="Enter Organizer name...">
+      </div>
       <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
-
       <br>
-
-
-      <button type="submit" class="form-submit-btn">REGISTER</button>
+      <div class="inspect-div">
+        <button class="inspect" type="submit">
+          sign up
+        </button>
+      </div>
     </form>
-    <p class="another-link">
-      Already have an account? <a href="" id="register-to-login">LOG IN</a>
-    </p>
   </div>
 </div>
+
 
 
 
@@ -255,21 +232,33 @@
     <h2>Contact Us</h2>
     <form id="contact-form">
       <label for="contact-name" class="input-label">Name:</label>
-      <input type="text" id="contact-name" name="contact-name" placeholder="Enter your Name..." />
+      <div class="input-container">
+        <input type="text" id="contact-name" name="contact-name" placeholder="Enter your Name..." />
+      </div>
       <span id="empty-name-contact" class="error-message" style="display: none;">Name is required!</span>
 
 
       <label for="email-contact" class="input-label">Email:</label>
-      <input type="email" id="email-contact" placeholder="Enter your Gmail..." />
+      <div class="input-container">
+        <input type="email" id="email-contact" placeholder="Enter your Gmail..." />
+
+      </div>
       <span id="empty-email-contact" class="error-message" style="display: none;">Email is required!</span>
 
       <label for="message-contact" class="input-label">Message:</label>
-      <textarea id="message-contact" rows="5" placeholder="Enter your Message..."></textarea>
+      <div class="input-container">
+        <textarea id="message-contact" rows="5" placeholder="Enter your Message..."></textarea>
+      </div>
+
       <span id="empty-message-contact" class="error-message" style="display: none;">Message is required!</span>
       <span id="message-length" class="error-message" style="display: none;">Message should be between 10 to 100
         character!</span>
       <br><br>
-      <button type="submit" class="form-submit-btn">SUBMIT</button>
+      <div class="inspect-div">
+        <button class="inspect" type="submit">
+          contact
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -301,42 +290,42 @@
 
   <div class="menu-item ">
     <a href="{% url 'profile' %}">
-      <i class="fa-solid fa-user" style="color: #ffffff;"></i>
+      <i class="fa-solid fa-user"></i>
       Profile
     </a>
   </div>
 
   <div class="menu-item ">
     <a href="{% url 'my_events' %}">
-      <i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i>
+      <i class="fa-solid fa-calendar-plus"></i>
       My Events
     </a>
   </div>
 
   <div class="menu-item ">
     <a href="{% url 'upcoming_events' %}">
-      <i class="fa-solid fa-calendar-alt" style="color: #ffffff;"></i>
+      <i class="fa-solid fa-calendar-alt"></i>
       Upcoming Events
     </a>
   </div>
 
   <div class="menu-item ">
     <a href="{% url 'notifications' %}">
-      <i class="fa-solid fa-bell" style="color: #ffffff;"></i>
+      <i class="fa-solid fa-bell"></i>
       Notification
     </a>
   </div>
 
   <div class="menu-item ">
     <a href="{% url 'settings' %}">
-      <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
+      <i class="fa-solid fa-gear"></i>
       Settings
     </a>
   </div>
 
   <div class="menu-item ">
     <a id="logout-btn">
-      <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i>
+      <i class="fa-solid fa-arrow-right"></i>
       Logout
     </a>
   </div>

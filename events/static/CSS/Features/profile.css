@@ -1,0 +1,62 @@
+.profile-container {
+    border: 1px solid #111;
+    position: fixed;
+    display: none;
+    background-color: #1a1a1a;
+    color: var(--fontcolor);
+    top: 60px;
+    right: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 1000;
+    box-shadow:
+    0 0 20px rgba(0, 153, 255, 0.8),
+    0 0 30px rgba(0, 153, 255, 0.6),
+    0 0 60px rgba(0, 153, 255, 0.4);
+}
+
+.profile-container .username {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.profile-container .email {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #bbb;
+}
+
+.profile-container .menu-item {
+    margin: 10px 0;
+}
+
+.profile-container .menu-item a {
+    color: White;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    padding: 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    background-color: #111;
+}
+
+.profile-container .menu-item a:hover {
+    background-color: #000;
+    text-decoration: underline;
+    color: #bbb ;
+}
+
+.profile-container .menu-item a i {
+    font-size: 1.1rem;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+.profile-container .menu-item a:hover i {
+    text-decoration: none;
+}

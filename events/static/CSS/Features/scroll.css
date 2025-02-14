@@ -46,7 +46,7 @@ textarea:focus {
   border: none;
 }
 textarea {
-  resize: none; /* Disable resizing */
+  resize: none; 
 }
 
 

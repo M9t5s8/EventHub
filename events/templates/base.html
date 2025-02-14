@@ -8,14 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Document{% endblock %}</title>
 
-    {% comment %} this is the common css used in the website {% endcomment %}
+    
+
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'CSS/navbar.css' %}" />
-    <link rel="stylesheet" href="{% static 'CSS/downbar.css' %}" />
-    <link rel="stylesheet" href="{% static 'CSS/scroll.css' %}" />
-    <link rel="stylesheet" href="{% static 'CSS/color.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/downbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/scroll.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/color.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/footer.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/form.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Features/profile.css' %}" />
     {% block extra_css %}{% endblock %}
+
+
+
+
+
+
+
+
     <script src="{% static 'JS/login.js' %}">
         document.cookie = "csrftoken={{ csrf_token }}";
     </script>

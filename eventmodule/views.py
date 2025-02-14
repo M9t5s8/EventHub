@@ -6,19 +6,24 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import json
 from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, render,redirect
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 
 
 def get_authenticated_user(request):
     if not request.user.is_authenticated:
         return None
     return request.user
-
-
 def user_authenticated_or_respond(request):
     user = get_authenticated_user(request)
     if not user:
         return JsonResponse({'success': False, 'message': 'User not authenticated.'}, status=403)
     return user
+def is_admin_or_organizer(user):
+    return user.is_authenticated and (user.is_staff or user.role == 'organizer')
+def home_redirect():
+    return redirect('/')
 
 
 # View to add an event
@@ -75,6 +80,32 @@ def add_event(request):
 
     return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
 
+
+@login_required
+@user_passes_test(is_admin_or_organizer) 
+def edit_event_view(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    context = {
+        'user': request.user,
+        'event':event,
+        'show_downbar': False
+    }
+    return render(request, 'events/event_edit.html', context)
+
+
+def edit_event(request, event_id):
+    event = get_object_or_404(Event, event_id=event_id)
+    if request.method == 'POST':
+        event.title = request.POST.get('event_name')
+        event.event_date = request.POST.get('event_date')
+        event.event_time = request.POST.get('event_time')
+        event.location = request.POST.get('event_location')
+        event.is_billboard = request.POST.get('is_billboard') == 'True'
+        if request.FILES.get('event_image'):
+            event.event_image = request.FILES['event_image']
+        event.save()
+        return JsonResponse({'success': True, 'message': 'Event updated successfully'})
+    return JsonResponse({'success': False, 'message': 'Failed to update event'})
 
 
 

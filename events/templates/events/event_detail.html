@@ -5,8 +5,8 @@
 {% block title %}Event Details{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'CSS/comment.css' %}" />
-<link rel="stylesheet" href="{% static 'CSS/event_detail.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/comment.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Pages/event_detail.css' %}" />
 {% endblock %}
 
 {% block downbar %}{% endblock %}
@@ -18,9 +18,54 @@
 
 {% block content %}
 
+<div class="event-detail-container">
+    <div class="event">
+        <div class="event-details">
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-img">
+                <img src="{{ event.event_image.url }}" alt="Event Image">
+            </div>
+            <div class="event-detail">
+                <div class="event-location">{{ event.location }}</div>
+                <div class="event-date">{{ event.event_date }}</div>
+                <div class="event-time">{{ event.event_time }} onwards</div>
+            </div>
+            <div class="event-description">
+                <p class="description-title">Description</p>
+                <p class="desccription">
+                    {{ event.description }}
+                </p>
+
+            </div>
+        </div>
+        <div class="ticket-rsvp">
+            {% if event.has_ticket %}
+            <div class="ticket-container">
+                <div>
+                    <h3>Select Ticket</h3>
+                </div>
+
+                <div class="ticket">
+                    <p class="ticket-price">Rs {{event.ticket_price}}</p>
+                    <button class="add-btn">ADD</button>
+                </div>
+                <div class="inspect-div">
+                    <button class="inspect">
+                        buy ticket
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+            <div class="rsvp-container">
+                <a href="" id="rsvp-container-open">RSVP</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
+  
 
 
 
@@ -169,6 +214,49 @@
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="form-container" id="rsvp-container">
+    <div class="form-box">
+      <button class="close-btn" id="close-rsvp-btn">
+        <i class="fa-sharp fa-solid fa-xmark"></i>
+      </button>
+      <h2>RSVP for the Event</h2>
+      <form id="form-rsvp">
+        <label for="rsvp-name" class="input-label">full name:</label>
+        <input type="text" id="rsvp-name" placeholder="Enter your full name"/>
+        <span id="empty-name-rsvp" class="error-message" style="display: none;">Name is required!</span>
+  
+        <label for="rsvp-email" class="input-label">email:</label>
+        <input type="email" id="rsvp-email" placeholder="Enter your email" />
+        <span id="empty-email-rsvp" class="error-message" style="display: none;">Email is required!</span>
+
+        <div class="confirmation-message">
+          <p>You'll receive a confirmation email once RSVP is successful.</p>
+        </div>
+        <div class="inspect-div">
+            <button class="inspect" type="submit">
+              confirm rsvp
+            </button>
+          </div>
+      </form>
+    </div>
+  </div>
 
 
 {% endblock %}

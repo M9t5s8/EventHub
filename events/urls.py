@@ -11,7 +11,7 @@ urlpatterns = [
     path('notifications/',views.notifications,name='notifications'),
     path('settings/',views.settings,name='settings'),
     path('ourteam/',views.ourteam,name='ourteam'),
-    path('event_detail/<int:event_id>/', views.event_detail, name='event_detail'),
+    path('events/detail/<int:event_id>/', views.event_detail, name='event_detail'),
 ]
 
 

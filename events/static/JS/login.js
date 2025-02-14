@@ -28,39 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   document.getElementById('contact-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const name = document.getElementById('contact-name');
@@ -129,28 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
   });
-  document.getElementById('email-contact').addEventListener('focus', function () {
-    const emailEmpty = document.getElementById('empty-email-contact');
-    if (emailEmpty.style.display === 'block') {
-      emailEmpty.style.display = 'none';
-    }
-  });
-  document.getElementById('contact-name').addEventListener('focus', function () {
-    const nameEmpty = document.getElementById('empty-name-contact');
-    if (nameEmpty.style.display === 'block') {
-      nameEmpty.style.display = 'none';
-    }
-  });
-  document.getElementById('message-contact').addEventListener('focus', function () {
-    const messageEmpty = document.getElementById('empty-message-contact');
-    const messageShort = document.getElementById('message-length');
-    if (messageEmpty.style.display === 'block') {
-      messageEmpty.style.display = 'none';
-    }
-    if (messageShort.style.display === 'block') {
-      messageShort.style.display = 'none';
-    }
-  });
+
 
 
 
@@ -171,14 +117,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+  
+  const togglePasswordLogin = document.getElementById("togglePasswordLogin");
+  const passwordLogin = document.getElementById("password-login");
+  const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+  const confirmPassword = document.getElementById("confirm-password");
+  const togglePasswordSignup = document.getElementById("togglePasswordSignup");
+  const passwordSignup = document.getElementById("password-signup");
 
-  document.querySelectorAll(".toggle-password").forEach((toggleBtn) => {
-    toggleBtn.addEventListener("click", () => {
-      const passwordInput = toggleBtn.previousElementSibling;
-      const type = passwordInput.type === "password" ? "text" : "password";
-      passwordInput.type = type;
-      toggleBtn.textContent = type === "password" ? "👁️" : "🙈";
-    });
+  togglePasswordLogin.addEventListener("click", function () {
+    const type = passwordLogin.type === "password" ? "text" : "password";
+    passwordLogin.type = type;
+    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
+  });
+
+  
+  
+
+  togglePasswordSignup.addEventListener("click", function () {
+    const type = passwordSignup.type === "password" ? "text" : "password";
+    passwordSignup.type = type;
+    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
+  });
+
+  
+  
+
+  toggleConfirmPassword.addEventListener("click", function () {
+    const type = confirmPassword.type === "password" ? "text" : "password";
+    confirmPassword.type = type;
+    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
   });
 
 
@@ -192,11 +160,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+  //display error
   const toggleError = (element, condition) => {
     element.style.display = condition ? "block" : "none";
   };
 
-
+  //input check
   const validateInput = (input, errorElement, minLength = 0, maxLength = Infinity) => {
     const value = input.value.trim();
     const isValid = value !== "" && value.length >= minLength && value.length <= maxLength;
@@ -210,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
+  //login form
   const loginForm = document.getElementById("form-login");
   loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -256,25 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  //signup form
   const signupForm = document.getElementById("form-signup");
   signupForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -316,12 +267,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((error) => console.error("Error:", error));
     }
   });
+
+  //resend otp 
   document.getElementById("resend-otp-link").addEventListener("click", function (event) {
     event.preventDefault();
-    sendOtp(user_email); 
+    sendOtp(user_email);
   });
-  
 
+  //otp successfull
   function sendOtp(email) {
     fetch("/send-otp/", {
       method: "POST",
@@ -348,6 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch((error) => console.error("Error:", error));
   }
 
+  //otp form
   const otpForm = document.getElementById("form-otp");
   otpForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -365,43 +319,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const organizerRadio = document.getElementById('organizer');
-  const attenderRadio = document.getElementById('attender');
-  let orgname_req = true;
-  let username_req = false;
-  function toggleFields() {
-    const orgnameLabel = document.getElementById('orgname-label');
-    const usernameLabel = document.getElementById('username-label');
-    const organizernameField = document.getElementById('organizername');
-    const usernameField = document.getElementById('username');
-    const emptyusername = document.getElementById('empty-username');
-    const emptyorgname = document.getElementById('empty-nameoforg');
-    if (organizerRadio.checked) {
-      organizernameField.style.display = 'block';
-      orgname_req = true;
-      orgnameLabel.style.display = 'block';
-      usernameLabel.style.display = 'none';
-      usernameField.style.display = 'none';
-      emptyorgname.style.display = 'none';
-      emptyusername.style.display = 'none';
-      username_req = false;
-      usernameField.value = '';
-    } else if (attenderRadio.checked) {
-      usernameField.style.display = 'block';
-      username_req = true;
-      orgnameLabel.style.display = 'none';
-      usernameLabel.style.display = 'block';
-      organizernameField.style.display = 'none';
-      emptyorgname.style.display = 'none';
-      emptyusername.style.display = 'none';
-      orgname_req = false;
-      organizernameField.value = '';
-    }
-  }
-  organizerRadio.addEventListener('change', toggleFields);
-  attenderRadio.addEventListener('change', toggleFields);
-  toggleFields();
-  document.getElementById('register-form').addEventListener('submit', function (event) {
+  //register form
+  const registerForm = document.getElementById('register-form');
+  registerForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const username = document.getElementById('username');
     const organizername = document.getElementById('organizername');
@@ -464,6 +384,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
   });
+
+
+
+
+  //register form radio toggle
+  const organizerRadio = document.getElementById('organizer');
+  const attenderRadio = document.getElementById('attender');
+  let orgname_req = true;
+  let username_req = false;
+  function toggleFields() {
+    const orgnameLabel = document.getElementById('orgname-label');
+    const usernameLabel = document.getElementById('username-label');
+    const organizernameField = document.getElementById('organizername');
+    const usernameField = document.getElementById('username');
+    const emptyusername = document.getElementById('empty-username');
+    const emptyorgname = document.getElementById('empty-nameoforg');
+    if (organizerRadio.checked) {
+      organizernameField.style.display = 'block';
+      orgname_req = true;
+      orgnameLabel.style.display = 'block';
+      usernameLabel.style.display = 'none';
+      usernameField.style.display = 'none';
+      emptyorgname.style.display = 'none';
+      emptyusername.style.display = 'none';
+      username_req = false;
+      usernameField.value = '';
+    } else if (attenderRadio.checked) {
+      usernameField.style.display = 'block';
+      username_req = true;
+      orgnameLabel.style.display = 'none';
+      usernameLabel.style.display = 'block';
+      organizernameField.style.display = 'none';
+      emptyorgname.style.display = 'none';
+      emptyusername.style.display = 'none';
+      orgname_req = false;
+      organizernameField.value = '';
+    }
+  }
+  organizerRadio.addEventListener('change', toggleFields);
+  attenderRadio.addEventListener('change', toggleFields);
+  toggleFields();
+
+
+
+
+
+
+
+
+  //login form focus
   document.getElementById('email-login').addEventListener('focus', function () {
     const emailEmpty = document.getElementById('empty-email');
     const noemailexistslogin = document.getElementById('no-email_exists_login');
@@ -488,6 +458,8 @@ document.addEventListener("DOMContentLoaded", () => {
       incorrectpassword.style.display = 'none';
     }
   });
+
+  //signup form focus
   document.getElementById('email-signup').addEventListener('focus', function () {
     const emailEmpty = document.getElementById('empty-email-signup');
     const emailexixtsError = document.getElementById('exists-email-signup');
@@ -518,6 +490,8 @@ document.addEventListener("DOMContentLoaded", () => {
       confirmpasswordCompare.style.display = 'none';
     }
   });
+
+  //otp form focus
   document.getElementById('otp').addEventListener('focus', function () {
     const emptyOTP = document.getElementById('empty-otp');
     const notmatchOTP = document.getElementById('not-match-otp');
@@ -528,6 +502,8 @@ document.addEventListener("DOMContentLoaded", () => {
       emptyOTP.style.display = 'none';
     }
   });
+
+  //register form focus
   document.getElementById('username').addEventListener('focus', function () {
     const emptyusername = document.getElementById('empty-username');
     const emptyorgname = document.getElementById('empty-nameoforg');
@@ -541,6 +517,29 @@ document.addEventListener("DOMContentLoaded", () => {
     emptyorgname.style.display = 'none';
   });
 
+  //contact form focus
+  document.getElementById('email-contact').addEventListener('focus', function () {
+    const emailEmpty = document.getElementById('empty-email-contact');
+    if (emailEmpty.style.display === 'block') {
+      emailEmpty.style.display = 'none';
+    }
+  });
+  document.getElementById('contact-name').addEventListener('focus', function () {
+    const nameEmpty = document.getElementById('empty-name-contact');
+    if (nameEmpty.style.display === 'block') {
+      nameEmpty.style.display = 'none';
+    }
+  });
+  document.getElementById('message-contact').addEventListener('focus', function () {
+    const messageEmpty = document.getElementById('empty-message-contact');
+    const messageShort = document.getElementById('message-length');
+    if (messageEmpty.style.display === 'block') {
+      messageEmpty.style.display = 'none';
+    }
+    if (messageShort.style.display === 'block') {
+      messageShort.style.display = 'none';
+    }
+  });
   function getCSRFToken() {
     const name = 'csrftoken';
     const cookies = document.cookie.split('; ');
