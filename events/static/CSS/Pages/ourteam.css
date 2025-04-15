@@ -1,7 +1,6 @@
 .ourteam-container {
     text-align: center;
     padding: 30px;
-    background: linear-gradient(135deg, #1a103e, #3e2c8d); /* Gradient background */
     color: #fff; /* White text color for contrast */
     display: flex;
     flex-direction: column;
@@ -28,16 +27,20 @@
     cursor: pointer;
     transition: 0.4s;
     box-sizing: border-box;
-    background: #111; /* Darker blue-gray background for team members */
+    background: #111; 
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.395); /* Softer shadow */
-    color: #fff; /* White text color */
+    color: #fff;
+    transition: 0.3s ease-in;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
 }
 
 /* Hover effect on team member box */
 .ourteams:hover {
-    background: #000; /* Even darker blue-gray on hover */
-    transform: translateY(-5px); /* Slight lift effect */
+    background: #000;
+    box-shadow:
+        0 0 10px rgba(0, 153, 255, 0.8),
+        0 0 16px rgba(0, 153, 255, 0.6),
+        0 0 30px rgba(0, 153, 255, 0.4);
 }
 
 /* Image inside the team member box */
@@ -85,7 +88,7 @@
 .ourteam-social-links a {
     text-decoration: none;
     padding: 12px;  /* Adjust padding for a more balanced look */
-    background-color: white;
+    background-color: #bbb;
     margin: 9px;  /* Margin between icons */
     border-radius: 50%;  /* Rounded container */
     display: inline-flex;  /* Use inline-flex for better alignment of the icon */
@@ -93,21 +96,27 @@
     align-items: center;  /* Center the icon vertically */
     width: 20px;  /* Fixed width of the circle */
     height: 20px;  /* Fixed height of the circle */
+    transition: 0.3s ease-in;
+    box-shadow:
+        0 0 2px rgba(0, 153, 255, 0.8),
+        0 0 5px rgba(0, 153, 255, 0.6),
+        0 0 10px rgba(0, 153, 255, 0.4);
 }
 
 .ourteam-social-links a i {
-    font-size: 1.7rem;  /* Fixed size for the icons */
+    font-size: 1.7rem;
     color: black;
     opacity: 0.9;
+    transition: 0.3s ease-in;
 }
 
 .ourteam-social-links a:hover {
-    background-color: #000;  /* Dark background on hover */
+    background-color: #000; 
     transition: 0.5s;
 }
 
 .ourteam-social-links a:hover i {
-    color: white;  /* Change icon color on hover */
+    color: #bbb;  /* Change icon color on hover */
     transition: 0.5s;
 }
 

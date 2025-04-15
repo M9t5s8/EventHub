@@ -2,11 +2,13 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Upcoming Events{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Pages/upcoming_events.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/eventshow.css' %}" />
 {% endblock %}
 {% block extra_js%}
 <script src="{% static 'JS/ellipsis.js' %}"></script>
@@ -18,5 +20,11 @@
         Upcoming Events
     </h2>
 </div>
+
+
+{% include 'eventshow.html' %}
+
+
+
 
 {% endblock %}

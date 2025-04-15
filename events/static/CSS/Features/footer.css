@@ -2,8 +2,10 @@ footer {
     background-color: #111;
     padding: 20px;
     padding-bottom: 30px;
-    bottom: 0;
-    left: 0;
+    box-shadow:
+        0 0 2px rgba(0, 153, 255, 0.8),
+        0 0 4px rgba(0, 153, 255, 0.6),
+        0 0 8px rgba(0, 153, 255, 0.4);
 }
 
 .footer-container {
@@ -26,14 +28,18 @@ footer {
     text-decoration: none;
     padding: 15px;
     margin: 15px;
-    background-color: var(--fontcolor);
+    background-color: #bbb;
     border-radius: 50%;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     width: 30px;
     height: 30px;
-    transition: 0.5s ease-in;
+    transition: 0.3s ease-in;
+    box-shadow:
+        0 0 2px rgba(0, 153, 255, 0.8),
+        0 0 5px rgba(0, 153, 255, 0.6),
+        0 0 10px rgba(0, 153, 255, 0.4);
 }
 
 .social-icons a i {
@@ -48,7 +54,7 @@ footer {
 }
 
 .social-icons a:hover i {
-    color: var(--fontcolor);
+    color: #bbb;
     transition: 0.5s;
 }
 

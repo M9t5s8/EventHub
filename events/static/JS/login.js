@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-
-
-  // logout code
+  // logout function
   document.getElementById('logout-btn').addEventListener('click', function (event) {
     event.preventDefault();
     if (confirm("Are you sure you want to log out?")) {
@@ -10,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': getCSRFToken(), // Ensure CSRF token is correctly fetched
+          'X-CSRFToken': getCSRFToken(),
         },
       })
         .then(response => response.json())
@@ -28,43 +26,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
+
+  const contactContainer = document.getElementById("contact-container");
   document.getElementById('contact-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const name = document.getElementById('contact-name');
     const email = document.getElementById('email-contact');
     const message = document.getElementById('message-contact');
-    const nameEmpty = document.getElementById('empty-name-contact');
-    const emailEmpty = document.getElementById('empty-email-contact');
-    const emptyMessage = document.getElementById('empty-message-contact');
-    const shortMessage = document.getElementById('message-length');
     let contact_valid = true;
     if (email.value.trim() === '') {
-      emailEmpty.style.display = 'block';
+      showError("email-contact-error","Empty Email!");
       contact_valid = false;
-    } else {
-      emailEmpty.style.display = 'none';
-      email.style.border = '';
     }
     if (name.value.trim() === '') {
-      nameEmpty.style.display = 'block';
+      showError("name-contact-error","Empty Name!");
       contact_valid = false;
-    } else {
-      nameEmpty.style.display = 'none';
-      name.style.border = '';
-    }
-    if (message.value.trim() === '') {
-      emptyMessage.style.display = 'block';
-      contact_valid = false;
-    } else {
-      emptyMessage.style.display = 'none';
-      message.style.border = '';
-      if (message.value.length < 10 || message.value.length > 100) {
-        shortMessage.style.display = 'block';
-        contact_valid = false;
-      }
-      else {
-        shortMessage.style.display = 'none';
-      }
     }
     if (contact_valid) {
       fetch('/contact/', {
@@ -87,8 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
         .then(data => {
-          console.log("Contact successful");
-          window.location.reload();
+          contactContainer.style.display = "none";
+          document.body.classList.remove("no-scroll");
         })
         .catch(error => {
           console.error('Error:', error);
@@ -98,85 +75,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-
-
-
-
-
-
   let generatedOTP;
   let user_email, user_password;
-  const loginContainer = document.getElementById("login-container");
   const signupContainer = document.getElementById("signup-container");
   const otpContainer = document.getElementById("otp-container");
   const registerContainer = document.getElementById("register-container");
-
-
-
-
-
-
-
-  
-  const togglePasswordLogin = document.getElementById("togglePasswordLogin");
-  const passwordLogin = document.getElementById("password-login");
-  const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
-  const confirmPassword = document.getElementById("confirm-password");
-  const togglePasswordSignup = document.getElementById("togglePasswordSignup");
-  const passwordSignup = document.getElementById("password-signup");
-
-  togglePasswordLogin.addEventListener("click", function () {
-    const type = passwordLogin.type === "password" ? "text" : "password";
-    passwordLogin.type = type;
-    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
-  });
-
-  
-  
-
-  togglePasswordSignup.addEventListener("click", function () {
-    const type = passwordSignup.type === "password" ? "text" : "password";
-    passwordSignup.type = type;
-    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
-  });
-
-  
-  
-
-  toggleConfirmPassword.addEventListener("click", function () {
-    const type = confirmPassword.type === "password" ? "text" : "password";
-    confirmPassword.type = type;
-    this.classList.toggle("fa-eye-slash"); // Toggle the icon (eye slash)
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-  //display error
-  const toggleError = (element, condition) => {
-    element.style.display = condition ? "block" : "none";
-  };
-
-  //input check
-  const validateInput = (input, errorElement, minLength = 0, maxLength = Infinity) => {
-    const value = input.value.trim();
-    const isValid = value !== "" && value.length >= minLength && value.length <= maxLength;
-    toggleError(errorElement, !isValid);
-    return isValid;
-  };
-
-
-
-
-
+  const loadingContainer = document.getElementById("loading-container");
 
 
   //login form
@@ -185,11 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const email = document.getElementById("email-login");
     const password = document.getElementById("password-login");
+    
+    let loginValid = true;
+    if (!validateInput(email, "email-login-error", 5, 100, { empty: "Email is required!" })) {
+      loginValid = false;
+    }
 
-    const emailValid = validateInput(email, document.getElementById("empty-email"));
-    const passwordValid = validateInput(password, document.getElementById("empty-password"), 8, 15);
-
-    if (emailValid && passwordValid) {
+    if (!validateInput(password, "password-login-error", 6, 20, { empty: "Password is required!" })) {
+      loginValid = false;
+    }
+    loadingContainer.style.display = "flex";
+    if (loginValid) {
       fetch("/login/", {
         method: "POST",
         headers: {
@@ -200,25 +110,21 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Login Response Data:", data); // Debugging Line
-
-          if (typeof data.email_exists === "undefined") {
-            console.error("emailexists is missing in the response!");
-          }
-
+          
           if (!data.email_exists) {
-            console.log("Email does not exist:", data.email_exists);
+            showError("email-login-error", "Email does not exists!");
             email.value = "";
-            toggleError(document.getElementById("no-email-login"), true);
           } else {
             if (!data.correct_pass) {
-              toggleError(document.getElementById("incorrect_password"), true);
+              password.value = "";
+              showError("password-login-error", "Incorrect Password");
             } else {
               window.location.href = '/';
             }
           }
         })
         .catch((error) => {
+          loadingContainer.style.display = "none"
           console.error("Error:", error);
 
         });
@@ -231,20 +137,33 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const email = document.getElementById("email-signup");
     const password = document.getElementById("password-signup");
-    const confirmPassword = document.getElementById("confirm-password");
-    const emailValid = validateInput(email, document.getElementById("empty-email-signup"));
-    const passwordValid = validateInput(
-      password,
-      document.getElementById("empty-password-signup"),
-      8,
-      15
-    );
-    const passwordsMatch = password.value === confirmPassword.value;
-    toggleError(
-      document.getElementById("password-not-same-signup"),
-      !passwordsMatch
-    );
-    if (emailValid && passwordValid && passwordsMatch) {
+    const confirmpassword = document.getElementById("confirm-password");
+    let signupValid = true;
+
+    
+    if (!validateInput(email, "email-signup-error", 5, 100, { empty: "Email is required!" })) {
+      signupValid = false;
+    }
+
+    
+    if (!validateInput(password, "password-signup-error", 8, 15, { empty: "Password is required!" })) {
+      signupValid = false;
+    }
+
+    
+    if (!validateInput(confirmpassword, "confirm-password-signup-error", 8, 15, { empty: "Confirm password is required!" })) {
+      signupValid = false;
+    }
+
+    
+    if (password.value.trim() !== confirmpassword.value.trim()) {
+      confirmpassword.value = "";
+      showError("confirm-password-signup-error", "Password does not match!");
+      signupValid = false;
+    }
+
+    loadingContainer.style.display = "flex";
+    if (signupValid) {
       fetch("/signup/", {
         method: "POST",
         headers: {
@@ -255,12 +174,15 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((response) => response.json())
         .then((data) => {
+          loadingContainer.style.display = "none";
           if (data.email_exists) {
-            toggleError(document.getElementById("exists-email-signup"), true);
+            email.value = '';
+            showError("email-signup-error", "Email already exists!");
           } else {
             document.getElementById("email-register").value = data.email_signup;
             user_email = data.email_signup;
             user_password = data.password_signup;
+            signupContainer.style.display = "none";
             sendOtp(user_email);
           }
         })
@@ -271,11 +193,13 @@ document.addEventListener("DOMContentLoaded", () => {
   //resend otp 
   document.getElementById("resend-otp-link").addEventListener("click", function (event) {
     event.preventDefault();
+    otpContainer.style.display = "none";
     sendOtp(user_email);
   });
 
   //otp successfull
   function sendOtp(email) {
+    loadingContainer.style.display = "flex"
     fetch("/send-otp/", {
       method: "POST",
       headers: {
@@ -288,11 +212,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.success) {
           generatedOTP = data.otp;
-          console.log("OTP:", generatedOTP);
-          signupContainer.style.display = "none";
-          loginContainer.style.display = "none";
+          loadingContainer.style.display = "none";
           otpContainer.style.display = "flex";
-          otpContainer.style.zIndex = "2000";
           document.body.classList.add("no-scroll");
         } else {
           console.error("OTP sending failed.");
@@ -306,12 +227,16 @@ document.addEventListener("DOMContentLoaded", () => {
   otpForm.addEventListener("submit", function (event) {
     event.preventDefault();
     const otp = document.getElementById("otp");
-    const otpValid = validateInput(otp, document.getElementById("empty-otp")) &&
-      generatedOTP == otp.value;
-    toggleError(document.getElementById("not-match-otp"), generatedOTP != otp.value);
+    let otpValid = true;
+    if (otp.value.trim() === '') {
+      showError("signup-otp-error", "OTP is required!")
+      otpValid = false;
+    }
+    if (otp.value != generatedOTP) {
+      showError("signup-otp-error", "OTP doesnot match!")
+      otpValid = false;
+    }
     if (otpValid) {
-      signupContainer.style.display = "none";
-      loginContainer.style.display = "none";
       otpContainer.style.display = "none";
       registerContainer.style.display = "flex";
       registerContainer.style.zIndex = "2000";
@@ -324,39 +249,17 @@ document.addEventListener("DOMContentLoaded", () => {
   registerForm.addEventListener('submit', function (event) {
     event.preventDefault();
     const username = document.getElementById('username');
-    const organizername = document.getElementById('organizername');
     const organizer = document.getElementById('organizer');
     const attendee = document.getElementById('attender');
 
-    const usernameError = document.getElementById('empty-username');
-    const organizernameError = document.getElementById('empty-nameoforg');
 
-
-
-    let isValid = true;
-
-
-    if (username.value.trim() === '' && username_req) {
-      usernameError.style.display = 'block';
-      isValid = false;
-    } else {
-      usernameError.style.display = 'none';
+    let registerValid = true;
+    if (!validateInput(username, "username-register-error", 5, 20, { empty: "Username is required!" })) {
+      registerValid = false;
     }
-    if (organizername.value.trim() === '' && orgname_req) {
-      organizernameError.style.display = 'block';
-      isValid = false;
-    } else {
-      organizernameError.style.display = 'none';
-    }
-
-
-    if (isValid) {
+    loadingContainer.style.display = "flex"
+    if (registerValid) {
       const selectedRole = organizer.checked ? 'organizer' : 'attendee';
-      console.log("Email:", user_email);
-      console.log("Password:", user_password);
-      console.log("Username:", username.value);
-      console.log("Organizer name:", organizername.value);
-      console.log("Selected Role:", selectedRole);
       fetch('/register/', {
         method: 'POST',
         headers: {
@@ -367,16 +270,20 @@ document.addEventListener("DOMContentLoaded", () => {
           email: user_email,
           password: user_password,
           username: username.value,
-          organizername: organizername.value,
           role: selectedRole,
         }),
       })
-        .then(response => {
-
-        })
+        .then((response) => response.json())
         .then(data => {
-          console.log("Account Creation sucessful")
-          window.location.reload();
+          loadingContainer.style.display = "none";
+          if(data.success){
+            window.location.href = '/';
+          }else{
+            if(data.username_taken){
+              showError("username-register-error","Username already taken!");
+            }
+          }
+          
         })
         .catch(error => {
           console.error('Error:', error);
@@ -386,160 +293,67 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
+  // For Login Form
+  hideErrorOnFocus("email-login", "email-login-error");
+  hideErrorOnFocus("password-login", "password-login-error");
+
+  // For Signup Form
+  hideErrorOnFocus("email-signup", "email-signup-error");
+  hideErrorOnFocus("password-signup", "password-signup-error");
+  hideErrorOnFocus("confirm-password", "confirm-password-signup-error");
+
+  // For OTP Form
+  hideErrorOnFocus("otp", "signup-otp-error");
+
+  // For Register Form
+  hideErrorOnFocus("username", "username-register-error");
+  hideErrorOnFocus("organizername", "orgname-register-error");
 
 
-  //register form radio toggle
-  const organizerRadio = document.getElementById('organizer');
-  const attenderRadio = document.getElementById('attender');
-  let orgname_req = true;
-  let username_req = false;
-  function toggleFields() {
-    const orgnameLabel = document.getElementById('orgname-label');
-    const usernameLabel = document.getElementById('username-label');
-    const organizernameField = document.getElementById('organizername');
-    const usernameField = document.getElementById('username');
-    const emptyusername = document.getElementById('empty-username');
-    const emptyorgname = document.getElementById('empty-nameoforg');
-    if (organizerRadio.checked) {
-      organizernameField.style.display = 'block';
-      orgname_req = true;
-      orgnameLabel.style.display = 'block';
-      usernameLabel.style.display = 'none';
-      usernameField.style.display = 'none';
-      emptyorgname.style.display = 'none';
-      emptyusername.style.display = 'none';
-      username_req = false;
-      usernameField.value = '';
-    } else if (attenderRadio.checked) {
-      usernameField.style.display = 'block';
-      username_req = true;
-      orgnameLabel.style.display = 'none';
-      usernameLabel.style.display = 'block';
-      organizernameField.style.display = 'none';
-      emptyorgname.style.display = 'none';
-      emptyusername.style.display = 'none';
-      orgname_req = false;
-      organizernameField.value = '';
+  function validateInput(input, errorElementId, minLength = 0, maxLength = Infinity, messages = {}) {
+    const value = input.value.trim();
+    let message = "";
+    let valid = true
+    if (value === "") {
+      message = messages.empty || "This field is required!";
+      valid = false;
+    } else if (value.length < minLength) {
+      message = messages.minLength || `Minimum ${minLength} characters required!`;
+      valid = false;
+    } else if (value.length > maxLength) {
+      message = messages.maxLength || `Maximum ${maxLength} characters allowed!`;
+      valid = false;
+    }
+
+    showError(errorElementId, message);
+
+    return valid;
+  }
+
+  function showError(inputId, message) {
+    const errorSpan = document.getElementById(inputId);
+    if (message) {
+      errorSpan.textContent = message;
+      errorSpan.style.visibility = "visible";
+    } else {
+      errorSpan.style.visibility = "hidden";
     }
   }
-  organizerRadio.addEventListener('change', toggleFields);
-  attenderRadio.addEventListener('change', toggleFields);
-  toggleFields();
+  function hideErrorOnFocus(inputId, errorId) {
+    const inputElement = document.getElementById(inputId);
+    const errorElement = document.getElementById(errorId);
+
+    if (!inputElement || !errorElement) {
+      return;
+    }
+    inputElement.addEventListener("focus", function () {
+      if (errorElement.style.visibility === "visible") {
+        errorElement.style.visibility = "hidden";
+      }
+    });
+  }
 
 
-
-
-
-
-
-
-  //login form focus
-  document.getElementById('email-login').addEventListener('focus', function () {
-    const emailEmpty = document.getElementById('empty-email');
-    const noemailexistslogin = document.getElementById('no-email_exists_login');
-    if (emailEmpty.style.display === 'block') {
-      emailEmpty.style.display = 'none';
-    }
-    if (noemailexistslogin.style.display === 'block') {
-      noemailexistslogin.style.display = 'none';
-    }
-  });
-  document.getElementById('password-login').addEventListener('focus', function () {
-    const passwordEmpty = document.getElementById('empty-password');
-    const shortPassword = document.getElementById('short-password');
-    const incorrectpassword = document.getElementById('incorrect_password');
-    if (passwordEmpty.style.display === 'block') {
-      passwordEmpty.style.display = 'none';
-    }
-    if (shortPassword.style.display === 'block') {
-      shortPassword.style.display = 'none';
-    }
-    if (incorrectpassword.style.display === 'block') {
-      incorrectpassword.style.display = 'none';
-    }
-  });
-
-  //signup form focus
-  document.getElementById('email-signup').addEventListener('focus', function () {
-    const emailEmpty = document.getElementById('empty-email-signup');
-    const emailexixtsError = document.getElementById('exists-email-signup');
-    if (emailEmpty.style.display === 'block') {
-      emailEmpty.style.display = 'none';
-    }
-    if (emailexixtsError.style.display === 'block') {
-      emailexixtsError.style.display = 'none';
-    }
-  });
-  document.getElementById('password-signup').addEventListener('focus', function () {
-    const passwordEmpty = document.getElementById('empty-password-signup');
-    const shortPassword = document.getElementById('short-password-signup');
-    const passwordCompare = document.getElementById('password-not-same-signup');
-    if (passwordEmpty.style.display === 'block') {
-      passwordEmpty.style.display = 'none';
-    }
-    if (shortPassword.style.display === 'block') {
-      shortPassword.style.display = 'none';
-    }
-    if (passwordCompare.style.display === 'block') {
-      passwordCompare.style.display = 'none';
-    }
-  });
-  document.getElementById('confirm-password').addEventListener('focus', function () {
-    const confirmpasswordCompare = document.getElementById('confirmpassword-not-same-signup');
-    if (confirmpasswordCompare.display === 'block') {
-      confirmpasswordCompare.style.display = 'none';
-    }
-  });
-
-  //otp form focus
-  document.getElementById('otp').addEventListener('focus', function () {
-    const emptyOTP = document.getElementById('empty-otp');
-    const notmatchOTP = document.getElementById('not-match-otp');
-    if (notmatchOTP.style.display === 'block') {
-      notmatchOTP.style.display = 'none';
-    }
-    if (emptyOTP.style.display === 'block') {
-      emptyOTP.style.display = 'none';
-    }
-  });
-
-  //register form focus
-  document.getElementById('username').addEventListener('focus', function () {
-    const emptyusername = document.getElementById('empty-username');
-    const emptyorgname = document.getElementById('empty-nameoforg');
-    emptyusername.style.display = 'none';
-    emptyorgname.style.display = 'none';
-  });
-  document.getElementById('organizername').addEventListener('focus', function () {
-    const emptyusername = document.getElementById('empty-username');
-    const emptyorgname = document.getElementById('empty-nameoforg');
-    emptyusername.style.display = 'none';
-    emptyorgname.style.display = 'none';
-  });
-
-  //contact form focus
-  document.getElementById('email-contact').addEventListener('focus', function () {
-    const emailEmpty = document.getElementById('empty-email-contact');
-    if (emailEmpty.style.display === 'block') {
-      emailEmpty.style.display = 'none';
-    }
-  });
-  document.getElementById('contact-name').addEventListener('focus', function () {
-    const nameEmpty = document.getElementById('empty-name-contact');
-    if (nameEmpty.style.display === 'block') {
-      nameEmpty.style.display = 'none';
-    }
-  });
-  document.getElementById('message-contact').addEventListener('focus', function () {
-    const messageEmpty = document.getElementById('empty-message-contact');
-    const messageShort = document.getElementById('message-length');
-    if (messageEmpty.style.display === 'block') {
-      messageEmpty.style.display = 'none';
-    }
-    if (messageShort.style.display === 'block') {
-      messageShort.style.display = 'none';
-    }
-  });
   function getCSRFToken() {
     const name = 'csrftoken';
     const cookies = document.cookie.split('; ');

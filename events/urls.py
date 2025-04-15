@@ -9,9 +9,12 @@ urlpatterns = [
     path('my_events/',views.my_events,name='my_events'),
     path('upcoming_events/',views.upcoming_events,name='upcoming_events'),
     path('notifications/',views.notifications,name='notifications'),
-    path('settings/',views.settings,name='settings'),
     path('ourteam/',views.ourteam,name='ourteam'),
     path('events/detail/<int:event_id>/', views.event_detail, name='event_detail'),
+    path('ticket/<str:ticket_url>/', views.ticket_detail, name='ticket_detail'),
+    path('event/<int:event_id>/tickets/', views.ticket_list_for_event, name='ticket_list_for_event'),
+    
+
 ]
 
 

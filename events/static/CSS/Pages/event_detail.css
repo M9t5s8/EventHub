@@ -1,147 +1,435 @@
+/* Container for event details */
 .event-detail-container {
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin: 120px auto 20px auto;
-    width: 80%;
-    background: #000;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: white;
-}
-.event {
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
-.event-details {
-    width: 65%;
-    display: flex;
     flex-direction: column;
-    gap: 10px;
-}
-.event-title {
-    font-size: 2rem;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-}
-.event-img {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    max-width: 700px;
-    height: 250px;
-    width: 100%;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid rgb(53, 48, 48);
-    overflow: hidden;
+    margin-top: 80px;
+    padding: 20px;
+    background: transparent;
 }
 
+.event {
+    display: flex;
+    flex-direction: row;
+    background: #000;
+    border-radius: 12px;
+    padding: 20px;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow:
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(0, 153, 255, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
+    box-sizing: border-box;
+}
+
+.event-details {
+    width: 60%;
+    background-color: #000;
+    border-radius: 12px;
+}
+
+/* Event title */
+.event-title {
+    font-size: 26px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+/* Event Image */
 .event-img img {
     width: 100%;
-    height: 100%;
+    max-height: 250px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 8px;
+    margin-bottom: 15px;
 }
-.event-detail{
-    display: flex;
-    justify-content: flex-start;
-    gap: 30px;
-    align-items: center;
-    color: #bbb;
 
+/* Location, Date and Time */
+.event-locdatime {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
-.event-location{
-    font-size: 1.1rem;
-}
-.event-date{
-    font-size: 1.1rem;
-}
-.event-time{
-    font-size: 1.1rem;
-}
-.event-description{
-    padding-right: 20px;
-    margin-top: 20px;
+
+.event-detail {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    font-size: 16px;
+    color: #bbb;
+    margin-bottom: 15px;
 }
-.event-description p{
-    color: #ccc;
-    font-size: 1.1rem;
-    line-height: 1.4rem;
-    margin: 0;
-    padding: 0;
+
+/* Event description */
+.event-description {
+    background: #111;
+    padding: 5px 15px 15px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
+
+.description-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.desccription {
+    font-size: 16px;
+    color: #bbb;
+}
+
 .ticket-rsvp {
-    width: 35%;
+    width: 40%;
+    background: #000;
+    border-radius: 12px;
+    color: #fff;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
+    align-items: center;
+    gap: 20px;
+}
+
+.ticket-card {
+    display: flex;
+    width: 100%;
 }
 
 .ticket-container {
+    width: 100%;
     background: #111;
-    padding: 30px;
+    padding: 20px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
-.ticket-container h3{
-    font-size: 1.2rem;
+
+.ticket-title h3 {
+    text-align: center;
     margin: 0;
-    color: #bbb;
-    text-align: start;
+    padding: 0;
 }
+
 .ticket {
-    padding: 10px;
     display: flex;
-    align-items: center;
-    background: white;
-    border-radius: 8px;
     justify-content: space-between;
-} 
-.ticket-price {
-    color: #111;
-    font-weight: bold;
-    margin-top: 5px;
+    align-items: center;
+    background: #111;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+}
+.ticket p{
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 10px auto 10px auto;
+}
+.ticket-type {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.ticket-type p {
     margin: 0;
+}
+
+.ticket-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.ticket-price {
+    font-size: 1rem;
+    color: #bbb;
 }
 
 .add-btn {
-    border: 1px solid #5a2d82;
+    border: 1px solid #bbb;
     background: none;
-    color: #5a2d82;
+    color: #bbb;
     padding: 5px 10px;
     border-radius: 5px;
     font-weight: bold;
+    align-items: center;
     cursor: pointer;
-}
-
-.inspect-div {
-    text-align: center;
-}
-
-.inspect {
-    width: 100%;
-    padding: 10px;
-    background-color: #aaa;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.3rem;
-    font-weight: bold;
     transition: 0.3s ease-in-out;
 }
 
-.inspect:hover {
-    background-color: #999;
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+.add-btn:hover {
+    background: #bbb;
+    color: black;
+}
+
+.rsvp-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-ticket {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.event-actions {
+    position: relative;
+    display: inline-block;
+}
+
+.action-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: #111;
+    color: white;
+    padding: 4px;
+    border-radius: 5px;
+}
+
+.eventdropdown-menu {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #111;
+    border-radius: 5px;
+    width: 120px;
+    z-index: 100;
+}
+
+.eventdropdown-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.eventdropdown-menu ul li {
+    font-size: 1rem;
+    text-align: end;
+    display: block;
+}
+
+/* Styling for buttons inside dropdown */
+.eventdropdown-menu ul li button {
+    background: none;
+    border: none;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 100%;
+    padding: 10px;
+    text-align: start;
+    transition: background 0.3s;
+}
+
+/* Hover effect */
+.eventdropdown-menu ul li button:hover {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+}
+
+.eventdropdown-menu ul li button:disabled {
+    color: #555;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.eventdropdown-menu ul li button.enabled {
+    color: #bbb;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.eventdropdown-menu ul li button.enabled:hover {
+    background-color: #1a1a1a;
+    border-radius: 5px;
+}
+
+.ticket_number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    width: auto;
+    max-width: 150px;
+    display: none;
+}
+
+.ticket-quantity {
+    font-size: 1.3rem;
+    color: #fff;
+    text-align: center;
+    min-width: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.decrement,
+.increment {
+    background: none;
+    border: 1px solid #bbb;
+    color: #bbb;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.decrement i,
+.increment i {
+    font-size: 1rem;
+    /* Adjust icon size */
+}
+
+/* Hover effects for buttons */
+.decrement:hover,
+.increment:hover {
+    background: #bbb;
+    color: black;
+}
+
+/* Style for buttons when clicked or focused */
+.decrement:active,
+.increment:active {
+    outline: none;
+    background: transparent;
+    color: #bbb;
+}
+
+.total-price-container {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #bbb;
+}
+
+
+.show-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111; 
+    
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+    width: 100%;
+}
+
+.avg-rating, .total-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 20px;
+}
+
+.avg-rating i {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+.avg-rating p, .total-rating p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #bbb;
+}
+
+.total-rating p {
+    color: #bbb;
+    font-size: 1.1rem;
+}
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 900px) {
+    .event {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .event-details,
+    .ticket-rsvp {
+        width: 100%;
+    }
+
+    .event-title {
+        font-size: 22px;
+    }
+
+    .event-img img {
+        max-height: 200px;
+    }
+
+    .event-description {
+        padding: 10px;
+    }
+
+    .ticket-container {
+        padding: 15px;
+    }
+
+    .ticket-type {
+        gap: 10px;
+    }
+
+    .add-btn {
+        font-size: 1rem;
+    }
+
+    .rating-ticket {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .ticket-quantity {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .event-title {
+        font-size: 18px;
+    }
+
+    .ticket-name {
+        font-size: 1rem;
+    }
+
+    .ticket-price {
+        font-size: 0.9rem;
+    }
+
+    .add-btn {
+        padding: 4px 8px;
+        font-size: 0.9rem;
+    }
+
+    .ticket-container {
+        padding: 10px;
+    }
+
+    .ticket-type {
+        align-items: flex-start;
+    }
 }

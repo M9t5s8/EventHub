@@ -47,16 +47,23 @@
   </nav>
 </div>
 
-<div class="navbar-container" id="navbar-container" style="display: none;">
+<div class="navbar-container" id="mobile-navbar">
   <nav>
+    <button class="close-nav-btn" id="close-nav-btn">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
     <ul>
       <li><a href="{% url 'home' %}">Home</a></li>
       <li>
-        <a href="{% url 'events' %}" id="event-btn" style="display: none;">Events</a>
-        <a href="" id="event-login-btn">Events</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'events' %}">Events</a>
+        {% else %}
+        <a href="" class="login-container-open">Events</a>
+        {% endif %}
       </li>
       <li><a href="{% url 'about' %}">About</a></li>
-      <li><a href="" id="contact-btn">Contact Us</a></li>
+      <li><a href="">Contact Us</a></li>
+      
     </ul>
   </nav>
 </div>
@@ -71,18 +78,15 @@
       <div class="input-container">
         <input type="email" id="email-login" placeholder="Enter your Gmail..." />
       </div>
-      <span id="empty-email" class="error-message" style="display: none;">Email is required!</span>
-      <span id="no-email-login" class="error-message" style="display: none;">Email does not Exist!</span>
+      <span id="email-login-error" class="error-message"></span>
 
       <label for="password-login" class="input-label">password:</label>
       <div class="input-container">
         <input type="password" id="password-login" placeholder="Enter your password..." />
         <i id="togglePasswordLogin" class="fa fa-eye"></i>
       </div>
-
-      <span id="empty-password" class="error-message" style="display: none;">Password is required!</span>
-      <span id="short-password" class="error-message" style="display: none;">Password should be between 8 to 15 characters!</span>
-      <span id="incorrect_password" class="error-message" style="display: none;">Incorrect Password!</span>
+      <span id="password-login-error" class="error-message"></span>
+      
       <div class="remember-me">
         <label class="custom-checkbox">
           <input type="checkbox" id="checkbox" checked>
@@ -112,24 +116,21 @@
       <div class="input-container">
         <input type="email" id="email-signup" placeholder="Enter your Gmail..." />
       </div>
-      <span id="empty-email-signup" class="error-message" style="display: none;">Email is required!</span>
-      <span id="exists-email-signup" class="error-message" style="display: none;">Email already Exists!</span>
+      <span id="email-signup-error" class="error-message"></span>
 
       <label for="password-signup" class="input-label">password:</label>
       <div class="input-container">
         <input type="password" id="password-signup" placeholder="Enter your password..." />
         <i id="togglePasswordSignup" class="fa fa-eye"></i>
       </div>
-      <span id="empty-password-signup" class="error-message" style="display: none;">Password is required!</span>
-      <span id="short-password-signup" class="error-message" style="display: none;">Password should be between 8 to 15 characters!</span>
-      <span id="password-not-same-signup" class="error-message" style="display: none;">Password does not match!</span>
+      <span id="password-signup-error" class="error-message"></span>
 
       <label for="confirm-password" class="input-label">confirm password:</label>
       <div class="input-container">
         <input type="password" id="confirm-password" placeholder="Confirm your password..." />
         <i id="toggleConfirmPassword" class="fa fa-eye"></i>
       </div>
-      <span id="confirmpassword-not-same-signup" class="error-message" style="display: none;">Password does not match!</span>
+      <span id="confirm-password-signup-error" class="error-message"></span>
 
       <div class="remember-me">
         <label class="custom-checkbox">
@@ -161,8 +162,7 @@
       <div class="input-container">
         <input type="number" id="otp" maxlength="6" placeholder="Enter the 6-digit OTP" />
       </div>
-      <span id="empty-otp" class="error-message" style="display: none;">OTP required!</span>
-      <span id="not-match-otp" class="error-message" style="display: none;">OTP does not match!</span>
+      <span id="signup-otp-error" class="error-message"></span>
       <div class="resend-otp">
         <p>Didn't receive the OTP?</p>
         <a href="" id="resend-otp-link">Resend OTP</a>
@@ -195,17 +195,13 @@
         <input type="radio" name="role" id="attender">
         <label for="attender" class="role-label">attender</label>
       </div>
-      <label for="username" class="input-label" id="username-label" style="display: none;">username:</label>
-      <div class="input-container">
-        <input type="text" id="username" placeholder="Enter your username..." style="display: none;">
-      </div>
-      <span id="empty-username" class="error-message" style="display: none;">Username is required!</span>
-      <label for="organizername" class="input-label" id="orgname-label">organizer name:</label>
-      <div class="input-container">
-        <input type="text" id="organizername" placeholder="Enter Organizer name...">
-      </div>
-      <span id="empty-nameoforg" class="error-message" style="display: none;">Organizer name is required!</span>
       <br>
+      <label for="username" class="input-label" id="username-label">username:</label>
+      <div class="input-container">
+        <input type="text" id="username" autocomplete="off" placeholder="Enter your username...">
+      </div>
+      <span id="username-register-error" class="error-message"></span>
+      <br>  
       <div class="inspect-div">
         <button class="inspect" type="submit">
           sign up
@@ -221,6 +217,11 @@
 
 
 
+<div class="loading-container" id="loading-container">
+  <div class="dots-container">
+    <div class="spinner"></div>
+  </div>
+</div>
 
 
 
@@ -235,7 +236,7 @@
       <div class="input-container">
         <input type="text" id="contact-name" name="contact-name" placeholder="Enter your Name..." />
       </div>
-      <span id="empty-name-contact" class="error-message" style="display: none;">Name is required!</span>
+      <span id="name-contact-error" class="error-message"></span>
 
 
       <label for="email-contact" class="input-label">Email:</label>
@@ -243,17 +244,14 @@
         <input type="email" id="email-contact" placeholder="Enter your Gmail..." />
 
       </div>
-      <span id="empty-email-contact" class="error-message" style="display: none;">Email is required!</span>
+      <span id="email-contact-error" class="error-message"></span>
 
       <label for="message-contact" class="input-label">Message:</label>
       <div class="input-container">
         <textarea id="message-contact" rows="5" placeholder="Enter your Message..."></textarea>
       </div>
 
-      <span id="empty-message-contact" class="error-message" style="display: none;">Message is required!</span>
-      <span id="message-length" class="error-message" style="display: none;">Message should be between 10 to 100
-        character!</span>
-      <br><br>
+      <span id="message-contact-error" class="error-message"></span>
       <div class="inspect-div">
         <button class="inspect" type="submit">
           contact
@@ -316,12 +314,7 @@
     </a>
   </div>
 
-  <div class="menu-item ">
-    <a href="{% url 'settings' %}">
-      <i class="fa-solid fa-gear"></i>
-      Settings
-    </a>
-  </div>
+  
 
   <div class="menu-item ">
     <a id="logout-btn">

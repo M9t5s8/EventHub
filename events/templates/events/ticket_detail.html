@@ -1,0 +1,77 @@
+{% load custom_filters %}
+
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Pages/ticket_detail.css' %}" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div class="ticket-container">
+    <div class="ticket-header">
+        <h1 class="ticket-title">Ticket Confirmation</h1>
+        <p class="ticket-subtitle">Thank you for your purchase, {{ ticket.name }}!</p>
+    </div>
+
+    <div class="ticket-details">
+        <h2 class="section-title">Ticket Details</h2>
+        <div class="ticket-info">
+            <p><strong>Ticket ID:</strong> {{ ticket.id }}</p>
+            <p><strong>Buyer Name:</strong> {{ ticket.name }}</p>
+            <p><strong>Buyer Email:</strong> {{ ticket.email }}</p>
+            <p><strong>Event:</strong> {{ ticket.event.title }}</p>
+            <p><strong>Purchase Date:</strong> {{ ticket.purchase_date }}</p>
+            <p><strong>Payment:</strong> {{ ticket.payment_status }}</p>
+            <p><strong>Status:</strong> {{ ticket.get_status_display }}</p>
+        </div>
+    </div>
+    <div class="ticket-purchases">
+        <h2 class="section-title">Purchased Tickets</h2>
+        <table class="purchase-table">
+            <thead>
+                <tr>
+                    <th>Ticket Type</th>
+                    <th>Quantity</th>
+                    <th>Price (each)</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in ticket.purchases.all %}
+                <tr>
+                    <td>{{ purchase.ticket_type.name }}</td>
+                    <td>{{ purchase.quantity }}</td>
+                    <td>Rs {{ purchase.ticket_type.price }}</td>
+                    <td>
+                        Rs {{ purchase.ticket_type.price|floatformat:0 }} × {{ purchase.quantity }} = 
+                        Rs {{ purchase.ticket_type.price|floatformat:0|multiply:purchase.quantity|floatformat:0 }}
+                    </td>
+                    
+                    
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="ticket-total">
+        <p><strong>Total Paid:</strong> Rs {{ ticket.total_price }}</p>
+    </div>
+    <div class="qr-code">
+        <h3>Scan Your Ticket</h3>
+        <img src="/media/qr_codes/{{ qr_code_file_url }}" alt="Ticket QR Code" />
+        <p>Scan this QR code at the event entry.</p>
+        <a href="/media/qr_codes/{{ qr_code_file_url }}" download>
+            <button class="inspect">download</button>
+        </a>
+    </div>
+    
+    
+    
+    
+
+</div>
+{% endblock %}

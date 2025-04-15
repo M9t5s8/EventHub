@@ -6,6 +6,31 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Pages/profile.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/noti.css' %}" />
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const profileImg = document.querySelector('.profile-img'); // Profile image at the top
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                // Update the profile image with the new image
+                profileImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Reset the profile image if no file is selected
+            profileImg.src = '{{ user.profile_picture.url }}'; // Reset to the original profile picture
+        }
+    }
+</script>
+<script src="{% static 'JS/profile.js' %}">
+    document.cookie = "csrftoken={{ csrf_token }}";
+</script>
 {% endblock %}
 
 {% block content %}
@@ -18,26 +43,120 @@
 
 <div class="userprofile-container">
     <div class="profile-info">
-        <!-- Display Name -->
-        <div class="profile-item">
-            <label for="username">username:</label>
-            <input type="text" id="username" value="{{ user.name}}" readonly>
-        </div>
-        <!-- Display Email -->
-        <div class="profile-item">
-            <label for="email">email:</label>
-            <input type="email" id="email" value="{{ user.email }}" readonly>
-        </div>
-        <!-- Display Role -->
-        <div class="profile-item">
-            <label for="role">role:</label>
-            <input type="text" id="role" value="{{ user.role }}" readonly>
-        </div>
-        <div class="profile-item">
-            <label for="joinedat">joined at:</label>
-            <input type="text" id="joinedat" value="{{ user.joined_at}}" readonly>
+        <!-- Profile Picture with camera icon -->
+        <form id="form-profile-change">
+            <div class="profile-item">
+                <div class="profile-picture">
+                    <div class="profile-img-container">
+                        <img src="{{ user.profile_picture.url }}" alt="User Profile Picture" onerror="this.src='/media/user_images/default.png'" class="profile-img">
+                    </div>
+                </div>
+                <label for="event_image" class="custom-file-upload">
+                    <input type="file" id="event_image" name="event_image" accept="image/*"
+                        onchange="previewImage(event)" />
+                    Choose File
+                </label>
+            </div>
+
+            <!-- Username Input -->
+            <div class="profile-item">
+                {% if user.role == 'organizer' or user.role == 'admin' %}
+                <label for="name" class="input-label">Organizer name:</label>
+                {% else %}
+                <label for="name" class="input-label">Username:</label>
+                {% endif %}
+                <div class="input-container">
+                    <input type="text" id="name" value="{{ user.name }}" />
+
+                </div>
+                <span id="username-edit-error" class="error-message"></span>
+            </div>
+
+            <!-- Email Input -->
+            <div class="profile-item">
+                <label for="email" class="input-label">Email:</label>
+                <div class="input-container">
+                    <input type="email" id="email" value="{{ user.email }}" readonly />
+                </div>
+                <span  class="error-message"></span>
+            </div>
+
+            <!-- Role Input -->
+            <div class="profile-item">
+                <label for="role" class="input-label">Role:</label>
+                <div class="input-container">
+                    <input type="text" id="role" value="{{ user.role }}" readonly />
+                </div>
+                <span  class="error-message"></span>
+            </div>
+
+            <!-- Joined At Input -->
+            <div class="profile-item">
+                <label for="joinedat" class="input-label">Joined At:</label>
+                <div class="input-container">
+                    <input type="text" id="joinedat" value="{{ user.joined_at }}" readonly />
+                </div>
+                <span  class="error-message"></span>
+            </div>
+            
+            <div class="inspect-div">
+                <button class="inspect cooldown-button" type="submit">
+                    submit
+                </button>
+            </div>
+        </form>
+        <div class="change-password">
+                <button id="change-pass-btn">
+                    change password
+                </button>
         </div>
     </div>
 
+
 </div>
+
+<div class="added-noti-container">
+    
+</div>
+
+
+<div class="form-container" id="password-container">
+    <div class="form-box">
+      <button class="close-btn" id="close-password-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+      <h2>change password</h2>
+      <form id="form-password">
+
+        <label for="old-pass" class="input-label">old password:</label>
+        <div class="input-container">
+          <input type="password" id="old-pass" placeholder="Enter old password..." />
+          <i id="togglePasswordold" class="fa fa-eye"></i>
+        </div>
+        <span id="old-password-error" class="error-message"></span>
+
+        <label for="new-pass" class="input-label">new password:</label>
+        <div class="input-container">
+          <input type="password" id="new-pass" placeholder="Enter new password..." autocomplete="new-password" />
+          <i id="togglePasswordnew" class="fa fa-eye"></i>
+        </div>
+        <span id="new-password-error" class="error-message"></span>
+
+
+
+        <label for="reenter-pass" class="input-label">re-enter password:</label>
+        <div class="input-container">
+          <input type="password" id="reenter-pass" placeholder="Re-enter new password..." autocomplete="new-password"/>
+          <i id="togglePasswordreenter" class="fa fa-eye"></i>
+        </div>
+        <span id="reenter-password-error" class="error-message"></span>
+
+        
+        <div class="inspect-div">
+          <button class="inspect cooldown-button" type="submit">
+            change
+          </button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
 {% endblock %}

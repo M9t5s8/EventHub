@@ -1,0 +1,25 @@
+.added-noti-container {
+    position: fixed;
+    bottom: 50px; 
+    right: 10px;  
+    background-color: #111; 
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    
+    box-shadow:
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(0, 153, 255, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
+    z-index: 9999;
+    opacity: 0; 
+    transform: scaleX(0); 
+    transform-origin: right center; 
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.added-noti-container.show {
+    opacity: 1;
+    transform: scaleX(1);  
+}

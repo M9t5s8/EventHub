@@ -3,10 +3,14 @@
 
 {% load static %}
 
+{% load custom_filters %}
+
+
 {% block title %}My Events{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Pages/my_events.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/eventshow.css' %}" />
 {% endblock %}
 {% block extra_js%}
 <script src="{% static 'JS/my_event.js' %}"></script>
@@ -19,5 +23,5 @@
         My Events
     </h2>
 </div>
-
+{% include 'eventshow.html' %}
 {% endblock %}

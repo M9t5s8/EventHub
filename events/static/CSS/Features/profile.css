@@ -1,5 +1,4 @@
 .profile-container {
-    border: 1px solid #111;
     position: fixed;
     display: none;
     background-color: #1a1a1a;
@@ -11,9 +10,9 @@
     width: 300px;
     z-index: 1000;
     box-shadow:
-    0 0 20px rgba(0, 153, 255, 0.8),
-    0 0 30px rgba(0, 153, 255, 0.6),
-    0 0 60px rgba(0, 153, 255, 0.4);
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(35, 39, 43, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
 }
 
 .profile-container .username {
@@ -34,7 +33,7 @@
 }
 
 .profile-container .menu-item a {
-    color: White;
+    color: white;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -43,20 +42,41 @@
     border-radius: 10px;
     transition: background-color 0.3s;
     background-color: #111;
+    cursor: pointer;
 }
 
 .profile-container .menu-item a:hover {
     background-color: #000;
-    text-decoration: underline;
-    color: #bbb ;
+    color: #bbb;
 }
 
 .profile-container .menu-item a i {
     font-size: 1.1rem;
     margin-right: 5px;
-    text-decoration: none;
 }
 
 .profile-container .menu-item a:hover i {
     text-decoration: none;
+}
+
+
+@media (max-width: 500px) {
+    .profile-container {
+        width: 80%;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .profile-container .username {
+        font-size: 1.1rem;
+    }
+
+    .profile-container .email {
+        font-size: 1.1rem;
+    }
+
+    .profile-container .menu-item a {
+        font-size: 1.1rem;
+    }
 }

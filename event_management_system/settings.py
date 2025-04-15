@@ -1,20 +1,28 @@
-from pathlib import Path
 import os
-
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = 'django-insecure-cnqrg)ey9!3+p)cp2lho0&@_ah%$ihg=mw!bv!dp4vg_l&a!jv'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
+# Static files
+STATIC_URL = '/static/' 
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# This is where collectstatic will store files in production
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files (for user uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
 INSTALLED_APPS = [
@@ -24,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
 ]
 
 EXTERNAL_APPS = [
@@ -50,7 +59,7 @@ ROOT_URLCONF = 'event_management_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Only this line is necessary
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,10 +77,18 @@ WSGI_APPLICATION = 'event_management_system.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Eventhub',
+        'USER': 'eventhub_admin',
+        'PASSWORD': 'eventhubadmin',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+
+
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -82,10 +99,43 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
+
+
+
+# python manage.py collectstatic
+# python manage.py collectstatic --clear
+
+
+
+
+
+
+# settings.py
+
+
+
+
+
+timezone = 'Asia/Kathmandu'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Ensure Redis is running
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # For storing task results
+task_serializer = 'json'
+accept_content = ['application/json']
+
+
+
+
+
 AUTH_USER_MODEL = 'eventhub_user.CustomUser'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', 
 ]
+
+
+
+
 
 
 # Internationalization
@@ -94,20 +144,24 @@ TIME_ZONE = 'Asia/Kathmandu'
 USE_I18N = True
 USE_TZ = True
 
+
+
+
+
 # Session settings
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 60*60*24*7
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False 
 SESSION_COOKIE_SECURE = False  # Change to True in production (HTTPS required)
 CSRF_COOKIE_SECURE = False  # Change to True in production (HTTPS required)
-SESSION_SAVE_EVERY_REQUEST = True  # Ensures session is saved on each request
+SESSION_SAVE_EVERY_REQUEST = True  
 
 
 
 
 
 
-# for otp
+# Email Configuration (For OTP)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_PORT = 587
@@ -117,19 +171,4 @@ EMAIL_HOST_PASSWORD = 'xieayndvjzupmgoe'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
-
-
-
-
-
-
-# Static files
-STATIC_URL = '/static/'  # This defines the base URL for static files
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Path for static files
-
-# Media files
-MEDIA_URL = '/media/'  # Base URL for serving uploaded files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Store images in 'media/' folder
-
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

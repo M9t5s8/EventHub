@@ -11,4 +11,13 @@ urlpatterns = [
     path("delete-event/<int:event_id>/", views.delete_event, name="delete_event"),
     path('events/edit/<int:event_id>/', views.edit_event_view, name='edit_event'),
     path('edit_event/<int:event_id>/', views.edit_event, name='edit_event_post'),
+    path('register_ticket/', views.register_ticket, name='register_ticket'),
+    path('save-event/<int:event_id>/', views.save_event, name='save_event'),
+    path('remove-event/<int:event_id>/', views.remove_event, name='remove_event'),
+    path('api/submit_ticket_order', views.submit_ticket_order, name='submit_ticket_order'),
+    path('rate-event/', views.rate_event, name='rate_event'),
+    path('notification/read/<int:notification_id>/', views.mark_notification_as_read, name='mark_notification_as_read'),
+    path('generate-signature/', views.generate_signature, name='generate_signature'),
+    path('payment-success/', views.payment_success, name='payment_success'),
+    path('payment-fail/', views.payment_fail, name='payment_fail'),
 ]

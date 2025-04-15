@@ -1,10 +1,19 @@
+html {
+  height: 100%;
+}
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(135deg, #1a103e, #3e2c8d);
+  background-color: #112;
   padding: 0;
+  height: 100%;
   box-sizing: border-box;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
 }
 
 .navbar {
@@ -16,9 +25,11 @@ body {
   padding: 20px 0px;
   z-index: 1000;
   box-shadow:
-  0 0 20px rgba(0, 153, 255, 0.8),
-  0 0 30px rgba(0, 153, 255, 0.6),
-  0 0 60px rgba(0, 153, 255, 0.4);
+        0 0 2px rgba(0, 153, 255, 0.8),
+        0 0 4px rgba(0, 153, 255, 0.6),
+        0 0 8px rgba(0, 153, 255, 0.4);
+  
+
 }
 
 .horizontal-bar {
@@ -27,7 +38,7 @@ body {
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 35px;
   height: 40px;
 }
 
@@ -46,6 +57,7 @@ body {
   font-size: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
+  
 }
 
 .horizontal-bar .logo:hover {
@@ -55,10 +67,12 @@ body {
 
 .horizontal-bar a {
   text-decoration: none;
-  color: var(--fontcolor);
+  color: #fff;
   transition: 0.5s ease;
   position: relative;
   align-items: center;
+  padding: 0 8px;
+  transition: 0.3s ease-in;
 }
 
 .horizontal-bar li a i {
@@ -68,19 +82,23 @@ body {
 }
 
 .horizontal-bar a:hover {
-  color: #bbb;
+  color: #ffcc00;
 }
 
-.horizontal-bar a::after,
+
 .nav-active::after {
   content: '';
   display: block;
   width: 0;
-  height: 2px;
-  background: var(--mainfonthover);
+  height: 3px;
   position: absolute;
-  bottom: -5px;
+  background-color: transparent;
+  bottom: -13px;
   left: 0;
+  box-shadow:
+    0 -3px 3px rgba(255, 255, 255, 0.8),
+    0 -7px 7px rgba(255, 255, 255, 0.6),
+    0 -15px 15px rgba(255, 255, 255, 0.4);
 }
 
 .nav-active::after {
@@ -112,66 +130,163 @@ body {
   border-radius: 50%;
   display: flex;
   justify-content: center;
+  padding: 0;
+  
   align-items: center;
+  overflow: hidden; 
+  box-shadow:
+        0 0 2px rgba(0, 153, 255, 0.8),
+        0 0 5px rgba(0, 153, 255, 0.6),
+        0 0 10px rgba(0, 153, 255, 0.4);
+  transition: background-color 0.3s ease, transform 0.3s ease; 
 }
+
 
 .profile-btn img {
-  height: 100%;
-  width: 100%;
+  height: 40px;
+  width: 40px;
+  object-fit: cover; 
   border-radius: 50%;
-  object-fit: cover;
-
+  transition: transform 0.3s ease;
 }
+
 
 .profile-btn:hover {
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1); 
 }
 
 
 
-.navbar-container nav {
-  flex-direction: column;
+
+
+
+.navbar-container {
   position: fixed;
-  background-color: #1a1a1a;
-  border-radius: 10px;
-  width: 400px;
-  position: relative;
-  color: var(--fontcolor);
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-
+  top: 0;
+  left: 0;
+  width: 70%;
+  height: 100%;
+  background-color: var(--navigationbar);
+  display: none;
+  box-shadow:
+    0 0 2px rgba(0, 153, 255, 0.8),
+    0 0 4px rgba(0, 153, 255, 0.6),
+    0 0 8px rgba(0, 153, 255, 0.4);
+  padding-top: 60px; 
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.close-nav-btn {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  margin-right: 30px;
+  margin-left: auto;
+  padding: 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer; 
+  position: absolute;
+  top: 20px;
+  right: 30px;
 }
 
-.navbar-container ul {
-  position: relative;
-  backdrop-filter: blur(10px);
+.close-nav-btn i {
+  transition: transform 0.3s ease;
+}
+
+.navbar-container nav ul {
   list-style: none;
   padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-left: 20px;
 }
 
-.navbar-container li {
-  text-align: center;
-  border-bottom: 1px soild #000;
-  padding: 30px 0px;
-  font-weight: 600;
-}
-
-.navbar-container a {
-  color: var(--fontcolor);
+.navbar-container nav ul li a {
   text-decoration: none;
-  font-size: 1.6rem;
+  color: white;
+  font-size: 1.3rem;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.navbar-container nav ul li a:hover {
+  color: #ffcc00;
+}
+
+.navbar-container nav ul li a:hover::after {
+  content: '';
   display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  box-shadow:
+    0 -3px 3px rgba(255, 255, 255, 0.8),
+    0 -7px 7px rgba(255, 255, 255, 0.6),
+    0 -15px 15px rgba(255, 255, 255, 0.4);
+  position: absolute;
+  bottom: -6px;
+  left: 0;
 }
 
-.navbar-container a:hover {
-  color: var(--mainfonthover);
+.navbar-container nav ul li .nav-active {
+  color: #bbb;
 }
 
-.navbar-container i {
-  font-size: 2rem;
-  cursor: pointer;
+.navbar-container nav ul li .nav-active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  box-shadow:
+    0 -3px 3px rgba(255, 255, 255, 0.8),
+    0 -7px 7px rgba(255, 255, 255, 0.6),
+    0 -15px 15px rgba(255, 255, 255, 0.4);
+  position: absolute;
+  bottom: -6px;
+  left: 0;
 }
+
+
+
+
+.navbar-container.show {
+  display: block;
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 900px) {
   .hideonMobile {

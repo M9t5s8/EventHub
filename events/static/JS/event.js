@@ -1,72 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const billboardContainer = document.querySelector('.billboard-container');
-    if (billboardContainer) {
-        const slides = document.querySelectorAll('.billboard-subcontainer');
-        const slideIndicators = document.querySelector('.slide-indicators');
-        let currentIndex = 0;
-        const totalSlides = slides.length;
-
-
-        function createPagination() {
-            slideIndicators.innerHTML = ''; // Clear existing dots
-            for (let i = 0; i < totalSlides; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                if (i === currentIndex) dot.classList.add('active');
-                dot.addEventListener('click', () => {
-                    currentIndex = i;
-                    updateSlide();
-                });
-                slideIndicators.appendChild(dot);
-            }
-        }
-
-
-        function updateSlide() {
-            slides.forEach((slide, index) => {
-                slide.style.display = index === currentIndex ? 'block' : 'none';
-            });
-            updateIndicators();
-        }
-
-
-        function updateIndicators() {
-            const dots = slideIndicators.querySelectorAll('.dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            if (dots[currentIndex]) {
-                dots[currentIndex].classList.add('active');
-            }
-        }
-
-        function autoSlide() {
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % totalSlides; // Move to next slide
-                updateSlide();
-            }, 5000);
-        }
-
-
-        document.querySelector(".next").addEventListener('click', () => {
-            console.log("Hello");
-            currentIndex = (currentIndex + 1) % totalSlides;
-            updateSlide();
-        });
-
-
-        document.querySelector(".previous").addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-            updateSlide();
-        });
-
-
-        createPagination();
-        updateSlide();
-        autoSlide();
-    }
-
-
-
-    
     const event1Container = document.getElementById("event1-container");
 
 
@@ -79,54 +11,47 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    document.getElementById('has-ticket').addEventListener('change', function () {
-        const ticketlabel = document.getElementById('ticket-label');
-        const ticketPriceInput = document.getElementById('ticket-price');
-        const displayStyle = this.checked ? 'block' : 'none';
-        ticketlabel.style.display = displayStyle;
-        ticketPriceInput.style.display = displayStyle;
-        if (!this.checked) ticketPriceInput.value = '';
-    });
+
+
+
+
+
+
+
+
 
     document.getElementById('form-event').addEventListener('submit', function (event) {
         event.preventDefault();
-
         const title = document.getElementById('event-title');
         const description = document.getElementById('event-description');
         const date = document.getElementById('event-date');
         const time = document.getElementById('event-time');
         const location = document.getElementById('event-location');
-        const ticketPrice = document.getElementById('ticket-price');
         const hasTicket = document.getElementById('has-ticket');
         const eventImage = document.getElementById('event-image');
-
         let event_valid = true;
 
-        // Form validation
-        if (title.value.trim() === '') {
-            document.getElementById('empty-event-title').style.display = 'block';
+        if (!validateInput(title, "title-event-error", 1, Infinity, { empty: "Title is required!" })) {
             event_valid = false;
-        } else document.getElementById('empty-event-title').style.display = 'none';
+        }
+        
+        if (!validateInput(description, "event-description-error", 1, Infinity, { empty: "Description is required!" })) {
+            event_valid = false;
+        }
+        
+        if (!validateInput(date, "event-date-error", 1, Infinity, { empty: "Date is required!" })) {
+            event_valid = false;
+        }
+        
+        if (!validateInput(time, "event-time-error", 1, Infinity, { empty: "Time is required!" })) {
+            event_valid = false;
+        }
+        
+        if (!validateInput(location, "event-location-error", 1, Infinity, { empty: "Location is required!" })) {
+            event_valid = false;
+        }
 
-        if (description.value.trim() === '') {
-            document.getElementById('empty-event-description').style.display = 'block';
-            event_valid = false;
-        } else document.getElementById('empty-event-description').style.display = 'none';
 
-        if (date.value.trim() === '') {
-            document.getElementById('empty-event-date').style.display = 'block';
-            event_valid = false;
-        } else document.getElementById('empty-event-date').style.display = 'none';
-
-        if (time.value.trim() === '') {
-            document.getElementById('empty-event-time').style.display = 'block';
-            event_valid = false;
-        } else document.getElementById('empty-event-time').style.display = 'none';
-
-        if (location.value.trim() === '') {
-            document.getElementById('empty-event-location').style.display = 'block';
-            event_valid = false;
-        } else document.getElementById('empty-event-location').style.display = 'none';
 
         if (event_valid) {
             const formData = new FormData();
@@ -136,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append('event_time', time.value);
             formData.append('event_location', location.value);
             formData.append('has_ticket', hasTicket.checked ? 'True' : 'False');
-            if (hasTicket.checked) formData.append('ticket_price', ticketPrice.value);
             if (eventImage.files[0]) formData.append('event_image', eventImage.files[0]);
 
 
@@ -157,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                         event1Container.style.display = "none";
                         document.body.classList.remove("no-scroll");
+                        showNotification("Event Added Successfully!");
                         addEventToDOM(data);
                     } else {
                         alert('Failed to add event: ' + data.message);
@@ -169,11 +94,55 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Function to dynamically add event to the DOM
+
+    function showNotification(message) {
+
+        const notification = document.createElement('div');
+        notification.classList.add('added-noti-container');
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 0);
+        setTimeout(function () {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 500);
+        }, 3000);
+    }
+
+
+
+
+
+
+
+
+
     function addEventToDOM(data) {
         const eventContainer = document.querySelector('.event-show-sub-container');
 
         const newEvent = document.createElement('div');
+        const eventDate = new Date(`${data.event_date}T${data.event_time}`);  // Combine date and time for formatting
+
+
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+        }).format(eventDate);
+
+
+        const formattedTime = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        }).format(eventDate);
+
+
+
+
         newEvent.classList.add('event');
         newEvent.innerHTML = `
         <div class="user-time">
@@ -183,15 +152,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="organizer-info">
                     <p class="organizer-name">${data.organizer_name}</p>
-                    <p class="event-created-time">Just now</p>
+                    <p class="event-created-time">Just Now</p>
                 </div>
                 ${data.role === 'admin' ? `
                 <div class="more-option">
                     <button id="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
-                    <div id="dropdown-menu" class="dropdown-menu">
+                    <div class="dropdown-menu">
                         <ul>
-                            <li><a href="#">Edit Event</a></li>
-                            <li><a href="#">Delete Event</a></li>
+                            <li><a href="{% url 'edit_event' event.event_id %}">Edit Event</a></li>
+                            <li><a href="#" class="delete-event" data-id="{{ event.event_id }}">Delete Event</a></li>
                             <li><a href="#">View Profile</a></li>
                         </ul>
                     </div>
@@ -205,18 +174,19 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>${data.event_name}</p>
         </div>
         <div class="event-datetime">
-            <p class="event-date">${data.event_date},</p>
-            <p class="event-time">${data.event_time}</p>
+        
+            <p class="event-date">${formattedDate}</p>
+            <p class="event-time">${formattedTime}</p>
         </div>
         <div class="event-lotick">
             <p class="event-location">${data.event_location}</p>
             <p class="event-ticket">
-                ${data.has_ticket ? `Rs ${data.ticket_price}` : 'Free'}
+                ${data.has_ticket ? `available` : 'Free'}
             </p>
         </div>
         <div class="inspect-div">
             <button class="inspect" data-id="${data.event_id}"
-                onclick="window.location.href='/event_detail/${data.event_id}/'">
+                onclick="window.location.href='/events/detail/${data.event_id}/'">
                 Inspect
             </button>
         </div>
@@ -228,6 +198,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     }
+
+
+
+
+
+
+
+    function validateInput(input, errorElementId, minLength = 0, maxLength = Infinity, messages = {}) {
+        const value = input.value.trim();
+        let message = "";
+        let valid = true
+        if (value === "") {
+            message = messages.empty || "This field is required!";
+            valid = false;
+        } else if (value.length < minLength) {
+            message = messages.minLength || `Minimum ${minLength} characters required!`;
+            valid = false;
+        } else if (value.length > maxLength) {
+            message = messages.maxLength || `Maximum ${maxLength} characters allowed!`;
+            valid = false;
+        }
+
+        showError(errorElementId, message);
+
+        return valid;
+    }
+
+    function showError(inputId, message) {
+        const errorSpan = document.getElementById(inputId);
+        if (errorSpan) { 
+            if (message) {
+                errorSpan.textContent = message;
+                errorSpan.style.visibility = "visible";
+            } else {
+                errorSpan.textContent = "";
+                errorSpan.style.visibility = "hidden";
+            }
+        }
+    }
+    
+    
+    hideErrorOnFocus("event-title","title-event-error");
+    hideErrorOnFocus("event-date","event-date-error");
+    hideErrorOnFocus("event-time","event-time-error");
+    hideErrorOnFocus("event-location","event-location-error");
+    hideErrorOnFocus("event-description","event-description-error");
+    function hideErrorOnFocus(inputId, errorId) {
+        const inputElement = document.getElementById(inputId);
+        const errorElement = document.getElementById(errorId);
+
+        if (!inputElement || !errorElement) {
+            return;
+        }
+        inputElement.addEventListener("focus", function () {
+            if (errorElement.style.visibility === "visible") {
+                errorElement.style.visibility = "hidden";
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     function getCSRFToken() {

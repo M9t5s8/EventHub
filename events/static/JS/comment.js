@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     const commentForm = document.getElementById("form-comment");
     const replyForm = document.getElementById("form-reply")
-
-
-    //comment form and its handling
+    
     if (commentForm) {
         commentForm.addEventListener("submit", function (event) {
             event.preventDefault();
@@ -52,9 +49,26 @@ document.addEventListener("DOMContentLoaded", function () {
                         <img src="${data.profile_picture}" alt="${data.username}" class="profile-img">
                     </div>
                     <div class="organizer-info">
-                        <p class="organizer-name">${data.username}</p>
+                        <p class="organizer-name">
+                        ${data.username}
+                        ${data.role.toLowerCase() !== 'attendee' ?
+                `<span class="badge ${data.role.toLowerCase() === 'admin' ? 'badge-admin' : 'badge-organizer'}">${data.role}</span>`
+                : ''}
+                        </p>
+
                         <p class="event-created-time">Just now</p>
                     </div>
+                     <div class="more-option">
+                        <button id="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
+                        <div id="dropdown-menu" class="dropdown-menu">
+                          <ul>
+                            <li><a >Edit</a></li>
+                            <li>
+                              <a href="#" class="delete-comment" >Delete</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                 </div>
                 <div class="comments">
                     <p class="comment">${data.content}</p>
@@ -78,12 +92,8 @@ document.addEventListener("DOMContentLoaded", function () {
         attachLikeDislikeListeners(newComment);
 
     }
+    
 
-
-
-
-
-    // this is when loading the page
     document.querySelectorAll(".comment-part, .reply-part").forEach(item => {
         attachLikeDislikeListeners(item);
     });
@@ -104,20 +114,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const oppositeButton = button.parentElement.querySelector(isLike ? ".dislike-btn" : ".like-btn");
         const isActive = button.classList.contains(isLike ? "liked" : "disliked");
 
-        // Handle opposite button state for both comment and reply
+        
         if (oppositeButton.classList.contains(isLike ? "disliked" : "liked")) {
             oppositeButton.classList.remove(isLike ? "disliked" : "liked");
             const oppositeCountSpan = oppositeButton.querySelector(".like-count, .dislike-count");
             oppositeCountSpan.textContent = Math.max(0, parseInt(oppositeCountSpan.textContent) - 1);
         }
 
-        // Toggle the active state for the current button
+        
         button.classList.toggle(isLike ? "liked" : "disliked");
 
-        // Update the count for the button
+        
         countSpan.textContent = isActive ? Math.max(0, parseInt(countSpan.textContent) - 1) : parseInt(countSpan.textContent) + 1;
 
-        // Send the request to the backend for both comments and replies
+        
         fetch(`/${isComment ? "comment" : "reply"}/${isLike ? "like" : "dislike"}/${itemId}/`, {
             method: "POST",
             headers: {
@@ -138,9 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
-
-
-    // reply form and data handling
+    
     document.querySelectorAll(".reply-btn").forEach(button => {
         button.addEventListener("click", function () {
             const commentId = this.getAttribute("data-comment-id");
@@ -164,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
         replyForm.addEventListener("submit", function (event) {
             event.preventDefault();
             const commentId = this.getAttribute("data-comment-id");
-            console.log("", commentId)
             const replyContent = document.getElementById("reply-content").value.trim();
 
             if (!replyContent) {
@@ -184,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        console.log("Hello");
                         addReplyToDOM(commentId, data);
                         replyForm.reset();
                     } else {
@@ -197,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
     }
+
     function addReplyToDOM(commentId, data) {
         const replyContainer = document.getElementById(`reply-section-${commentId}`);
         if (!replyContainer) {
@@ -212,9 +219,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     <img src="${data.profile_picture}" alt="${data.username}" class="profile-img">
                 </div>
                 <div class="organizer-info">
-                    <p class="organizer-name">${data.username}</p>
+                    <p class="organizer-name">
+                        ${data.username}
+                        ${data.role.toLowerCase() !== 'attendee' ?
+                        `<span class="badge ${data.role.toLowerCase() === 'admin' ? 'badge-admin' : 'badge-organizer'}">${data.role}</span>`
+                        : ''}
+                    </p>
+
                     <p class="event-created-time">Just now</p>
                 </div>
+                 <div class="more-option">
+                        <button id="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
+                        <div id="dropdown-menu" class="dropdown-menu">
+                          <ul>
+                            <li><a >Edit</a></li>
+                            <li>
+                              <a href="#" class="delete-comment" >Delete</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
             </div>
             <div class="replies">
                 <p class="reply">${data.content}</p>
@@ -238,11 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
         attachLikeDislikeListeners(newReply);
     }
 
-
-
-
-
-    // token
     function getCSRFToken() {
         return document.cookie.split("; ").find(row => row.startsWith("csrftoken="))?.split("=")[1] || "";
     }

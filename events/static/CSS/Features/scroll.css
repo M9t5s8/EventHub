@@ -1,4 +1,4 @@
-/* Custom scrollbar */
+
 ::-webkit-scrollbar {
   width: 3px;
 }
@@ -24,32 +24,3 @@
 .no-scroll {
   overflow: hidden;
 }
-
-
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
-input[type="text"]:focus,
-input[type="date"]:focus,
-input[type="time"]:focus,
-textarea:focus {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-  border: none;
-}
-textarea {
-  resize: none; 
-}
-
-
-
-
-

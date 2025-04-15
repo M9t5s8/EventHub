@@ -2,13 +2,15 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
+{% load custom_filters %}
 {% block title %}Notification{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Pages/notifications.css' %}" />
 {% endblock %}
-
+{% block extra_js%}
+<script src="{% static 'JS/notification.js' %}"></script>
+{% endblock %}
 {% block content %}
 <div class="profile-title">
     <h2>
@@ -18,18 +20,31 @@
 </div>
 <div class="notifications-container">
     <div class="notification-info">
-        {% if events %}
-        {% for event in events %}
-        <div class="notifications">
-            <p>
-                <a href="{% url 'event_detail' event.event_id %}">{{ event.title }}</a>
-                is near, so be ready for it on {{ event.event_time }}, {{ event.event_date }} at {{ event.location }}
-            </p>
-        </div>
-        {% endfor %}
+        {% if notifications %}
+            {% for notification in notifications %}
+            <div class="notification-item {% if notification.is_read %}read-notification{% else %}unread-notification{% endif %}">
+                <span class="notification-time">{{ notification.created_at|custom_timesince }}</span>
+                
+                <a href="{% url 'mark_notification_as_read' notification.id %}" 
+                   class="notification-link" 
+                   data-target-url="{{ notification.url }}"
+                   {% if notification.type == 'ticket_purchase' %}target="_blank"{% endif %}>
+                    {{ notification.message }}
+                </a>
+                
+                <a href="{% url 'mark_notification_as_read' notification.id %}" 
+                   class="noti-click-here"
+                   data-target-url="{{ notification.url }}">
+                    Click <strong>here</strong> to visit
+                </a>
+            </div>
+            
+            
+            {% endfor %}
         {% else %}
-        <p class="no-notification">You will be notified later</p>
+            <p class="no-notifications">You will be notified later.</p>
         {% endif %}
     </div>
 </div>
+
 {% endblock %}

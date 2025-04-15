@@ -1,15 +1,16 @@
-from django.shortcuts import render
+
 from django.http import JsonResponse
 import json
-import random
 from eventhub_user.models import CustomUser 
 from django.contrib.auth import login
-from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate
 from .utils import generate_otp, send_otp_email
 from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash
 
 def login_view(request):
     if request.method == "POST":
@@ -53,14 +54,10 @@ def send_otp(request):
         
             if email:
                 otp = generate_otp()
-                print("Otp:",otp)
                 send_otp_email(email, otp)
                 request.session['otp'] = otp
-                print("Pass from here")
                 cache.set(email, otp, timeout=600)  
-                print("stuck here")
                 return JsonResponse({"success": True, "otp": otp}, status=200)
-
             else:
                 return JsonResponse({"success":False}, status=200)
 
@@ -75,6 +72,56 @@ def send_otp(request):
 
 
 
+@csrf_exempt
+def update_profile(request):
+    if request.method == 'POST':
+        try:
+            username = request.POST.get('username')
+            profile_picture = request.FILES.get('profile_picture') 
+            user = request.user 
+            users = CustomUser.objects.filter(name=username.strip()).first()
+            if users is None or user == users:
+                pass
+            else:
+                print("Username already taken")
+                return JsonResponse({'username_taken': True,'success':False})
+            if username:
+                user.name = username
+            if profile_picture:
+                user.profile_picture = profile_picture
+            user.save()
+            return JsonResponse({'success': True, 'username': user.name, 'profile_picture': user.profile_picture.url}) 
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+
+
+def change_password(request):
+    if request.method == 'POST':
+        try:
+            old_password = request.POST.get('old_password')
+            new_password = request.POST.get('new_password')
+            user = request.user
+            if not check_password(old_password, user.password):
+                return JsonResponse({'success': False, 'password_not_match': True})
+
+            
+            user.set_password(new_password)
+            user.save()
+
+            update_session_auth_hash(request, user)
+
+            return JsonResponse({'success': True})
+
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
 
 
@@ -96,12 +143,6 @@ def signup_view(request):
             else:
                 return JsonResponse({"email_exists": True}, status=200)
 
-
-           
-            
-            
-
-            
             return JsonResponse({"email_exists": False, "password_signup": password, "email_signup": email}, status=200)
 
         except Exception as e:
@@ -117,33 +158,22 @@ def register_view(request):
         try:
             data = json.loads(request.body)
             email, password, role = data.get('email'), data.get('password'), data.get('role')
+            name = data.get('username')
 
-
-            print(f"Email: {email}")
-            print(f"Password: {password}")
-            print(f"Role: {role}")
-
-            if role == 'organizer':
-                name = data.get('organizername')
+            user = CustomUser.objects.filter(name=name.strip()).first()
+            if user is None:
+                pass
             else:
-                name = data.get('username')
-
-
-            print(f"Name: {name}")
-
-            
+                return JsonResponse({'username_taken': True,'success':False})
             hashed_password = make_password(password)
-            print("Hello")
             user = CustomUser(email=email, password=hashed_password, name=name, role=role)
             user.save()
             authenticated_user = authenticate(request, email=email, password=password)
 
             if authenticated_user is not None:
                 login(request, authenticated_user)
-                print("Account Created and Logged In!")
-                return JsonResponse({"message": "Account Created and Logged In!"}, status=200)
+                return JsonResponse({"success":True,"message": "Account Created and Logged In!"}, status=200)
             else:
-                print("Authentication failed after registration.")
                 return JsonResponse({"error": "Authentication failed after registration."}, status=500)
             
 

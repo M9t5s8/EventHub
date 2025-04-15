@@ -6,6 +6,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Features/comment.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/noti.css' %}" />
 <link rel="stylesheet" href="{% static 'CSS/Pages/event_detail.css' %}" />
 {% endblock %}
 
@@ -13,7 +14,12 @@
 
 {% block extra_js%}
 <script src="{% static 'JS/comment.js' %}"></script>
-<script src="{% static 'JS/event_detail.js' %}"></script>
+<script src="{% static 'JS/ticket.js' %}"></script>
+<script src="{% static 'JS/star.js' %}">document.cookie = "csrftoken={{ csrf_token }}";</script>
+<script src="{% static 'JS/toggleadd.js' %}">document.cookie = "csrftoken={{ csrf_token }}";</script>
+<script src="{% static 'JS/ellipsis.js' %}">document.cookie = "csrftoken={{ csrf_token }}";</script>
+
+
 {% endblock %}
 
 {% block content %}
@@ -25,39 +31,133 @@
             <div class="event-img">
                 <img src="{{ event.event_image.url }}" alt="Event Image">
             </div>
-            <div class="event-detail">
-                <div class="event-location">{{ event.location }}</div>
-                <div class="event-date">{{ event.event_date }}</div>
-                <div class="event-time">{{ event.event_time }} onwards</div>
+            <div class="event-locdatime">
+                <div class="event-detail">
+                    <div class="event-location">{{ event.location }}</div>
+                    <div class="event-date">{{ event.event_date|date:"M d, Y"}}</div>
+                    <div class="event-time">{{ event.event_time|time:"g:i A"}} onwards</div>
+                </div>
+                {% if user.role == 'attendee' %}
+                <div class="event-actions" data-event-id="{{ event.event_id }}">
+                    <i class="fa-solid fa-plus action-icon" id="toggleDropdown"></i>
+                    <div class="eventdropdown-menu" id="eventdropdown-menu">
+                        <ul>
+                            <li>
+                                <button class="add-to-my-events" id="addmyEventBtn" {% if user in event.saved_by.all %} disabled {% endif %}>
+                                    My Events
+                                </button>
+                            </li>
+                            <li>
+                                <button class="remove-from-events" id="removeEventBtn" {% if user not in event.saved_by.all %} disabled {% endif %}>
+                                    Remove
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+
             </div>
             <div class="event-description">
                 <p class="description-title">Description</p>
-                <p class="desccription">
-                    {{ event.description }}
-                </p>
-
+                <p class="desccription">{{ event.description }}</p>
             </div>
         </div>
-        <div class="ticket-rsvp">
-            {% if event.has_ticket %}
-            <div class="ticket-container">
-                <div>
-                    <h3>Select Ticket</h3>
-                </div>
 
-                <div class="ticket">
-                    <p class="ticket-price">Rs {{event.ticket_price}}</p>
-                    <button class="add-btn">ADD</button>
+        <div class="ticket-rsvp">
+            <div class="ticket-card">
+                {% if event.has_ticket and event.is_active %}
+                {% if tickets|length >= 1 %}
+                <div class="ticket-container">
+                    <div class="ticket-title">
+                        <h3>Select Ticket</h3>
+                    </div>
+                    {% for ticket in tickets %}
+                    <div class="ticket">
+                        <div class="ticket-type">
+                            <p class="ticket-name">{{ ticket.name }}</p>
+                            <p class="ticket-price" data-price="{{ ticket.price }}">Rs {{ ticket.price }}</p>
+                        </div>
+                        <button class="add-btn" data-ticket-id="{{ ticket.id }}"
+                            data-ticket-price="{{ ticket.price }}">ADD</button>
+                        <div class="ticket_number" id="ticket-number-container-{{ ticket.id }}" style="display: none;">
+                            <button class="decrement" data-ticket-id="{{ ticket.id }}"
+                                data-ticket-price="{{ ticket.price }}">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <span class="ticket-quantity" data-ticket-id="{{ ticket.id }}">1</span>
+                            <button class="increment" data-ticket-id="{{ ticket.id }}"
+                                data-ticket-price="{{ ticket.price }}">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="total-price-container">
+                        <span>Total Price: <span id="total-price">0.00</span></span>
+                    </div>
+
+                    <div class="inspect-div" id="open-buy-ticket-btn">
+                        <button class="inspect" id="buy-ticket" {% if not user.role == 'attendee' or not event.is_active %}disabled{% endif %}>Buy Ticket</button>
+                    </div>
+                    {% if user.role == 'admin' and event.has_ticket %}
+                    <a href="{% url 'ticket_list_for_event' event_id=event.event_id %}" target="_blank">
+                        <button class="inspect">tickets</button>
+                    </a>
+                    {% endif %}
                 </div>
-                <div class="inspect-div">
-                    <button class="inspect">
-                        buy ticket
-                    </button>
+                {% else %}
+                <div class="ticket-container">
+                    <div class="ticket-title">
+                        <h3>Ticket Information</h3>
+                    </div>
+                    <div class="ticket">
+                        <p>Ticket is not available at the moment.</p>
+                    </div>
                 </div>
-            </div>
-            {% endif %}
-            <div class="rsvp-container">
-                <a href="" id="rsvp-container-open">RSVP</a>
+                {% endif %}
+                {% elif not event.has_ticket and event.is_active %}
+                <div class="ticket-container">
+                    <div class="ticket-title">
+                        <h3>Ticket Information</h3>
+                    </div>
+                    <div class="ticket">
+                        <p>This event is free to attend.</p>
+                    </div>
+                </div>
+                {% elif not event.is_active %}
+                <div class="ticket-container">
+                    <div class="ticket-title">
+                        <h3>Ticket Information</h3>
+                    </div>
+                    <div class="ticket">
+                        <p>This event is already over.</p>
+                    </div>
+                    <div class="rating-ticket">
+                        <div class="show-rating">
+                            <div class="avg-rating">
+                                <i class="fas fa-star"></i>
+                                <p id="avg-rating">{{ average_rating }}</p>
+                            </div>
+                            <div class="total-rating">
+                                <p id="total-rating">{{ total_ratings }} Votes</p>
+                            </div>
+                        </div>
+                        {% if not event.is_active and user.role == 'attendee' %}
+                        <button class="inspect" id="rating-open-btn">rate this event</button>
+                        {% endif %}
+
+                        {% if user.role == 'admin' and event.has_ticket %}
+                        <a href="{% url 'ticket_list_for_event' event_id=event.event_id %}" target="_blank">
+                            <button class="inspect">tickets</button>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -65,37 +165,145 @@
 
 
 
-  
+
+
+
+
+
+<div class="form-container" id="payment-container">
+    <div class="form-box">
+        <button class="close-btn" id="close-payment-btn">
+            <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <h2>Buy Ticket</h2>
+        <form id="payment-form">
+            <label for="full-name" class="input-label">Full Name:</label>
+            <div class="input-container">
+                <input type="text" id="buy-ticket-full-name" name="full_name" placeholder="Enter your full name..." />
+            </div>
+            <span id="buy-ticket-name-error" class="error-message"></span>
+
+            <input type="text" id="event_id" value="{{ event.event_id }}" hidden />
+            <label for="email" class="input-label">Email:</label>
+            <div class="input-container">
+                <input type="email" id="buy-ticket-email" name="email" value="{{ user.email }}"
+                    placeholder="Enter your email..." />
+            </div>
+            <span id="buy-ticket-email-error" class="error-message"></span>
+
+            <label for="total-price" class="input-label">Total Price:</label>
+            <div class="input-container">
+                <input type="text" id="buy-ticket-total-price" name="total_price" readonly />
+            </div>
+
+            <br>
+
+            <div class="inspect-div">
+                <button class="inspect" type="submit">
+                    Next
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 
 
 
 
+{% comment %} <div class="form-container" id="buy-ticket-container">
+    <div class="form-box">
+        <button class="close-btn" id="close-buy-ticket-btn">
+            <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <h2>Buy Ticket</h2>
+        <form id="buy-ticket-form">
+            <label for="full-name" class="input-label">Full Name:</label>
+            <div class="input-container">
+                <input type="text" id="buy-ticket-full-name" name="full_name" placeholder="Enter your full name..." />
+            </div>
+            <span id="buy-ticket-name-error" class="error-message"></span>
+
+            <input type="text" id="event_id" value="{{ event.event_id }}" hidden />
+            <label for="email" class="input-label">Email:</label>
+            <div class="input-container">
+                <input type="email" id="buy-ticket-email" name="email" value="{{ user.email }}"
+                    placeholder="Enter your email..." />
+            </div>
+            <span id="buy-ticket-email-error" class="error-message"></span>
+
+            <label for="total-price" class="input-label">Total Price:</label>
+            <div class="input-container">
+                <input type="text" id="buy-ticket-total-price" name="total_price" readonly />
+            </div>
+
+            <br>
+
+            <div class="inspect-div">
+                <button class="inspect" type="submit">
+                    Next
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="form-container" id="qr-code-container">
+    <div class="form-box">
+        <button class="close-btn" id="close-qr-code-btn">
+            <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <h2>Payment QR Code</h2>
+        <div class="generated-qr-code">
+            <img id="generated-qr" class="generated-qr" src="" alt="QR Code" style="display: none;" />
+        </div>
+
+        <h4>Scan this to pay for your tickets</h2>
+        <div class="inspect-div">
+            <button class="inspect" type="submit">
+                    next
+             </button>
+        </div>
+    </div>
+</div> {% endcomment %}
 
 
 
 
 
 
+<div class="form-container" id="rating-container">
+    <div class="form-box">
+        <button class="close-btn" id="close-rating-btn">
+            <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <h2>Rate this Event</h2>
+        <form id="rating-form">
+            <div class="stars">
+                <input type="hidden" name="rating" id="rating-value" value="{{ user_rating }}">
+                <input type="hidden" id="event_id" value="{{event.event_id}}">
+                {% for i in stars_range %}
+                <i class="{% if i <= user_rating %}fas{% else %}far{% endif %} fa-star {% if i <= user_rating %}active{% endif %}" data-value="{{ i }}"></i>
 
+                    
+                {% endfor %}
+                
+            </div>
+            
+            <div id="rating-status"></div>
+            <div class="input-container">
+                <textarea id="message-rating" rows="3" placeholder="Leave a comment..."></textarea>
+            </div>
+            <br>
+            <div class="inspect-div">
+                <button class="inspect" type="submit">submit</button>
+            </div>
+        </form>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </div>
+</div>
 
 <div class="comment-container">
     <div class="comment-title">
@@ -107,7 +315,7 @@
         <form id="form-comment">
             <input type="hidden" id="event-id" value="{{event.event_id}}">
             <textarea id="comment-content" placeholder="Write your comment here..." rows="1"></textarea>
-            <button type="submit">Comment</button>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </form>
     </div>
 
@@ -123,13 +331,32 @@
                         {% endif %}
                     </div>
                     <div class="organizer-info">
-                        <p class="organizer-name">{{ comment.user.name }}</p>
-                        <p class="event-created-time">{{ comment.commented_at|timesince }} ago</p>
+                        <p class="organizer-name">{{ comment.user.name }}
+                            {% if comment.user.role == 'admin' %}
+                            <span class="badge badge-admin">Admin</span>
+                            {% elif comment.user.role == 'organizer' %}
+                            <span class="badge badge-organizer">Organizer</span>
+                            {% endif %}
+                        </p>
+                        <p class="event-created-time">{{ comment.commented_at|custom_timesince }}</p>
+                    </div>
+                    <div class="more-option">
+
+                        <button class="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
+                        <div class="dropdown-menu">
+                            <ul>
+                                <li><a class="edit-comment">Edit</a></li>
+                                <li>
+                                    <a href="#" class="delete-comment" data-id="{{ comment.comment_id }}">Delete</a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
                 <div class="comments">
                     <p class="comment">{{ comment.content }}</p>
-                    <hr style="background: #bbb; height: 2px; margin: 3px 0 3px 0;">
+                    <hr style="background: transparent; height: 2px; margin: 3px 0 3px 0;">
                     <div class="comment-actions">
                         {% with action=comment_actions|get_item:comment.comment_id %}
                         <button class="like-btn {% if action.user_liked %} liked {% endif %}"
@@ -145,7 +372,8 @@
                             <span class="dislike-count">{{ comment.dislikes.count }}</span>
                         </button>
                         {% endwith %}
-                        <button class="reply-btn" data-comment-id="{{ comment.comment_id }}">Reply</button>
+                        <button class="reply-btn" data-comment-id="{{ comment.comment_id }}"> {{replies|length}}
+                            reply</button>
                     </div>
                 </div>
             </div>
@@ -154,7 +382,7 @@
                 <div class="reply-box">
                     <form id="form-reply" data-comment-id="{{ comment.comment_id }}">
                         <textarea id="reply-content" placeholder="Write your reply here..." rows="1"></textarea>
-                        <button type="submit" class="submit-reply-btn">Reply</button>
+                        <button type="submit" class="submit-reply-btn"><i class="fas fa-paper-plane"></i></button>
                     </form>
                 </div>
                 {% for reply in replies|get_item:comment.comment_id %}
@@ -167,13 +395,32 @@
                             {% endif %}
                         </div>
                         <div class="organizer-info">
-                            <p class="organizer-name">{{ reply.user.name }}</p>
-                            <p class="event-created-time">{{ reply.replied_at|timesince }} ago</p>
+                            <p class="organizer-name">{{ reply.user.name }}
+                                {% if reply.user.role == 'admin' %}
+                                <span class="badge badge-admin">Admin</span>
+                                {% elif reply.user.role == 'organizer' %}
+                                <span class="badge badge-organizer">Organizer</span>
+                                {% endif %}
+                            </p>
+                            <p class="event-created-time">{{ reply.replied_at|custom_timesince }}</p>
+                        </div>
+                        <div class="more-option">
+
+                            <button class="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li><a class="edit-comment">Edit</a></li>
+                                    <li>
+                                        <a href="#" class="delete-comment" data-id="{{ comment.comment_id }}">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </div>
                     </div>
                     <div class="replies">
                         <p class="reply">{{ reply.content }}</p>
-                        <hr style="background: #bbb; height: 1px; margin: 3px 0 3px 0;">
+                        <hr style="background:transparent; height: 1px; margin: 3px 0 3px 0;">
                         <div class="reply-actions">
                             {% with action=reply_actions|get_item:reply.reply_id %}
                             <button class="like-btn {% if action.user_liked %} liked {% endif %}"
@@ -213,50 +460,45 @@
 
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="form-container" id="rsvp-container">
+<div class="form-container" id="ticket-container">
     <div class="form-box">
-      <button class="close-btn" id="close-rsvp-btn">
-        <i class="fa-sharp fa-solid fa-xmark"></i>
-      </button>
-      <h2>RSVP for the Event</h2>
-      <form id="form-rsvp">
-        <label for="rsvp-name" class="input-label">full name:</label>
-        <input type="text" id="rsvp-name" placeholder="Enter your full name"/>
-        <span id="empty-name-rsvp" class="error-message" style="display: none;">Name is required!</span>
-  
-        <label for="rsvp-email" class="input-label">email:</label>
-        <input type="email" id="rsvp-email" placeholder="Enter your email" />
-        <span id="empty-email-rsvp" class="error-message" style="display: none;">Email is required!</span>
+        <button class="close-btn" id="close-rsvp-btn">
+            <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <h2>RSVP for the Event</h2>
+        <form id="form-rsvp">
+            <label for="rsvp-name" class="input-label">full name:</label>
+            <div class="input-container">
+                <input type="text" id="rsvp-name" placeholder="Enter your full name..." />
+            </div>
+            <span id="empty-name-rsvp" class="error-message" style="display: none;">Name is required!</span>
 
-        <div class="confirmation-message">
-          <p>You'll receive a confirmation email once RSVP is successful.</p>
-        </div>
-        <div class="inspect-div">
-            <button class="inspect" type="submit">
-              confirm rsvp
-            </button>
-          </div>
-      </form>
+            <label for="rsvp-number" class="input-label">contact no:</label>
+            <div class="input-container">
+                <input type="number" id="rsvp-number" placeholder="Enter your Contact no..." />
+            </div>
+            <span id="empty-number-rsvp" class="error-message" style="display: none;">Contact no is required!</span>
+
+            <label for="rsvp-people" class="input-label">no of people:</label>
+            <div class="input-container">
+                <input type="number" id="rsvp-people" placeholder="Enter no of people..." value="1" min="1" />
+            </div>
+            <span id="empty-people-rsvp" class="error-message" style="display: none;">At least 1 is required!</span>
+
+
+            <div class="remember-me">
+                <label class="custom-checkbox">
+                    <input type="checkbox" id="checkbox">
+                    <span class="checkmark"></span>
+                    <h3>Get me notified!</h3>
+                </label>
+            </div>
+            <div class="inspect-div">
+                <button class="inspect" type="submit">
+                    confirm rsvp
+                </button>
+            </div>
+        </form>
     </div>
-  </div>
-
-
+</div>
 {% endblock %}

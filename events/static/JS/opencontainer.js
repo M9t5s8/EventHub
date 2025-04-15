@@ -1,62 +1,53 @@
-const togglePasswordFields = [
-    { toggle: "togglePasswordLogin", input: "password-login" },
-    { toggle: "togglePasswordSignup", input: "password-signup" },
-    { toggle: "toggleConfirmPassword", input: "confirm-password" }
-];
 
-togglePasswordFields.forEach(({ toggle, input }) => {
-    const toggleElement = document.getElementById(toggle);
-    const inputElement = document.getElementById(input);
-    
-    if (toggleElement) {
-        toggleElement.addEventListener("click", function () {
-            const currentType = inputElement.getAttribute('type');
-            console.log("Current input type:", currentType); 
-            
-            // Toggle the password visibility
-            if (currentType === "password") {
-                inputElement.setAttribute('type', 'text');
-                console.log("Icon change to 'eye-slash'");
-                
-                
-                toggleElement.classList.remove("fa-eye");
-                toggleElement.classList.add("fa-eye-slash");
-            } else {
-                inputElement.setAttribute('type', 'password');
-                console.log("Icon change to 'eye'"); // Debugging
-                
-                
-                toggleElement.classList.remove("fa-eye-slash");
-                toggleElement.classList.add("fa-eye");
-            }
-
-            console.log("Updated input type:", inputElement.getAttribute('type'));  // Debugging
-        });
-    }
-});
 document.addEventListener("DOMContentLoaded", () => {
     const loginBtn = document.querySelectorAll(".login-container-open");
+    const passwordBtn = document.getElementById("change-pass-btn");
     const loginContainer = document.getElementById("login-container");
     const signupContainer = document.getElementById("signup-container");
     const otpContainer = document.getElementById("otp-container");
     const registerContainer = document.getElementById("register-container");
     const rsvpContainer = document.getElementById("rsvp-container");
     const event1Container = document.getElementById("event1-container");
+    const filterContainer = document.getElementById("filter-container");
+    const passwordContainer = document.getElementById("password-container");
+    const ratingContainer = document.getElementById("rating-container");
+    const qrContainer=document.getElementById("qr-code-container");
+    const paymentContainer=document.getElementById('payment-container');
+
+    const loginForm = document.getElementById("form-login");
+    const signupForm = document.getElementById("form-signup");
+    const otpForm = document.getElementById("form-otp");
+    const registerForm = document.getElementById("form-register");
+    const passwordForm = document.getElementById("form-password");
+
+    const filterBtn = document.getElementById("filter-btn");
+    const filterResetBtn = document.getElementById("reset-filters");
+    const filterOpenBtn = document.getElementById("open-filter");
     const rsvpBtn = document.getElementById("rsvp-container-open");
     const eventBtn = document.getElementById("add-event-btn");
+    const ratingBtn = document.getElementById("rating-open-btn");
+
+
     const closeSignupBtn = document.getElementById("close-signup-btn");
     const closeOTPBtn = document.getElementById("close-otp-btn");
     const closeLoginBtn = document.getElementById("close-login-btn");
     const closeRegisterBtn = document.getElementById("close-register-btn");
     const closeRsvpBtn = document.getElementById("close-rsvp-btn");
     const closeEventBtn = document.getElementById("close-event-add-btn");
+    const closeFilterBtn = document.getElementById("close-filter-btn");
+    const closePasswordBtn = document.getElementById("close-password-btn");
+    const closeRatingBtn = document.getElementById("close-rating-btn");
+    const closeQRBtn=document.getElementById("close-qr-code-btn");
+    const closePaymentBtn=document.getElementById("close-payment-btn");
+
     const signupLink = document.getElementById("signup-link");
     const loginLink = document.getElementById("login-link");
     const otploginLink = document.getElementById("otp-to-signup");
     const registerloginLink = document.getElementById("register-to-login");
     function showContainer(containerToShow) {
+
         const containers = [
-            loginContainer, signupContainer, otpContainer, registerContainer, rsvpContainer, event1Container
+            loginContainer, signupContainer, otpContainer, registerContainer, rsvpContainer, event1Container, filterContainer, passwordContainer, ratingContainer
         ];
 
 
@@ -73,14 +64,26 @@ document.addEventListener("DOMContentLoaded", () => {
             document.body.classList.add("no-scroll");
         }
     }
+    function resetForms() {
+        const forms = [
+            loginForm, signupForm, otpForm, passwordForm, registerForm
+        ];
 
+        forms.forEach(form => {
+            if (form) {
+                form.reset();
+            }
+        });
+    }
 
 
     if (loginBtn) {
         loginBtn.forEach(loginBtn => {
             loginBtn.addEventListener("click", (e) => {
                 e.preventDefault();
+                resetForms(loginForm);
                 showContainer(loginContainer);
+
             });
         });
     }
@@ -88,6 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
         rsvpBtn.addEventListener("click", (e) => {
             e.preventDefault();
             showContainer(rsvpContainer);
+        });
+    }
+    if (passwordBtn) {
+        passwordBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            resetForms(passwordForm);
+            showContainer(passwordContainer);
         });
     }
     if (eventBtn) {
@@ -99,27 +109,46 @@ document.addEventListener("DOMContentLoaded", () => {
     if (signupLink) {
         signupLink.addEventListener("click", (e) => {
             e.preventDefault();
+            resetForms(signupForm);
             showContainer(signupContainer);
+
+        });
+    }
+    if (ratingBtn) {
+        ratingBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showContainer(ratingContainer);
         });
     }
     if (loginLink) {
         loginLink.addEventListener("click", (e) => {
             e.preventDefault();
+            resetForms(loginForm);
             showContainer(loginContainer);
+
         });
     }
     if (otploginLink) {
         otploginLink.addEventListener("click", (e) => {
             e.preventDefault();
+            resetForms(otpForm);
             showContainer(otpContainer);
         });
     }
     if (registerloginLink) {
         registerloginLink.addEventListener("click", (e) => {
             e.preventDefault();
+            resetForms(registerForm);
             showContainer(registerContainer);
         });
     }
+    if (filterOpenBtn) {
+        filterOpenBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showContainer(filterContainer);
+        });
+    }
+
 
 
 
@@ -133,13 +162,52 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeRegisterBtn) closeRegisterBtn.addEventListener("click", () => closeContainer(registerContainer));
     if (closeRsvpBtn) closeRsvpBtn.addEventListener("click", () => closeContainer(rsvpContainer));
     if (closeEventBtn) closeEventBtn.addEventListener("click", () => closeContainer(event1Container));
-
-    [loginContainer, signupContainer, otpContainer, registerContainer, rsvpContainer, event1Container].forEach((container) => {
+    if (closeFilterBtn) closeFilterBtn.addEventListener("click", () => closeContainer(filterContainer));
+    if (filterBtn) filterBtn.addEventListener("click", () => closeContainer(filterContainer));
+    if (closePasswordBtn) closePasswordBtn.addEventListener("click", () => closeContainer(passwordContainer));
+    if (filterResetBtn) filterResetBtn.addEventListener("click", () => closeContainer(filterContainer));
+    if (closeRatingBtn) closeRatingBtn.addEventListener("click", () => closeContainer(ratingContainer));
+    if (closeQRBtn) closeQRBtn.addEventListener("click",() => closeContainer(qrContainer));
+    if (closePaymentBtn) closePaymentBtn.addEventListener("click",() => closeContainer(paymentContainer));
+    [loginContainer, signupContainer, otpContainer, registerContainer, rsvpContainer, event1Container, filterContainer, passwordContainer, ratingContainer,qrContainer,paymentContainer].forEach((container) => {
         if (container) {
             container.addEventListener("click", (e) => {
                 if (e.target === container) {
                     container.style.display = "none";
                     document.body.classList.remove("no-scroll");
+                }
+            });
+        }
+    });
+
+
+
+    const togglePasswordFields = [
+        { toggle: "togglePasswordLogin", input: "password-login" },
+        { toggle: "togglePasswordSignup", input: "password-signup" },
+        { toggle: "toggleConfirmPassword", input: "confirm-password" },
+        { toggle: "togglePasswordold", input: "old-pass" },
+        { toggle: "togglePasswordnew", input: "new-pass" },
+        { toggle: "togglePasswordreenter", input: "reenter-pass" },
+    ];
+
+    togglePasswordFields.forEach(({ toggle, input }) => {
+        const toggleElement = document.getElementById(toggle);
+        const inputElement = document.getElementById(input);
+
+        if (toggleElement) {
+            toggleElement.addEventListener("click", function () {
+                const currentType = inputElement.getAttribute('type');
+
+
+                if (currentType === "password") {
+                    inputElement.setAttribute('type', 'text');
+                    toggleElement.classList.remove("fa-eye");
+                    toggleElement.classList.add("fa-eye-slash");
+                } else {
+                    inputElement.setAttribute('type', 'password');
+                    toggleElement.classList.remove("fa-eye-slash");
+                    toggleElement.classList.add("fa-eye");
                 }
             });
         }
@@ -159,12 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-
-
-
-
-    // open profile when clicking icon or picture
+    
     const profileContainer = document.getElementById("profile-container");
     const profileBtn = document.getElementById('user-profile');
 
@@ -190,24 +253,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // show nav bar on mobile
-    document.getElementById('show-nav-btn').addEventListener('click', (e) => {
-        verticalnavBar = document.getElementById("vertical-navbar");
-        e.preventDefault();
-    });
-    const navbarBtn = document.getElementById("show-nav-btn");
-    const navbarContainer = document.getElementById("navbar-container");
+    
+    const navbarBtn = document.getElementById("show-nav-btn"); 
+    const navbarContainer = document.getElementById("mobile-navbar"); 
+    const closeNavbarBtn = document.getElementById("close-nav-btn");
+
+    
     function showNavbar() {
         console.log("Showing nav bar");
-        navbarContainer.style.display = "flex";
-        navbarContainer.style.zIndex = "2000";
-        document.body.classList.add("no-scroll");
+        navbarContainer.style.display = "block";
+        document.body.classList.add("no-scroll"); 
     }
+
+    
+    function hideNavbar() {
+        console.log("Hiding nav bar");
+        navbarContainer.style.display = "none"; 
+        document.body.classList.remove("no-scroll");
+    }
+
+   
     navbarBtn.addEventListener("click", (e) => {
         e.preventDefault();
         showNavbar();
     });
 
+    
+    closeNavbarBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        hideNavbar();
+    });
+
+   
+    window.addEventListener("click", (e) => {
+        if (navbarContainer.style.display === "flex" && !navbarContainer.contains(e.target) && e.target !== navbarBtn) {
+            hideNavbar();
+        }
+    });
 
 
 
@@ -245,10 +327,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    
 
 
-    
+
+
 
 
 

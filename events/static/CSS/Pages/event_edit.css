@@ -2,10 +2,11 @@
     justify-content: center;
     align-items: center;
     margin: 0;
+
 }
 
 .event-edit-form {
-    margin: 150px auto 100px auto;
+    margin: 100px auto 50px auto;
     max-width: 500px;
     background-color: #111;
     padding: 40px 40px;
@@ -14,13 +15,38 @@
     color: var(--fontcolor);
     text-align: center;
     box-shadow:
-        0 0 20px rgba(0, 153, 255, 0.8),
-        0 0 30px rgba(0, 153, 255, 0.6),
-        0 0 60px rgba(0, 153, 255, 0.4);
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(0, 153, 255, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
+
 }
-
-
-
+.ticket-edit-form{
+    margin: 40px auto 20px auto;
+    max-width: 500px;
+    background-color: #111;
+    padding: 40px 40px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #fff;
+    text-align: center;
+    box-shadow:
+    0 0 5px rgba(0, 153, 255, 0.8),
+    0 0 8px rgba(0, 153, 255, 0.6),
+    0 0 15px rgba(0, 153, 255, 0.4);
+}
+.ticket-list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.ticket-table{
+    color: #fff;
+}
 
 input[type="file"] {
     display: none;
@@ -51,7 +77,7 @@ input[type="file"] {
     display: none;
 }
 .ticket-custom-checkbox {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
     height: 100%;
@@ -73,6 +99,8 @@ input[type="checkbox"] {
     display: flex;
     align-items: center;
     font-size: 16px;
+    width:150px;
+    cursor: pointer;
 }
 
 .ticket-checkmark {
@@ -94,28 +122,7 @@ input[type="checkbox"]:checked+.ticket-checkmark::after {
     color: white;
     font-size: 16px;
 }
-.inspect-div {
-    text-align: center;
-}
 
-.inspect {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    background-color: #aaa;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.3rem;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-}
-
-.inspect:hover {
-    background-color: #999;
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
-}
 .profile-item {
     display: flex;
     flex-direction: column;
@@ -138,3 +145,112 @@ input[type="checkbox"]:checked+.ticket-checkmark::after {
 .event-edit-form input[readonly] { 
     cursor: not-allowed;
 }
+
+.custom-date{
+    display: none;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .event-edit-form, .ticket-edit-form {
+        max-width: 90%;
+        padding: 20px;
+    }
+    
+    .ticket-table th, .ticket-table td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .event-edit-form, .ticket-edit-form {
+        max-width: 100%;
+        padding: 15px;
+    }
+    
+    .ticket-table {
+        font-size: 0.8rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: transparent;
+    border: 2px solid #bbb;
+}
+
+.ticket-table th, .ticket-table td {
+    border: 2px solid #bbb;
+    padding: 10px;
+    text-align: left;
+    color: #fff;
+}
+
+.ticket-table th {
+    background: transparent;
+    font-weight: 500;
+}
+
+

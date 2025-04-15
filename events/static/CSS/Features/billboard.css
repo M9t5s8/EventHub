@@ -1,0 +1,359 @@
+.billboard-container{
+    margin: 45px 0 0 0;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.billboard-card {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+}
+
+.billboard-subcontainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s ease-in-out;
+}
+
+.billboard-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 68%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.billboard-detail {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40%;
+    height: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex;
+    background-color: rgba(0, 0, 0, 1);
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 1) 80%,
+            rgba(0, 0, 0, 0) 100%);
+    z-index: 2;
+}
+
+.billboard-overlay {
+    position: absolute;
+    top: 0;
+    left: 32%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.3) 50%,
+            rgba(0, 0, 0, 0) 100%);
+    z-index: 1;
+}
+
+.bildetail-container {
+    width: 100%;
+    padding: 20px;
+    /* background-color: #3e2c8d; */
+}
+
+.bill-title {
+    font-size: 2.3rem;
+    font-weight: bold;
+    text-align: start;
+    position: absolute;
+    left: 20px;
+    bottom: 280px;
+    white-space: normal;
+    max-width: 100%;
+    margin-bottom: 5px;
+}
+
+.bill-title p {
+    margin: 0;
+    padding: 0;
+}
+
+.bill-description {
+    text-align: start;
+    font-size: 1rem;
+    line-height: 1.2rem;
+    position: absolute;
+    left: 20px;
+    bottom: 210px;
+    height: 3.7rem;
+}
+
+.bill-description p {
+    margin: 0;
+}
+
+.bill-datetime {
+    display: flex;
+    justify-content: flex-start;
+    position: absolute;
+    left: 20px;
+    bottom: 180px;
+    gap: 10px;
+    font-size: 1.1rem;
+    color: #bbb;
+}
+
+.bill-date,
+.bill-time {
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+}
+
+
+.bill-lotick {
+    position: absolute;
+    left: 20px;
+    bottom: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 15px;
+    color: #eee;
+    width: 100%;
+    height: 60px;
+}
+
+.bill-location {
+    text-align: start;
+    width: 70%;
+    font-weight: 500;
+    margin: 0;
+}
+
+
+.view-details-btn {
+    position: absolute;
+    left: 20px;
+    bottom: 50px;
+    width: 130px;
+}
+
+.view-details {
+    width: 100%;
+    padding: 10px;
+    background-color: transparent;
+    color: #aaa;
+    border: 2px solid #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.view-details:hover {
+    background-color: #aaa;
+    color: black;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+.view-details i {
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+.spotlight {
+    position: absolute;
+    left: 20px;
+    bottom: 380px;
+    font-size: 1.2rem;
+    text-align: start;
+    margin-bottom: 5px;
+    color: #bbb;
+}
+
+
+.change-btn {
+    position: absolute;
+    top: 450px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    z-index: 3;
+}
+
+.change-btn button {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.change-btn button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.change-btn i {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+
+/* Styling for the dots */
+.slide-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #bbb;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #000;
+    /* Highlight active dot */
+}
+
+
+
+
+
+@media screen and (max-width: 768px) {
+    .billboard-container {
+        padding: 20px;
+    }
+
+    .billboard-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .billboard-img {
+        width: 100%;
+        height: 250px;
+    }
+
+    .billboard-detail {
+        position: relative;
+        width: 100%;
+        height: auto;
+        background: linear-gradient(to right,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 1) 100%);
+    }
+
+    .bill-title {
+        font-size: 1.8rem;
+        bottom: 200px;
+    }
+
+    .bill-description {
+        font-size: 0.9rem;
+        bottom: 150px;
+    }
+
+    .bill-datetime {
+        font-size: 1rem;
+        bottom: 120px;
+    }
+
+    .bill-lotick {
+        font-size: 1rem;
+        bottom: 70px;
+    }
+
+    .view-details-btn {
+        width: 100px;
+    }
+
+    .view-details {
+        font-size: 1rem;
+    }
+
+    .change-btn {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .billboard-img {
+        height: 200px;
+    }
+
+    .bill-title {
+        font-size: 1.5rem;
+        bottom: 180px;
+    }
+
+    .bill-description {
+        font-size: 0.8rem;
+        bottom: 130px;
+    }
+
+    .bill-datetime {
+        font-size: 0.9rem;
+        bottom: 100px;
+    }
+
+    .bill-lotick {
+        font-size: 1rem;
+        bottom: 50px;
+    }
+
+    .view-details-btn {
+        width: 90px;
+    }
+
+    .view-details {
+        font-size: 1rem;
+    }
+
+    .change-btn {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+}

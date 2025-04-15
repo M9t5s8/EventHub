@@ -1,0 +1,91 @@
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Pages/ticket_list.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Tickets for Event: {{ tickets.0.event.title }}</h2>
+
+    <!-- Search Section -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="ticket-search" placeholder="Search by Ticket ID" onkeyup="searchTickets()">
+            <button class="search-bar" type="submit" id="search-btn" onclick="searchTickets()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <table id="ticket-table">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                <tr class="ticket-row">
+                    <td>{{ ticket.id }}</td>
+                    <td>{{ ticket.name }}</td>
+                    <td>{{ ticket.email }}</td>
+                    <td>
+                        {% if ticket.payment_status == 'success' %}
+                            <span style="color: white;">Success</span>
+                        {% elif ticket.payment_status == 'failed' %}
+                            <span style="color: red;">failed</span>
+                        {% endif %}
+                    </td>
+                    
+                    <td>
+                        <select name="status_{{ ticket.id }}">
+                            <option value="pending" {% if ticket.status == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="checked" {% if ticket.status == 'checked' %}selected{% endif %}>Checked</option>
+                        </select>
+                    </td>
+                    <td>
+                        <a href="{% url 'ticket_detail' ticket_url=ticket.ticket_url %}" target="_blank">
+                            <button type="button">click</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary">update status</button>
+    </form>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function searchTickets() {
+        const input = document.getElementById("ticket-search");
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById("ticket-table");
+        const rows = table.getElementsByClassName("ticket-row"); // Use class for rows
+
+        
+        Array.from(rows).forEach(row => {
+            const ticketIdCell = row.getElementsByTagName("td")[0];
+            const ticketId = ticketIdCell.textContent || ticketIdCell.innerText;
+
+            if (ticketId.toLowerCase().indexOf(filter) > -1) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none"; 
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,29 +1,33 @@
+
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Events{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Pages/events.css' %}" />
-
+<link rel="stylesheet" href="{% static 'CSS/Features/billboard.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/eventshow.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/search.css' %}" />
+<link rel="stylesheet" href="{% static 'CSS/Features/noti.css' %}" />
 {% endblock %}
 {% block extra_js%}
-<script src="{% static 'JS/event.js' %}">
-  document.cookie = "csrftoken={{ csrf_token }}";
-</script>
-<script src="{% static 'JS/ellipsis.js' %}">
-  document.cookie = "csrftoken={{ csrf_token }}";
-</script>
+<script src="{% static 'JS/event.js' %}">document.cookie = "csrftoken={{ csrf_token }}";</script>
+<script src="{% static 'JS/ellipsis.js' %}">document.cookie = "csrftoken={{ csrf_token }}";</script>
+<script src="{% static 'JS/filter.js' %}"></script>
+<script src="{% static 'JS/search.js' %}"></script>
+<script src="{% static 'JS/billboard.js' %}"></script>
 {% endblock %}
 
 
 {% block content %}
 
 
-<div class="event-show-container">
+<div class="billboard-container">
   {% if billboard_event %}
-  <div class="billboard-container">
+  <div class="billboard-card">
     {% for event in billboard_event %}
     <div class="billboard-subcontainer" id="billboard-{{ forloop.counter }}">
       <div class="billboard-img" style="background-image: url('{{ event.event_image.url }}');"></div>
@@ -39,8 +43,8 @@
             <p>{{ event.description|truncatewords:30 }}</p>
           </div>
           <div class="bill-datetime">
-            <p class="bill-date">{{ event.event_date }},</p>
-            <p class="bill-time">{{ event.event_time }}</p>
+            <p class="bill-date">{{ event.event_date|date:"M d, Y" }},</p>
+            <p class="bill-time">{{ event.event_time|time:"g:i A" }}</p>
           </div>
           <div class="bill-lotick">
             <p class="bill-location">{{ event.location }}</p>
@@ -64,92 +68,88 @@
   </div>
   {% endif %}
   <div class="slide-indicators"></div>
+</div>
 
 
-
-
-
-
-
-
-
-
+<div class="add-search">
   {% if user.role == 'organizer' or user.role == 'admin' %}
   <div class="add-event">
     <button class="add-event-btn" id="add-event-btn">add events</button>
   </div>
-  {% elif user.role == 'attender' %}
-  <div style="height:80px;"></div>
   {% endif %}
-
-  <div class="event-show-sub-container">
-    {% if events %}
-    {% for event in events %}
-    <div class="event">
-      <div class="user-time">
-        <div class="organizer-profile">
-          <div class="profile-image-wrapper">
-            {% if event.organizer.profile_picture %}
-            <img src="{{ event.organizer.profile_picture.url }}" alt="Organizer Image" class="profile-img">
-            {% endif %}
-          </div>
-          <div class="organizer-info">
-            <a href="{% url 'home' %}" class="organizer-name">{{ event.organizer.name }}</a>
-            <p class="event-created-time">{{ event.created_at|timesince }} ago</p>
-          </div>
-          
-          <div class="more-option">
-            {% if user.role == 'admin' %}
-            <button id="ellipsis-button"><i class="fas fa-ellipsis-v"></i></button>
-            <div id="dropdown-menu" class="dropdown-menu">
-              <ul>
-                <li><a href="{% url 'edit_event' event.event_id %}">Edit Event</a></li>
-                <li>
-                  <a href="#" class="delete-event" data-id="{{ event.event_id }}">Delete Event</a>
-                </li>
-                <li><a href="#">View Profile</a></li>
-              </ul>
-            </div>
-            {% endif %}
-          </div>
-          
-        </div>
-      </div>
-      <div class="event-image">
-        {% if event.event_image %}
-        <img src="{{ event.event_image.url }}" alt="Event Image">
-        {% endif %}
-      </div>
-      <div class="event-title">
-        <p>{{ event.title }}</p>
-      </div>
-      <div class="event-datetime">
-        <p class="event-date">{{ event.event_date }},</p>
-        <p class="event-time">{{ event.event_time }}</p>
-      </div>
-      <div class="event-lotick">
-        <p class="event-location">{{ event.location }}</p>
-        <p class="event-ticket">
-          {% if event.has_ticket %}
-          Rs {{ event.ticket_price }}
-          {% else %}
-          free
-          {% endif %}
-        </p>
-      </div>
-      <div class="inspect-div">
-        <button class="inspect" data-id="{{ event.event_id }}"
-          onclick="window.location.href='{% url 'event_detail' event.event_id %}'">
-          inspect
-        </button>
-      </div>
+  <div class="search-container">
+    <div class="search-box" id="search-form">
+      <input type="text" name="q" id="search-input" placeholder="Type here to search..." value="{{ search_query }}">
+      <button class="search-bar" type="submit" id="search-btn">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+      <button class="search-bar" type="button" id="clear-btn" style="display: none;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button class="filter" type="button" id="open-filter">filter</button>
     </div>
-    {% endfor %}
-    {% else %}
-    <p class="event-not-found" id="event-not-found">No events available at the moment.</p>
-    {% endif %}
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+<div class="filter-container" id="filter-container">
+  <div class="filter-sub-container">
+    <button class="close-btn" id="close-filter-btn"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+    <h3>Filter Events</h3>
+    <div class="select-box">
+      <div class="select-type">
+        <label for="sort">Sort:</label>
+        <select id="sort" class="sort-dropdown">
+          <option value="recent" {% if selected_sort == 'recent' %}selected{% endif %}>Recently Added</option>
+          <option value="first" {% if selected_sort == 'first' %}selected{% endif %}>First Added</option>
+          <option value="popular" {% if selected_sort == 'popular' %}selected{% endif %}>Most Viewed</option>
+          <option value="highest" {% if selected_sort == 'highest' %}selected{% endif %}>Highest Rated</option>
+        </select>
+      </div>
+      <div class="select-type">
+        <label for="ticket-filter">Ticket:</label>
+        <select id="ticket-filter" name="ticket">
+          <option value="" {% if selected_ticket == '' %}selected{% endif %}>All</option>
+          <option value="paid" {% if selected_ticket == 'paid' %}selected{% endif %}>Paid</option>
+          <option value="free" {% if selected_ticket == 'free' %}selected{% endif %}>Free</option>
+        </select>
+      </div>
+      <div class="select-type">
+        <label for="status-filter">Event Status</label>
+        <select id="status-filter" name="status">
+          <option value="" {% if selected_status == 'active' %}selected{% endif %}>Active</option>
+          <option value="inactive" {% if selected_status == 'inactive' %}selected{% endif %}>Inactive</option>
+          <option value="all" {% if selected_status == 'all' %}selected{% endif %}>All</option>
+        </select>
+      </div>
+      <div class="select-type">
+        <label for="search-by">Search By</label>
+        <select id="search-by" name="search">
+          <option value="title" {% if selected_search == 'title' %}selected{% endif %}>Title</option>
+          <option value="location" {% if selected_search == 'location' %}selected{% endif %}>Location</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-btn-div">
+      <button class="filter-btn" id="filter-btn">filter</button>
+      <button  class="filter-btn" id="reset-filters">reset</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+{% include 'eventshow.html' %}
 
 
 <div class="form-container" id="event1-container">
@@ -168,36 +168,30 @@
       <div id="event-basic">
         <label for="event-title" class="input-label">event title:</label>
         <div class="input-container">
-          <input type="text" id="event-title" placeholder="Enter Event Title..." />
-
+          <input type="text" id="event-title" autocomplete="off" placeholder="Enter Event Title..." />
         </div>
-        <span id="empty-event-title" class="error-message" style="display: none;">Title is required!</span>
+        <span id="title-event-error" class="error-message"></span>
 
         <label for="event-date" class="input-label">event date:</label>
         <div class="input-container">
           <input type="date" id="event-date" />
-
         </div>
-        <span id="empty-event-date" class="error-message" style="display: none;">Date is required!</span>
+        <span id="event-date-error" class="error-message"></span>
 
         <label for="event-time" class="input-label">event time:</label>
         <div class="input-container">
           <input type="time" id="event-time" />
-
         </div>
-        <span id="empty-event-time" class="error-message" style="display: none;">Time is required!</span>
+        <span id="event-time-error" class="error-message"></span>
 
         <label for="event-location" class="input-label">event location:</label>
         <div class="input-container">
           <input type="text" id="event-location" placeholder="Enter Event Location..." />
-
         </div>
-        <span id="empty-event-location" class="error-message" style="display: none;">Location is required!</span>
+        <span id="event-location-error" class="error-message"></span>
       </div>
       <div id="event-extra-detail" style="display:none;">
-        
         <label for="event-image" class="input-label">event image:</label>
-        
         <label class="custom-file-upload">
           <input type="file" id="event-image" name="event_image" accept="image/*" />
           choose file
@@ -213,21 +207,13 @@
           </label>
         </div>
 
-        <!-- Ticket Price -->
-        <label for="ticket-price" id="ticket-label" class="input-label" style="display: none;">Ticket Price:</label>
-        <div class="input-container">
-          <input type="number" id="ticket-price" name="ticket_price" style="display: none;"
-          placeholder="Enter Ticket Price..." />
-        </div>
         
-        <span id="empty-ticket-price" class="error-message" style="display: none;">Ticket price is required when tickets
-          are enabled.</span>
 
         <label for="event-description" class="input-label">Event Description:</label>
         <div class="input-container">
           <textarea id="event-description" rows="3" placeholder="Enter Event Description..."></textarea>
         </div>
-        <span id="empty-event-description" class="error-message" style="display: none;">Description is required!</span>
+        <span id="event-description-error" class="error-message"></span>
       </div>
 
       <div class="inspect-div">
@@ -246,8 +232,17 @@
 
 
 
+<div class="pagination">
+  {% if events.has_previous %}
+      <a href="?page={{ events.previous_page_number }}">previous</a>
+  {% endif %}
 
+  <span>page {{ events.number }} of {{ events.paginator.num_pages }}</span>
 
+  {% if events.has_next %}
+      <a href="?page={{ events.next_page_number }}">next</a>
+  {% endif %}
+</div>
 
 
 
