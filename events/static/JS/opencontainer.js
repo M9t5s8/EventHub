@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const filterBtn = document.getElementById("filter-btn");
     const filterResetBtn = document.getElementById("reset-filters");
     const filterOpenBtn = document.getElementById("open-filter");
-    const rsvpBtn = document.getElementById("rsvp-container-open");
+    const rsvpBtn = document.getElementById("rsvp-open-btn");
     const eventBtn = document.getElementById("add-event-btn");
     const ratingBtn = document.getElementById("rating-open-btn");
 

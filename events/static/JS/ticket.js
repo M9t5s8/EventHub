@@ -220,28 +220,94 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert("There was an error processing your request.");
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
 
     });
+
+
+
+
+    const rsvpForm = document.getElementById("rsvp-form");
+    const rsvpContainer = document.getElementById("rsvp-container");
+    if (rsvpForm && rsvpContainer) {
+        rsvpForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const fullName = rsvpForm.querySelector('input[name="full_name"]');
+            const email = rsvpForm.querySelector('input[name="email"]');
+            const attendees = rsvpForm.querySelector('input[name="attendees"]');
+            const eventID = document.getElementById('rsvp-event-id');  // You can add data-event-id="{{ event.event_id }}" in the form tag
+
+            let formValid = true;
+
+            // Basic validation
+            if (!validateInput(fullName,"rsvp-name-error" , 3, 100, { empty: "Full name is required!" })) {
+                formValid = false;
+            }
+
+            if (!validateInput(email, "rsvp-email-error", 5, 100, { empty: "Email is required!" })) {
+                formValid = false;
+            }
+
+            if (!attendees.value || parseInt(attendees.value) <= 0) {
+                alert("Please enter a valid number of attendees.");
+                formValid = false;
+            }
+
+            if (formValid) {
+                loadingContainer.style.display = "flex";
+
+                const rsvpData = {
+                    event_id: eventID.value,
+                    full_name: fullName.value,
+                    email: email.value,
+                    attendees: parseInt(attendees.value)
+                };
+                console.log("Eventid:",eventID.value)
+
+                fetch("/api/submit_rsvp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCSRFToken(),
+                    },
+                    body: JSON.stringify(rsvpData)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        loadingContainer.style.display = "none";
+                        if (data.success) {
+                            rsvpContainer.style.display = "none";
+                            document.body.classList.remove("no-scroll");
+                            rsvpForm.reset();
+                            showNotification("RSVPed Successfully!");
+                        } else {
+                            alert("There was an error submitting your RSVP.");
+                        }
+                    })
+                    .catch(error => {
+                        loadingContainer.style.display = "none";
+                        console.error("Error:", error);
+                        alert("There was an error sending the RSVP.");
+                    });
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // buyTicketForm.addEventListener("submit", function (event) {
     //     event.preventDefault();
@@ -321,19 +387,19 @@ document.addEventListener("DOMContentLoaded", function () {
     // });
 
 
-    window.onload = function() {
+    window.onload = function () {
         // Check if the URL has the 'payment' query parameter with value 'success'
         const urlParams = new URLSearchParams(window.location.search);
         const paymentStatus = urlParams.get('payment');
-        
+
         if (paymentStatus === 'success') {
             showNotification("Ticket has been Purchased!");
         }
-        if(paymentStatus=== 'failed') {
+        if (paymentStatus === 'failed') {
             showNotification("Ticket Purchase Failed!");
         }
-        const newUrl = window.location.href.split('?')[0]; 
-            history.pushState({}, '', newUrl); 
+        const newUrl = window.location.href.split('?')[0];
+        history.pushState({}, '', newUrl);
     }
 
 

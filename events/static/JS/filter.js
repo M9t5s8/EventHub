@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
     filterBtn.addEventListener("click", function () {
-        console.log("Filtering");
+        
         applyFilters();
     });
     if (resetFilter) {

@@ -1,23 +1,101 @@
 <!-- contact.html -->
 {% extends 'base.html' %}
-<!-- this uses the base.html where the boiler plate are used -->
+
 
 {% load static %}
-<!-- to use contact.css in this page -->
 
-{% block title %}About{% endblock %}
+
+{% block title %}About Us{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'CSS/Pages/about.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/Pages/ourteam.css' %}" />
 {% endblock %}
 
 {% block downbar %}{% endblock %}
 
 
 {% block content %}
-<div class="aboutus_container">
-    
+<div class="about-container">
+  <header>
+    <h1>About EVENTHUB</h1>
+    <p>Your Gateway to Discovering and Creating Unforgettable Events</p>
+  </header>
 
+  <section class="about-section">
+    <h2 class="about-heading">Who We Are</h2>
+    <p class="about-paragraph">
+      EVENTHUB is a dynamic event listing platform built to simplify how people discover, manage, and participate in events. We bring communities together by bridging the gap between organizers and attendees.
+    </p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-heading">What We Do</h2>
+    <ul class="about-list">
+      <li class="about-list-item"><strong>For Attendees:</strong> Find concerts, workshops, meetups, festivals, and more.</li>
+      <li class="about-list-item"><strong>For Organizers:</strong> Easily create, update, and promote your events.</li>
+      <li class="about-list-item"><strong>For Admins:</strong> Curate and showcase featured events in our exclusive Billboard section.</li>
+    </ul>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-heading">Our Vision</h2>
+    <p class="about-paragraph">
+      To be the go-to digital hub for discovering and managing events, making it easy to connect through experiences.
+    </p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-heading">Our Mission</h2>
+    <ul class="about-list">
+      <li class="about-list-item">Empower users to discover meaningful events.</li>
+      <li class="about-list-item">Enable organizers to effectively manage their events.</li>
+      <li class="about-list-item">Continuously innovate to enhance user experience.</li>
+    </ul>
+  </section>
+</div>
+
+<div class="ourteam-container">
+    <h2>Our Team</h2>
+    <div class="ourteam-sub-container">
+        <div class="ourteams">
+            <img src="{% static 'Images/aamod.png' %}" alt="Profile Picture">
+            <div class="ourteam-name">Aamod Mishra</div>
+            <div class="ourteam-desig">Frontend Designer</div>
+            <div class="ourteam-about">Hey, I’m the one who makes everything look and feel amazing. I turn designs into reality and make sure users enjoy every click, scroll, and interaction. If it’s on the screen, I’ve styled it, positioned it, and obsessed over every pixel!</div>
+            <div class="ourteam-social-links">
+                <a href="#" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/aamod.mishra.7#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://github.com/aamodmishra" target="_blank"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+
+        <div class="ourteams">
+            <img src="{% static 'Images/mitesh.png' %}" alt="Profile Picture">
+            <div class="ourteam-name">Mitesh Lamsal</div>
+            <div class="ourteam-desig">Fullstack Developer</div>
+            <div class="ourteam-about">I wear both hats frontend and backend. I connect the dots, solve problems across the entire stack, and make sure everything from UI to database works in perfect sync. Call me the glue that holds it all together!</div>
+
+            <div class="ourteam-social-links">
+                <a href=" " target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://github.com/M9t5s8" target="_blank"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+
+        <div class="ourteams">
+            <img src="{% static 'Images/shivam.png' %}" alt="Profile Picture">
+            <div class="ourteam-name">Shivam Yadav</div>
+            <div class="ourteam-desig">Backend Developer</div>
+            <div class="ourteam-about">I’m the brain behind the curtain. I build the logic, handle the data, and make sure everything works like magic—even if you can’t see it. APIs, databases, server logic? That’s my playground.</div>
+
+            <div class="ourteam-social-links">
+                <a href="#" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
   

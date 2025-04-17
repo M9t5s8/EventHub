@@ -1,4 +1,4 @@
-/* Container for event details */
+
 .event-detail-container {
     display: flex;
     justify-content: center;
@@ -220,7 +220,7 @@
     display: block;
 }
 
-/* Styling for buttons inside dropdown */
+
 .eventdropdown-menu ul li button {
     background: none;
     border: none;
@@ -231,10 +231,10 @@
     width: 100%;
     padding: 10px;
     text-align: start;
-    transition: background 0.3s;
+    transition:  0.3s;
 }
 
-/* Hover effect */
+
 .eventdropdown-menu ul li button:hover {
     background-color: #1a1a1a;
     border-radius: 5px;
@@ -286,7 +286,7 @@
     border-radius: 5px;
     font-size: 1.2rem;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: 0.3s ease;
 }
 
 .decrement i,
@@ -295,14 +295,14 @@
     /* Adjust icon size */
 }
 
-/* Hover effects for buttons */
+
 .decrement:hover,
 .increment:hover {
     background: #bbb;
     color: black;
 }
 
-/* Style for buttons when clicked or focused */
+
 .decrement:active,
 .increment:active {
     outline: none;

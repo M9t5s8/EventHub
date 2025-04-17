@@ -1,6 +1,6 @@
 from django.http import JsonResponse,HttpResponse
 from eventhub_user.models import CustomUser
-from eventmodule.models import  Comment, Reply,Ticket, TicketType, CustomUser, Event,EventRating,Notification,TicketPurchase
+from eventmodule.models import  Comment, Reply,Ticket, TicketType, CustomUser, Event,EventRating,Notification,TicketPurchase,RSVP
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from datetime import datetime
@@ -55,28 +55,18 @@ def create_notification(user, message, notification_type, url=None):
 def generate_signature(request):
     import json
     data = json.loads(request.body)
-
     total_amount = data.get('total_amount')
     transaction_uuid = str(uuid.uuid4())
     product_code = data.get('product_code')
-    
     if total_amount:
         total_amount = str(total_amount).replace(',', '')
-
     secret_key = '8gBm/:&EnhH.1/q'
-
-    # Step 1: Prepare string to sign
     signed_fields = f"total_amount={total_amount},transaction_uuid={transaction_uuid},product_code={product_code}"
-
     secret_key = secret_key.encode('utf-8')
     signed_fields = signed_fields.encode('utf-8')
-    
     hmac_sha256 = hmac.new(secret_key, signed_fields, hashlib.sha256)
     digest = hmac_sha256.digest()
-
     signature = base64.b64encode(digest).decode('utf-8')
-    
-
     return JsonResponse({'signature': signature,'transaction_uuid':transaction_uuid})
 
 
@@ -310,6 +300,44 @@ def edit_event_view(request, event_id):
 
 
 
+@csrf_exempt
+def submit_rsvp(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        event_id = data.get("event_id")
+        full_name = data.get("full_name")
+        email = data.get("email")
+        attendees = data.get("attendees")
+        user=request.user
+       
+
+        try:
+            event = Event.objects.get(pk=event_id)
+            rsvp=RSVP.objects.create(
+                user=user, 
+                event=event,
+                full_name=full_name,
+                email=email,
+                attendees=attendees
+            )
+            rsvp.save()
+            rsvp_url = f"/rsvp/{rsvp.rsvp_url}/"
+            if user in event.saved_by.all():
+                event.saved_by.add(user)
+            create_notification(
+                    user=rsvp.user,
+                    message = f"You have successfully RSVPed for the event: '{rsvp.event.title}'. We look forward to seeing you!",
+                    notification_type='rsvp',
+                    url=rsvp_url,
+                )
+            return JsonResponse({'success': True}, status=201)
+        except Event.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Event not found'}, status=404)
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=405)
+
+
+
 
 @csrf_exempt
 def register_ticket(request):
@@ -406,7 +434,7 @@ def submit_ticket_order(request):
             total_price=total_price,
             purchase_date=timezone.now(),
             transaction_uuid=transaction_uuid,
-            payment_status='failure',
+            payment_status='failed',
         )
 
         for ticket_data in tickets_data:
@@ -487,7 +515,8 @@ def payment_success(request):
                 ticket.save()
 
                 ticket_download_url = f"/ticket/{ticket.ticket_url}/"
-
+                if ticket.user in ticket.event.saved_by.all():
+                    ticket.event.saved_by.add(ticket.user)
                 create_notification(
                     user=ticket.user,
                     message=f"Your ticket for '{ticket.event.title}' has been successfully purchased!",

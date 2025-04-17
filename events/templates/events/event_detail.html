@@ -103,8 +103,11 @@
                     <div class="inspect-div" id="open-buy-ticket-btn">
                         <button class="inspect" id="buy-ticket" {% if not user.role == 'attendee' or not event.is_active %}disabled{% endif %}>Buy Ticket</button>
                     </div>
-                    {% if user.role == 'admin' and event.has_ticket %}
-                    <a href="{% url 'ticket_list_for_event' event_id=event.event_id %}" target="_blank">
+                    {% if event.is_active and user.role == 'attendee' %}
+                        <button class="inspect" id="rsvp-open-btn">RSVP</button>
+                    {% endif %}
+                    {% if event.has_ticket %}
+                    <a href="{% url 'ticket_list_for_event' event_id=event.event_id %}" >
                         <button class="inspect">tickets</button>
                     </a>
                     {% endif %}
@@ -146,12 +149,14 @@
                                 <p id="total-rating">{{ total_ratings }} Votes</p>
                             </div>
                         </div>
+                        {% if event.is_active and user.role == 'attendee' %}
+                        <button class="inspect" id="rsvp-open-btn">RSVP</button>
+                        {% endif %}
                         {% if not event.is_active and user.role == 'attendee' %}
                         <button class="inspect" id="rating-open-btn">rate this event</button>
                         {% endif %}
-
-                        {% if user.role == 'admin' and event.has_ticket %}
-                        <a href="{% url 'ticket_list_for_event' event_id=event.event_id %}" target="_blank">
+                        {% if event.has_ticket %}
+                        <a href="{% url 'ticket_list_for_event' event_id=event.event_id %}" style="width: 100%;" >
                             <button class="inspect">tickets</button>
                         </a>
                         {% endif %}
@@ -163,6 +168,43 @@
     </div>
 </div>
 
+<div class="form-container" id="rsvp-container">
+    <div class="form-box">
+        <button class="close-btn" id="close-rsvp-btn">
+            <i class="fa-sharp fa-solid fa-xmark"></i>
+        </button>
+        <h2>RSVP to Event</h2>
+        <form id="rsvp-form">
+            <label for="rsvp-name" class="input-label">Full Name:</label>
+            <div class="input-container">
+                <input type="text" id="rsvp-full-name" name="full_name" placeholder="Enter your full name..." autocomplete="off" />
+            </div>
+            <span id="rsvp-name-error" class="error-message"></span>
+
+            <input type="text" id="rsvp-event-id" value="{{ event.event_id }}" hidden />
+
+            <label for="rsvp-email" class="input-label">Email:</label>
+            <div class="input-container">
+                <input type="email" id="rsvp-email" name="email" value="{{ user.email }}" placeholder="Enter your email..." />
+            </div>
+            <span id="rsvp-email-error" class="error-message"></span>
+
+            <label for="rsvp-people" class="input-label">People:</label>
+            <div class="input-container">
+                <input type="number" id="rsvp-count" name="attendees" placeholder="Number of People Attending:" min="1" />
+            </div>
+            <span id="rsvp-count-error" class="error-message"></span>
+
+            <br>
+
+            <div class="inspect-div">
+                <button class="inspect" type="submit">
+                    Confirm RSVP
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 

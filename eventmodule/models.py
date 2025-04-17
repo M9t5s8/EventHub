@@ -67,8 +67,9 @@ class TicketType(models.Model):
 
 class Ticket(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),      
-        ('checked', 'Checked'), 
+        ('in_progress', 'In Progress'),      
+        ('checked', 'Checked'),
+        ('verified','Verified') 
     ]
     PAYMENT_STATUS_CHOICES = [
         ('success', 'Success'),
@@ -86,7 +87,7 @@ class Ticket(models.Model):
     
     ticket_url = models.CharField(max_length=64, unique=True, blank=True, null=True)
     
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')  # Ticket status
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_progress')  # Ticket status
     transaction_uuid = models.CharField(max_length=100, blank=True, null=True, unique=True)
     payment_status = models.CharField(
         max_length=10,
@@ -127,10 +128,55 @@ class Ticket(models.Model):
 
     def mark_as_submitted(self):
         """Mark the ticket as submitted"""
-        self.status = 'checked'
+        self.status = 'verified'
         self.save()
 
 
+class RSVP(models.Model):
+    STATUS_CHOICES = [
+        ('in_progress', 'in_progress'),
+        ('cancelled','Cancelled'),
+        ('verified','Verified'), 
+        ('checked', 'Checked'), 
+    ]
+
+    id = models.CharField(primary_key=True, max_length=8, unique=True, editable=False)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rsvps')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='rsvps')
+    full_name = models.CharField(max_length=100)
+    rsvp_url = models.CharField(max_length=64, unique=True, blank=True, null=True)
+    email = models.EmailField()
+    attendees = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='in_progress')
+    rsvp_date = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = self.generate_unique_rsvp_id()
+            
+        if not self.rsvp_url:
+            self.rsvp_url = self.generate_secure_rsvp_url()
+        
+        super().save(*args, **kwargs) 
+
+    @staticmethod
+    def generate_unique_rsvp_id():
+        while True:
+            rsvp_id = str(random.randint(10000000, 99999999)) 
+            if not RSVP.objects.filter(id=rsvp_id).exists():
+                return rsvp_id
+            
+    @staticmethod
+    def generate_secure_rsvp_url():
+        """Generate a secure and unique ticket URL using secrets module"""
+        return secrets.token_urlsafe(32)
+    
+    def mark_as_submitted(self):
+        self.status = 'checked'
+        self.save()
+
+    def __str__(self):
+        return f"{self.full_name} RSVPed for {self.event.title} ({self.attendees} people)"
 
 class TicketPurchase(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='purchases', on_delete=models.CASCADE, null=True, blank=True)
@@ -185,7 +231,8 @@ class Notification(models.Model):
     type = models.CharField(max_length=50, choices=(
         ('event_update', 'Event Update'),
         ('ticket_upload', 'Ticket Upload'),
-        ('ticket_purchase','Ticket Purchase')
+        ('ticket_purchase','Ticket Purchase'),
+        ('rsvp','Rsvp'),
     ))
     url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

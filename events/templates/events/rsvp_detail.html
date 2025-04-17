@@ -1,0 +1,38 @@
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/Pages/ticket_detail.css' %}" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="ticket-container">
+    <div class="ticket-header">
+        <h1 class="ticket-title">RSVP Confirmation</h1>
+        <p class="ticket-subtitle">Thank you for RSVPing, {{ rsvp.full_name }}!</p>
+    </div>
+
+    <div class="ticket-details">
+        <h2 class="section-title">RSVP Details</h2>
+        <div class="ticket-info">
+            <p><strong>RSVP ID:</strong> {{ rsvp.id }}</p>
+            <p><strong>Name:</strong> {{ rsvp.full_name }}</p>
+            <p><strong>Email:</strong> {{ rsvp.email }}</p>
+            <p><strong>Event:</strong> {{ rsvp.event.title }}</p>
+            <p><strong>Attendees:</strong> {{ rsvp.attendees }}</p>
+            <p><strong>Submitted On:</strong> {{ rsvp.rsvp_date }}</p>
+            <p><strong>Status:</strong> {{ rsvp.get_status_display }}</p>
+        </div>
+    </div>
+
+    {% if qr_code_file_url %}
+    <div class="qr-code">
+        <h3>Scan Your RSVP</h3>
+        <img src="/media/qr_codes/{{ qr_code_file_url }}" alt="RSVP QR Code" />
+        <p>Show this at the event entry.</p>
+        <a href="/media/qr_codes/{{ qr_code_file_url }}" download>
+            <button class="inspect">Download</button>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -15,7 +15,9 @@
         <h1 class="ticket-title">Ticket Confirmation</h1>
         <p class="ticket-subtitle">Thank you for your purchase, {{ ticket.name }}!</p>
     </div>
-
+    <a href="{% url 'event_detail' ticket.event.event_id %}">
+        <i class="fas fa-arrow-left"></i>
+    </a>
     <div class="ticket-details">
         <h2 class="section-title">Ticket Details</h2>
         <div class="ticket-info">

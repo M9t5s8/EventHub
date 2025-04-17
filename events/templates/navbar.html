@@ -23,9 +23,9 @@
         </a>
         {% endif %}
       </li>
-      <li class="hideonMobile {% if request.path == '/about/' %}nav-active{% endif %}">
-        <a href="{% url 'about' %}">
-          About
+      <li class="hideonMobile {% if request.path == '/aboutus/' %}nav-active{% endif %}">
+        <a href="{% url 'aboutus' %}">
+          About Us
         </a>
       </li>
       <li class="hideonMobile">
@@ -61,7 +61,7 @@
         <a href="" class="login-container-open">Events</a>
         {% endif %}
       </li>
-      <li><a href="{% url 'about' %}">About</a></li>
+      <li><a href="{% url 'aboutus' %}">About</a></li>
       <li><a href="">Contact Us</a></li>
       
     </ul>

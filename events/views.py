@@ -4,7 +4,7 @@ from contact.models import Contact
 from eventhub_user.models import CustomUser
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from eventmodule.models import Event, Comment, Reply,TicketType,TicketPurchase,Ticket,Notification,EventRating
+from eventmodule.models import Event, Comment, Reply,TicketType,TicketPurchase,Ticket,Notification,EventRating,RSVP
 from django.utils import timezone
 from django.db.models import Q
 from django.utils.timezone import localtime
@@ -27,7 +27,8 @@ def home_redirect():
     return redirect('/')
 
 
-
+def is_admin_or_organizer(user):
+    return user.is_authenticated and (user.is_staff or user.role == 'organizer')
 
 
 
@@ -124,27 +125,27 @@ def ticket_detail(request, ticket_url):
     except Ticket.DoesNotExist:
         return render(request, '404.html', {'error': 'Ticket not found!'})
 
-    # Generate the QR code for the ticket URL
+    
     qr_code = qrcode.make(f"http://192.168.10.103:8000/ticket/{ticket.ticket_url}/")
     
-    # to store qr codes
+   
     qr_code_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
     
-    # Create the folder if it doesn't exist
+  
     if not os.path.exists(qr_code_folder):
         os.makedirs(qr_code_folder)
 
-    # Now save the QR code image to the 'qr_codes' folder
+   
     file_name = f"ticket_{ticket.ticket_url}_qr.png"
     file_path = os.path.join(qr_code_folder, file_name)
     
     
-    # Save the QR code image to the file system
+    
     with open(file_path, 'wb') as f:
         qr_code.save(f)
 
 
-    # Generate the file path to pass to the template for downloading
+   
     qr_code_file_url = file_name
     
     return render(request, 'events/ticket_detail.html', {
@@ -152,37 +153,84 @@ def ticket_detail(request, ticket_url):
         'qr_code_file_url': qr_code_file_url
     })
 
-@user_passes_test(is_admin) 
+
+def rsvp_detail(request, rsvp_url):
+    try:
+        rsvp = RSVP.objects.get(rsvp_url=rsvp_url)
+    except RSVP.DoesNotExist:
+        return render(request, '404.html', {'error': 'RSVP not found!'})
+
+    qr_code = qrcode.make(f"http://192.168.10.103:8000/rsvp/{rsvp.rsvp_url}/") 
+
+    qr_code_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
+
+    if not os.path.exists(qr_code_folder):
+        os.makedirs(qr_code_folder)
+
+    # Save the QR code image
+    file_name = f"rsvp_{rsvp.id}_qr.png"
+    file_path = os.path.join(qr_code_folder, file_name)
+
+    with open(file_path, 'wb') as f:
+        qr_code.save(f)
+
+    qr_code_file_url = file_name
+
+    return render(request, 'events/rsvp_detail.html', {
+        'rsvp': rsvp,
+        'qr_code_file_url': qr_code_file_url
+    })
+
+
+@login_required
 def ticket_list_for_event(request, event_id):
     search_query = request.GET.get('q', '') 
+    user=request.user
 
+    event = get_object_or_404(Event, event_id=event_id)
     
-    if search_query:
-        tickets = Ticket.objects.filter(
-            event_id=event_id
-        ).filter(
-            Q(id__icontains=search_query) 
-        )
-    else:
-        tickets = Ticket.objects.filter(event_id=event_id) 
+    tickets = Ticket.objects.filter(event_id=event_id)
+    rsvps = RSVP.objects.filter(event_id=event_id)
 
+    # Filter by user if the role is 'attendee'
+    if user.role == 'attendee':
+        tickets = tickets.filter(user=user, payment_status='success')
+        rsvps = rsvps.filter(user=user)
+
+    # Search functionality (Ticket ID)
+    if search_query:
+        tickets = tickets.filter(Q(id__icontains=search_query))
+        rsvps = rsvps.filter(Q(id__icontains=search_query))
     
     if request.method == 'POST':
+        # Update Ticket statuses
         for ticket in tickets:
             status = request.POST.get(f"status_{ticket.id}")
             if status and ticket.status != status:
                 ticket.status = status
                 ticket.save()
 
+        # Update RSVP statuses
+        for rsvp in rsvps:
+            rsvp_status = request.POST.get(f"rsvp_status_{rsvp.id}")
+            if rsvp_status and rsvp.status != rsvp_status:
+                rsvp.status = rsvp_status
+                rsvp.save()
+
+
         return redirect('ticket_list_for_event', event_id=event_id)
 
-   
+
+    
     forms = {ticket.id: TicketStatusForm(instance=ticket) for ticket in tickets}
 
     return render(request, 'events/ticket_list.html', {
+        'user': user,
         'tickets': tickets,
+        'rsvps':rsvps,
         'forms': forms,
         'event_id': event_id,
+        'event':event,
         'search_query': search_query,
     })
 
@@ -227,16 +275,13 @@ def events(request):
     status_filter = request.GET.get('status', 'active')
     search_filter = request.GET.get('search-by', 'title')
     search_query = request.GET.get('q', '')
-
     events = Event.objects.filter(is_deleted=False)
-
     # Search filter
     if search_query:
         if search_filter == 'title':
             events = events.filter(title__icontains=search_query)
         elif search_filter == 'location':
             events = events.filter(location__icontains=search_query)
-
     # Sorting
     if sort_type == 'recent':
         events = events.order_by('-created_at')
@@ -244,7 +289,6 @@ def events(request):
         events = events.order_by('created_at')
     elif sort_type == 'popular':
         events = events.annotate(saved_count=Count('saved_by')).order_by('-saved_count')
-
     # Ticket filter
     if ticket_filter == 'paid':
         events = events.filter(has_ticket=True)
@@ -326,12 +370,7 @@ def events(request):
     }
     return render(request, "events/events.html", context)
 
-def ourteam(request):
-    context = {
-        'user': request.user,
-        'show_downbar':False
-        }
-    return render(request, "events/ourteam.html", context)
+
 
 @login_required
 def profile(request):

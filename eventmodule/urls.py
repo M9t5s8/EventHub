@@ -20,4 +20,5 @@ urlpatterns = [
     path('generate-signature/', views.generate_signature, name='generate_signature'),
     path('payment-success/', views.payment_success, name='payment_success'),
     path('payment-fail/', views.payment_fail, name='payment_fail'),
+    path('api/submit_rsvp', views.submit_rsvp, name='submit_rsvp'),
 ]

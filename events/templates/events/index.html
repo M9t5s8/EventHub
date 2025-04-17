@@ -13,10 +13,11 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero">
+<section class="hero" style="background-image: url('{{ event.event_image.url }}');">
   <div class="hero-content">
     <h1>EVENTHUB</h1>
     <h2>Your one-stop platform for discovering and joining exciting events!</h2>
+
     <p>
       Explore a wide range of events, from concerts to conferences, sports,
       and community gatherings. Our platform makes it easy to browse,
@@ -34,6 +35,13 @@
     {% endif %}
 
 
+  </div>
+</section>
+<hr>
+<section class="upcoming-events">
+  <div class="container">
+    <h2 class="section-title">Upcoming Events</h2>
+    {% include 'eventshow.html' %}
   </div>
 </section>
 <hr>
@@ -65,13 +73,7 @@
     </div>
   </div>
 </section>
-<hr>
-<section class="upcoming-events">
-  <div class="container">
-    <h2 class="section-title">Upcoming Events</h2>
-    {% include 'eventshow.html' %}
-  </div>
-</section>
+
 
 
 <hr>

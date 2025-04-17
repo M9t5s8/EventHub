@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Event, Comment, Reply, TicketType, Ticket, TicketPurchase,EventRating,Notification
+from .models import Event, Comment, Reply, TicketType, Ticket, TicketPurchase,EventRating,Notification,RSVP
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -103,7 +103,7 @@ class TicketAdmin(admin.ModelAdmin):
         return obj.user.id if obj.user else "-"
     user_id.short_description = 'User ID'
 
-    list_display = ('ticket_url','id', 'user_id', 'event', 'name', 'email', 'total_price', 'purchase_date')
+    list_display = ('ticket_url','id', 'user_id', 'event', 'name', 'email', 'total_price','payment_status', 'purchase_date')
     list_filter = ('purchase_date', 'event')
     search_fields = ('name', 'email', 'event__title', 'user__name')
 
@@ -118,7 +118,19 @@ class NotificationAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
 
 
+@admin.register(RSVP)
+class RSVPAdmin(admin.ModelAdmin):
+    list_display = ('id', 'full_name', 'email', 'event', 'attendees', 'status', 'rsvp_date')
+    list_filter = ('status', 'event', 'rsvp_date')
+    search_fields = ('full_name', 'email', 'id')
+    ordering = ('-rsvp_date',)
+    readonly_fields = ('id', 'rsvp_date')
 
+    fieldsets = (
+        ('RSVP Information', {
+            'fields': ('id', 'user', 'event', 'full_name', 'email', 'attendees', 'status', 'rsvp_date')
+        }),
+    )
 
 
 

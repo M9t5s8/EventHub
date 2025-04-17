@@ -28,7 +28,7 @@
                 <a href="{% url 'mark_notification_as_read' notification.id %}" 
                    class="notification-link" 
                    data-target-url="{{ notification.url }}"
-                   {% if notification.type == 'ticket_purchase' %}target="_blank"{% endif %}>
+                   {% if notification.type == 'ticket_purchase' or notification.type == 'rsvp'  %}target="_blank"{% endif %}>
                     {{ notification.message }}
                 </a>
                 

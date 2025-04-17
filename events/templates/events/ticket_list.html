@@ -1,13 +1,19 @@
 {% load static %}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'CSS/Pages/ticket_list.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-
 {% endblock %}
+
 {% block content %}
 <div class="container">
-    <h2>Tickets for Event: {{ tickets.0.event.title }}</h2>
+    <h2>Tickets for Event: {{ event.title }}</h2>
+    <a href="{% url 'event_detail' event_id %}" class="back-button">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+    
 
     <!-- Search Section -->
     <div class="search-container">
@@ -18,6 +24,8 @@
             </button>
         </div>
     </div>
+
+    <!-- Tickets Table -->
     <form method="POST">
         {% csrf_token %}
         <table id="ticket-table">
@@ -26,8 +34,8 @@
                     <th>Ticket ID</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Status</th>
                     <th>Payment</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -37,32 +45,89 @@
                     <td>{{ ticket.id }}</td>
                     <td>{{ ticket.name }}</td>
                     <td>{{ ticket.email }}</td>
-                    <td>
-                        {% if ticket.payment_status == 'success' %}
-                            <span style="color: white;">Success</span>
-                        {% elif ticket.payment_status == 'failed' %}
-                            <span style="color: red;">failed</span>
-                        {% endif %}
-                    </td>
                     
                     <td>
-                        <select name="status_{{ ticket.id }}">
-                            <option value="pending" {% if ticket.status == 'pending' %}selected{% endif %}>Pending</option>
-                            <option value="checked" {% if ticket.status == 'checked' %}selected{% endif %}>Checked</option>
-                        </select>
+                        {% if ticket.payment_status == 'success' %}
+                        <span style="color: white;">Success</span>
+                        {% elif ticket.payment_status == 'failed' %}
+                        <span style="color: #ff4c4c;">Failed</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                    {% if user.role == 'admin' %}
+                    <select name="status_{{ ticket.id }}">
+                        <option value="in_progress" {% if ticket.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="checked" {% if ticket.status == 'checked' %}selected{% endif %}>Checked</option>
+                        <option value="verified" {% if ticket.status == 'verified' %}selected{% endif %}>Verified</option>
+                    </select>
+                    {% else %}
+                     {{ ticket.get_status_display }}
+                    {% endif %}
                     </td>
                     <td>
                         <a href="{% url 'ticket_detail' ticket_url=ticket.ticket_url %}" target="_blank">
-                            <button type="button">click</button>
+                            <button type="button">Click</button>
                         </a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <button type="submit" class="btn btn-primary">update status</button>
+        {% if user.role == 'admin' %}
+        <button type="submit" class="btn btn-primary">Update Status</button>
+        {% endif %}
     </form>
+
+    <hr>
+
+    <!-- RSVP Table -->
+    <h2>RSVPs for Event: {{ event.title }}</h2>
+    <form method="POST" >
+    {% csrf_token %}
+    <table id="rsvp-table">
+        <thead>
+            <tr>
+                <th>RSVP ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Attendees</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for rsvp in rsvps %}
+            <tr>
+                <td>{{ rsvp.id }}</td>
+                <td>{{ rsvp.full_name }}</td>
+                <td>{{ rsvp.email }}</td>
+                <td>{{ rsvp.attendees }}</td>
+                
+                <td>
+                    {% if user.role == 'admin' %}
+                    <select name="rsvp_status_{{ rsvp.id }}">
+                        <option value="in_progress" {% if rsvp.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                        <option value="cancelled" {% if rsvp.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                        <option value="verified" {% if rsvp.status == 'verified' %}selected{% endif %}>Verified</option>
+                        <option value="checked" {% if rsvp.status == 'checked' %}selected{% endif %}>Checked</option>
+                    </select>
+                    {% else %}
+                     {{ rsvp.get_status_display }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'rsvp_detail' rsvp_url=rsvp.rsvp_url %}" target="_blank">
+                        <button type="button">Click</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if user.role == 'admin' %}
+    <button type="submit" class="btn btn-primary">Update Status</button>
+    {% endif %}
+</form>
 
 </div>
 {% endblock %}
@@ -72,19 +137,11 @@
     function searchTickets() {
         const input = document.getElementById("ticket-search");
         const filter = input.value.toLowerCase();
-        const table = document.getElementById("ticket-table");
-        const rows = table.getElementsByClassName("ticket-row"); // Use class for rows
+        const rows = document.querySelectorAll("#ticket-table .ticket-row");
 
-        
-        Array.from(rows).forEach(row => {
-            const ticketIdCell = row.getElementsByTagName("td")[0];
-            const ticketId = ticketIdCell.textContent || ticketIdCell.innerText;
-
-            if (ticketId.toLowerCase().indexOf(filter) > -1) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none"; 
-            }
+        rows.forEach(row => {
+            const ticketId = row.cells[0].textContent.toLowerCase();
+            row.style.display = ticketId.includes(filter) ? "" : "none";
         });
     }
 </script>

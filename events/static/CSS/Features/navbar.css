@@ -38,6 +38,7 @@ main {
   padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 35px;
   height: 40px;
 }
@@ -304,11 +305,28 @@ main {
 }
 
 @media (max-width: 500px) {
+  .navbar {
+    padding: 15px 0px;
+  }
+  
+  .horizontal-bar {
+    gap: 35px;
+    height: 35px;
+  }
+  .profile-btn {
+    height: 30px;
+    width: 30px;
+  }
+  .profile-btn img {
+    height: 30px;
+    width: 30px;
+  }
   .hideonMobile {
     display: none;
   }
 
   .horizontal-bar {
+    
     gap: 15px;
   }
 
