@@ -80,18 +80,23 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'event_management_system.wsgi.application'
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+}
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME'),
+#         'USER': os.environ.get('DB_USER'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD'),
+#         'HOST': os.environ.get('DB_HOST'),
+#         'PORT': os.environ.get('DB_PORT', '5432'),
+#     }
+# }
 
 
 
