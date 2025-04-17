@@ -1,12 +1,16 @@
 import os
 from pathlib import Path
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['eventhub-mqaw.onrender.com', 'localhost', '127.0.0.1']
 
@@ -74,17 +78,19 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'event_management_system.wsgi.application'
 
 # Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT', '5432'),
     }
 }
 
@@ -163,14 +169,17 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 
 
-# Email Configuration (For OTP)
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com' 
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'noreply.eventhub123@gmail.com'  
-EMAIL_HOST_PASSWORD = 'xieayndvjzupmgoe' 
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST = env('EMAIL_HOST') 
+EMAIL_PORT = env('EMAIL_PORT', 587)
+EMAIL_USE_TLS = True  
+EMAIL_HOST_USER = env('EMAIL_HOST_USER') 
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') 
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER) 
+
+
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
