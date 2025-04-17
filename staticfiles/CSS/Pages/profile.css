@@ -1,0 +1,174 @@
+/* Container for the entire profile */
+.userprofile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    
+    margin-top: 20px;
+    padding: 10px;
+}
+
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    background-color: #111;
+    color: white;
+    box-shadow:
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(0, 153, 255, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.profile-info form{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    
+}
+.profile-item {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.profile-item label {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+/* Read-only input fields */
+.profile-item input[readonly] {
+    border: none;
+    cursor: not-allowed;
+}
+
+/* Remove focus outline on readonly inputs */
+.profile-item input[readonly]:focus {
+    outline: none;
+}
+
+/* Profile image styling */
+.profile-picture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px; /* Space below the image */
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+/* Hide default file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Custom file upload button */
+.custom-file-upload {
+    margin: 5px auto;
+    padding: 10px 15px;
+    background-color: #aaa;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Custom file upload button hover effect */
+.custom-file-upload:hover {
+    background-color: #999;
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Ensure custom file input button stays hidden */
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.change-password button{
+    font-size: 1.2rem;
+    color: #bbb;
+    border: none;
+    background-color: transparent;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+.change-password button:hover{
+    text-decoration: underline;
+    color: #007bff;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Media Queries for Responsiveness */
+
+/* For medium screens (tablets) */
+@media (max-width: 768px) {
+    .profile-info {
+        width: 90%; /* Make profile info take up more space */
+    }
+
+    .profile-item input {
+        font-size: 1rem;
+    }
+
+    .profile-img {
+        width: 100px; /* Adjusted image size for medium screens */
+        height: 100px;
+    }
+
+    .profile-item label {
+        font-size: 1.1rem;
+    }
+}
+
+/* For small screens (mobile phones) */
+@media (max-width: 480px) {
+    .profile-info {
+        width: 100%; 
+        padding: 20px;
+    }
+
+    .profile-img {
+        width: 90px; /* Adjusted image size for small screens */
+        height: 90px;
+    }
+
+    .profile-item input {
+        font-size: 0.9rem;
+    }
+
+    .profile-item label {
+        font-size: 1rem;
+    }
+    .change-password button{
+        font-size: 1rem;
+    }
+}

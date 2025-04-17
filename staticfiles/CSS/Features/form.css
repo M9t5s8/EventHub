@@ -1,0 +1,498 @@
+.form-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+}
+
+.form-box {
+    background-color: #111;
+    padding: 40px 40px;
+    border-radius: 10px;
+    width: 330px;
+    position: relative;
+    color: var(--fontcolor);
+    text-align: center;
+    box-shadow:
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(0, 153, 255, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
+}
+
+.form-box h2 {
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: var(--fontcolor);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.input-label {
+    margin-top: 5px;
+    margin-left: 5px;
+    text-align: left;
+    margin-bottom: 4px;
+    font-size: 1.2rem;
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#togglePasswordSignup,
+#toggleConfirmPassword,
+#togglePasswordLogin,
+#togglePasswordnew,
+#togglePasswordold,
+#togglePasswordreenter {
+    font-size: 1.1rem;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+textarea {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #1b1b1b;
+    font-size: 1.1rem;
+    border: 2px solid transparent;
+    color: white;
+    outline: none;
+}
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    -webkit-background-clip: text;
+    font-size: 1.1rem;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #1b1b1b;
+
+}
+
+.remember-me {
+    margin-top: 5px;
+    display: flex;
+    padding: 0;
+    height: 30px;
+}
+
+
+
+.inspect-div {
+    text-align: center;
+}
+
+.inspect {
+    width: 100%;
+    padding: 10px;
+    background-color: #aaa;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.inspect:hover {
+    background-color: #999;
+    box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
+}
+.inspect:disabled {
+    width: 100%;
+    padding: 10px 10px;
+    background-color: #777;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: not-allowed;
+    font-size: 1.3rem;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+
+.inspect:disabled:hover {
+    background-color: #777;
+    box-shadow: none;
+}
+
+.another-link {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.another-link a {
+    color: var(--fontcolor);
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+
+.resend-otp {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    width: 100%;
+}
+
+.resend-otp a {
+    color: var(--fontcolor);
+    text-decoration: none;
+
+}
+
+.resend-otp a:hover {
+    text-decoration: underline;
+}
+
+
+
+.error-message {
+    color: #ff4d4d;
+    visibility: hidden;
+    display: block;
+    margin-left: 5px;
+    margin-top: 2px;
+    font-size: 0.9rem;
+    min-height: 1.3rem;
+    text-align: start;
+}
+
+
+input:invalid {
+    border: 2px solid red;
+}
+
+
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+}
+
+.custom-checkbox h3 {
+    color: #E7E7E7;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1rem;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.checkmark {
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+    position: relative;
+    background-color: #1a1a1a;
+}
+
+input[type="checkbox"]:checked+.checkmark::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 16px;
+}
+
+.role-selection {
+    display: flex;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.role-label {
+    position: relative;
+    display: flex;
+    color: black;
+    font-size: 16px;
+    background-color: var(--fontcolor);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.role-label::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    border: 3px solid black;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+input[type="radio"]:checked+.role-label {
+    background-color: black;
+    color: white;
+}
+
+input[type="radio"]:checked+.role-label::before {
+    height: 12px;
+    width: 12px;
+    border: 3px solid var(--fontcolor);
+    background-color: black;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus {
+    border: 2px solid #bbb;
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+
+
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+/* Style the circle inside the slider */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+
+input:checked+.slider {
+    background-color: #4CAF50;
+}
+
+input:checked+.slider:before {
+    transform: translateX(26px);
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #bbb;
+    margin-top: 10px;
+}
+
+.stars i {
+    transition: color 0.3s ease-in-out;
+}
+
+.stars i:hover,
+.stars i .active {
+    color: #f5c518;
+}
+
+#rating-status {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #bbb;
+    min-height: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.generated-qr-code {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.generated-qr {
+    width: 200px; 
+    height: 200px;
+    padding: 10px;
+    background-color: transparent; 
+    border-radius: 8px;
+}
+
+
+
+
+
+
+@media (max-width: 600px) {
+    
+    .form-box {
+        width:80%;
+        padding: 20px;
+    }
+    .close-btn {
+        top: 10px;
+        right: 20px;
+        font-size: 18px;
+    }
+    .form-box h2 {
+        font-size: 1.5rem;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    textarea {
+        font-size: 1rem;
+        padding: 8px;
+    }
+    .inspect {
+        font-size: 1.1rem;
+        padding: 8px;
+    }
+    .inspect:disabled {
+        font-size: 1.1rem;
+        padding: 8px;
+    }
+    .role-selection {
+        flex-direction: column;
+    }
+    .role-label {
+        font-size: 1rem;
+        padding: 8px 10px;
+    }
+}
+
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .form-box {
+        width: 75%;
+        padding: 30px;
+    }
+    .close-btn {
+        top: 15px;
+        right: 25px;
+        font-size: 18px;
+    }
+    .form-box h2 {
+        font-size: 1.7rem;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    textarea {
+        font-size: 1.1rem;
+        padding: 10px;
+    }
+    .inspect {
+        font-size: 1.2rem;
+        padding: 10px;
+    }
+    .inspect:disabled {
+        font-size: 1.2rem;
+        padding: 10px;
+    }
+    .role-label {
+        font-size: 1.1rem;
+        padding: 10px 12px;
+    }
+}
+
+

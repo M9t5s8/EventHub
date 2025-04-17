@@ -1,0 +1,82 @@
+.profile-container {
+    position: fixed;
+    display: none;
+    background-color: #1a1a1a;
+    color: var(--fontcolor);
+    top: 60px;
+    right: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    z-index: 1000;
+    box-shadow:
+        0 0 5px rgba(0, 153, 255, 0.8),
+        0 0 8px rgba(35, 39, 43, 0.6),
+        0 0 15px rgba(0, 153, 255, 0.4);
+}
+
+.profile-container .username {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.profile-container .email {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #bbb;
+}
+
+.profile-container .menu-item {
+    margin: 10px 0;
+}
+
+.profile-container .menu-item a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    padding: 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    background-color: #111;
+    cursor: pointer;
+}
+
+.profile-container .menu-item a:hover {
+    background-color: #000;
+    color: #bbb;
+}
+
+.profile-container .menu-item a i {
+    font-size: 1.1rem;
+    margin-right: 5px;
+}
+
+.profile-container .menu-item a:hover i {
+    text-decoration: none;
+}
+
+
+@media (max-width: 500px) {
+    .profile-container {
+        width: 80%;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .profile-container .username {
+        font-size: 1.1rem;
+    }
+
+    .profile-container .email {
+        font-size: 1.1rem;
+    }
+
+    .profile-container .menu-item a {
+        font-size: 1.1rem;
+    }
+}

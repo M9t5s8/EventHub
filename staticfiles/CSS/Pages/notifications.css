@@ -1,0 +1,126 @@
+.notifications-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.notification-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: 500px;
+}
+
+.notification-item {
+    padding: 25px 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    cursor: pointer;
+    gap: 10px;
+}
+
+.unread-notification {
+    background-color: #3c3b4c;
+}
+
+.read-notification {
+    background-color: #252434;
+}
+
+.notification-link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 1.3rem;
+}
+
+.unread-notification .notification-link {
+    color: #eee;
+}
+
+.unread-notification .notification-time {
+    color: #eee;
+}
+.unread-notification .noti-click-here {
+    color: #eee;
+}
+.unread-notification .noti-click-here:hover, .unread-notification .notification-link:hover{
+    color: #fff;
+}
+.read-notification .notification-link {
+    color: #999;
+}
+
+.read-notification .notification-time {
+    color: #999;
+}
+.read-notification .noti-click-here {
+    color: #999;
+}
+.read-notification .noti-click-here:hover, .read-notification .notification-link:hover{
+    color: #bbb;
+}
+.noti-click-here{
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+.notification-time {
+    font-size: 1.1rem;
+}
+
+.no-notifications {
+    text-align: center;
+    color: #999;
+    font-size: 1.2rem;
+    padding: 20px 0;
+}
+
+@media (max-width: 600px) {
+    .notifications-container {
+        padding: 15px;
+    }
+
+    .notification-item {
+        padding: 15px 12px;
+    }
+
+    .notification-link {
+        font-size: 1rem;
+    }
+
+    .noti-click-here,
+    .notification-time {
+        font-size: 0.9rem;
+    }
+
+    .no-notifications {
+        font-size: 1rem;
+    }
+}
+
+/* Medium screens: tablets */
+@media (min-width: 601px) and (max-width: 900px) {
+    .notifications-container {
+        padding: 18px;
+    }
+
+    .notification-item {
+        padding: 20px 16px;
+    }
+
+    .notification-link {
+        font-size: 1.15rem;
+    }
+
+    .noti-click-here,
+    .notification-time {
+        font-size: 1rem;
+    }
+}
