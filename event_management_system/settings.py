@@ -8,7 +8,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['eventhub-mqaw.onrender.com', 'localhost', '127.0.0.1']
+
 
 # Static files
 STATIC_URL = '/static/' 
@@ -79,11 +80,11 @@ WSGI_APPLICATION = 'event_management_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Eventhub',
-        'USER': 'eventhub_admin',
-        'PASSWORD': 'eventhubadmin',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
