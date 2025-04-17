@@ -11,6 +11,11 @@ __pycache__/
 db.sqlite3
 db.sqlite3-journal
 
+# PostgreSQL-related (optional)
+*.pgsql
+*.sql
+*.dump
+
 # Static and media
 /staticfiles/
 /media/
@@ -26,3 +31,8 @@ env/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Migrations (optional - if you generate them per deployment)
+# Comment this out if you want to track migrations
+# **/migrations/
+# !**/migrations/__init__.py
