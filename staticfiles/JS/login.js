@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          
+          loadingContainer.style.display = "none";
           if (!data.email_exists) {
             showError("email-login-error", "Email does not exists!");
             email.value = "";
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         })
         .catch((error) => {
-          loadingContainer.style.display = "none"
+          loadingContainer.style.display = "none";
           console.error("Error:", error);
 
         });
@@ -210,6 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        loadingContainer.style.display = "none";
         if (data.success) {
           generatedOTP = data.otp;
           loadingContainer.style.display = "none";
